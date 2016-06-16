@@ -45,6 +45,9 @@ final class Installer
     // Create index.php
     FileHelper::copyFile(static::FRAMEWORK_DIR . 'index.php', static::DOCUMENT_ROOT . 'index.php');
 
+    // Create .gitignore
+    FileHelper::copyFile(static::FRAMEWORK_DIR . '.gitignore', '.gitignore');
+
     // Create .htaccess
     FileHelper::copyFile('htaccess.dist', static::DOCUMENT_ROOT . '.htaccess');
 
