@@ -59,9 +59,6 @@ final class Installer
 
     // Show complete message
     self::show_message($io);
-
-    // Delete unneeded files
-    self::delete_self();
   }
 
   /**
