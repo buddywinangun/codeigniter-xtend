@@ -1,0 +1,25 @@
+{
+    "name": "buddywinangun/codeigniter-xtend",
+    "description": "Codeigniter Manager",
+    "keywords": [
+        "CodeIgniter",
+        "Xtend"
+    ],
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Xtend\\": "src/"
+        }
+    },
+    "authors": [{
+        "name": "buddywinangun",
+        "email": "buddywinangun@gmail.com"
+    }],
+    "require": {
+        "codeigniter/framework": "^3.1"
+    },
+    "support": {
+        "source": "https://github.com/buddywinangun/codeIgniter-xtend"
+    }
+}
