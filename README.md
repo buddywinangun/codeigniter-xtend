@@ -23,7 +23,7 @@ Codeigniter Xtend menginstal [CodeIgniter Framework](https://github.com/bcit-ci/
 1. Create a project of **Codeigniter Xtend**.
 
 ```
-composer create-project buddywinangun/codeIgniter-xtend my-project
+composer create-project buddywinangun/codeigniter-xtend my-project
 ```
 
 2.Grant write permission to the system directory
