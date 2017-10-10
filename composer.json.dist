@@ -1,0 +1,15 @@
+{
+  "description" : "CodeIgniter Application with Composer",
+  "require": {
+    "php": "^7.0",
+    "buddywinangun/codeigniter-xtend": "dev-master"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.6"
+  },
+  "scripts": {
+    "test": [
+      "./vendor/bin/phpunit"
+    ]
+  }
+}
