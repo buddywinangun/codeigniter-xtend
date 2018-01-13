@@ -30,7 +30,7 @@ final class Installer
     $io->write('Preparing the application file.');
     FileHelper::copyDirectory(static::FRAMEWORK_DIR . 'application', 'application');
     FileHelper::copyDirectory('src/application', 'application');
-    FileHelper::copyDirectory('src/public', DOCUMENT_ROOT);
+    FileHelper::copyDirectory('src/public', static::DOCUMENT_ROOT);
 
     $io->write('Create an entry point.');
     FileHelper::copyFile(static::FRAMEWORK_DIR . 'index.php', static::DOCUMENT_ROOT . 'index.php');
