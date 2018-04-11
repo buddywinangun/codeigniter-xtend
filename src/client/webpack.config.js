@@ -13,13 +13,6 @@ module.exports = {
       path.resolve(__dirname, 'node_modules')
     ]
   },
-  entry: {
-    docs: './src/pages/docs.js',
-    'login': './src/pages/login.js',
-    'users': './src/pages/users.js',
-    'userlogs': './src/pages/userlogs.js',
-    'editPersonal': './src/pages/editPersonal.js',
-  },
   output: {
     path: path.resolve(__dirname, '../../public/themes/default'),
     filename: '[name].js'
