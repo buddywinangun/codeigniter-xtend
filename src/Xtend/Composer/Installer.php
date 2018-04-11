@@ -73,10 +73,11 @@ final class Installer
     $io->write('Deleting unnecessary files.');
     FileHelper::delete(
       $cwd . '/src',
+      $cwd . '/.github',
       $cwd . '/composer.json.dist',
       $cwd . '/CHANGELOG.md',
       $cwd . '/README.md',
-      $cwd . '/LICENSE'
+      $cwd . '/LICENSE.md'
     );
 
     $io->write('Installation is complete.');
