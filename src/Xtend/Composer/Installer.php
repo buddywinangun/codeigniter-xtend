@@ -63,12 +63,6 @@ final class Installer
     FileHelper::copyFile('composer.json.dist', 'composer.json');
     passthru('composer update');
 
-    $io->write('Preparing the frontend module.');
-    FileHelper::copyDirectory('src/client', 'client');
-    chdir('./client');
-    passthru('npm install');
-    passthru('npm run build');
-
     chdir($cwd);
     $io->write('Deleting unnecessary files.');
     FileHelper::delete(
