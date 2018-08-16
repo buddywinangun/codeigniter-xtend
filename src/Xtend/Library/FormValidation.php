@@ -2,7 +2,7 @@
 
 namespace Xtend\Library;
 
-use \X\Util\Validation;
+use \Xtend\Util\Validation;
 
 abstract class FormValidation extends \CI_Form_validation
 {

@@ -8,7 +8,7 @@ final class SampleTest extends TestCase
 
   protected function setUp(): void
   {
-    $this->sample = new \X\UnittestSample('Hello world');
+    $this->sample = new \Xtend\UnitTestSample('Hello world');
   }
 
   protected function tearDown(): void

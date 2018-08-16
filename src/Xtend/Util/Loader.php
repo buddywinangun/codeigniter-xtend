@@ -46,13 +46,8 @@ final class Loader
       && !$overwrite
     )
       return;
-    $db = \X\Database\DB($config, $queryBuilder);
-    if (!$return || $overwrite) {
-      $CI->db = '';
-      $CI->db = &$db;
-    }
-    if ($return)
-      return $db;
+
+    $CI->load->database($config, $return, $queryBuilder);
   }
 
   /**

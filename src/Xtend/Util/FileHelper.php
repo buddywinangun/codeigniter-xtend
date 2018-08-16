@@ -100,7 +100,7 @@ final class FileHelper
    * Delete directory or file.
    *
    * ```php
-   * use \X\Util\FileHelper;
+   * use \Xtend\Util\FileHelper;
    *
    * // Delete all files and folders in "/ path"..
    * FileHelper::delete('/test');

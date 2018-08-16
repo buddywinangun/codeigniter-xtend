@@ -35,6 +35,18 @@ Lihat [https://codeigniter.com/userguide3/](https://codeigniter.com/userguide3/)
 
 Anda harus memperbarui secara manual jika file di folder `application` atau `index.php` berubah. Cek [CodeIgniter User Guide](http://www.codeigniter.com/user_guide/installation/upgrading.html).
 
+## Unit testing
+
+Tes unit terdiri dari file-file berikut.
+- tests/*.php: Test Case.
+- phpunit.xml: Test setting fill.
+- phpunit-printer.yml: Test result output format.
+
+Jalankan tes.
+```sh
+composer test
+```
+
 ## Reference
 
 -  [Composer Installation](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-macos)
