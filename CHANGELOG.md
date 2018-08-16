@@ -6,7 +6,10 @@ Semua perubahan penting pada proyek ini akan didokumentasikan dalam file ini.
 
 | Release | Status          | Initial Release | Active LTS Start | Maintenance LTS Start | End-of-life |
 | :-----: | :-------------: | :-------------: | :--------------: | :-------------------: | :---------: |
-| 1.x     | **Pending**     | TBD             | TBD              | TBD                   | TBD         |
+| [1.x][] | **Current**     | 2018-08-17      | TBD              | TBD                   | TBD         |
+| 2.x     | **Pending**     | TBD             | TBD              | TBD                   | TBD         |
+
+[1.x]: https://github.com/buddywinangun/codeigniter-xtend/tree/1.0.0
 
 ## Release Phases
 
@@ -32,4 +35,8 @@ Rilis baru dibuat dari branch `master` ke versi mayor *Active*. Lihat [Releases 
 Format didasarkan pada [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 dan menggunakan [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Full Changelog](https://github.com/buddywinangun/codeigniter-xtend/releases)
+### [Unreleased](https://github.com/buddywinangun/codeigniter-xtend/compare/1.0.0...HEAD)
+
+### [v1.0.0](https://github.com/buddywinangun/codeigniter-xtend/tree/1.0.0) - 2018-08-17
+
+- **Full Changelog**: https://github.com/buddywinangun/codeigniter-xtend/releases/tag/1.0.0
