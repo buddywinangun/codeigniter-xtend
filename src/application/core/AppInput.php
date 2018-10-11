@@ -1,4 +1,6 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class AppInput extends Xtend\Library\Input {}
+class AppInput extends Xtend\Core\Input
+{
+}
