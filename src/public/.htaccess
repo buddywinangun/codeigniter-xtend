@@ -2,8 +2,17 @@
 # you don't need `IfModule`. If you don't need it, you don't need this file
 # at all.
 <IfModule mod_rewrite.c>
-RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php/$1 [L]
+DirectoryIndex index.php index.html
+RewriteEngine on
+
+# Allow requests for valid file or folder names, or some that should be
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d [OR]
+
+# Send request via index.php if not a real file or directory
+RewriteCond $1 ^(robots\.txt)
+RewriteRule ^(.*)$ - [L]
+
+# use index.php as front controller ...
+RewriteRule ^(.*)$ ./index.php/$1 [L]
 </IfModule>
