@@ -3,7 +3,7 @@
 namespace Xtend\Composer;
 
 use Composer\Script\Event;
-use Xtend\Util\FileHelper;
+use Xtend\Helper\FileHelper;
 
 final class Installer
 {
@@ -29,8 +29,7 @@ final class Installer
 
     $io->write('Preparing the application file.');
     FileHelper::copyDirectory(static::FRAMEWORK_DIR . 'application', 'application');
-    FileHelper::copyDirectory('src/application', 'application');
-    FileHelper::copyDirectory('src/public', static::DOCUMENT_ROOT);
+    self::pathSrc();
 
     $io->write('Create an entry point.');
     FileHelper::copyFile(static::FRAMEWORK_DIR . 'index.php', static::DOCUMENT_ROOT . 'index.php');
@@ -76,5 +75,29 @@ final class Installer
 
     $io->write('Installation is complete.');
     $io->write('See <https://packagist.org/packages/buddywinangun/codeigniter-xtend> for details.');
+  }
+
+  /**
+   * Composer update script
+   *
+   * @param Event $event
+   */
+  public static function update(Event $event)
+  {
+    $io = $event->getIO();
+
+    self::pathSrc('vendor/buddywinangun/codeigniter-xtend/');
+
+    $io->write('Update is complete.');
+    $io->write('See <https://packagist.org/packages/buddywinangun/codeigniter-xtend> for details.');
+  }
+
+  /**
+   * @param Event $event
+   */
+  public static function pathSrc($path = '')
+  {
+    FileHelper::copyDirectory($path . 'src/application', 'application');
+    FileHelper::copyDirectory($path . 'src/public', static::DOCUMENT_ROOT);
   }
 }
