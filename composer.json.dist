@@ -9,6 +9,9 @@
     "codedungeon/phpunit-result-printer": "^0.32.0"
   },
   "scripts": {
+    "post-update-cmd": [
+      "Xtend\\Composer\\Installer::update"
+    ],
     "test": [
       "./vendor/bin/phpunit"
     ]

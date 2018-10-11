@@ -12,7 +12,10 @@
     "autoload": {
         "psr-4": {
             "Xtend\\": "src/Xtend/"
-        }
+        },
+        "files": [
+            "./src/Xtend/Event/Events.php"
+        ]
     },
     "authors": [{
         "name": "buddywinangun",
