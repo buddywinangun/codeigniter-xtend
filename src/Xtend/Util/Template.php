@@ -2,7 +2,7 @@
 
 namespace Xtend\Util;
 
-use Xtend\Util\FileHelper;
+use Xtend\Helper\FileHelper;
 use Xtend\Util\Loader;
 
 final class Template

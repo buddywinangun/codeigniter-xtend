@@ -1,6 +1,6 @@
 <?php
 
-namespace Xtend\Util;
+namespace Xtend\Helper;
 
 use Xtend\Util\Logger;
 
@@ -100,7 +100,7 @@ final class FileHelper
    * Delete directory or file.
    *
    * ```php
-   * use \Xtend\Util\FileHelper;
+   * use \Xtend\Helper\FileHelper;
    *
    * // Delete all files and folders in "/ path"..
    * FileHelper::delete('/test');

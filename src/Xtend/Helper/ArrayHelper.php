@@ -1,13 +1,13 @@
 <?php
 
-namespace Xtend\Util;
+namespace Xtend\Helper;
 
 final class ArrayHelper
 {
   /**
    * Searches and returns the value of the specified key from the array
    * ```php
-   * use \Xtend\Util\ArrayHelper;
+   * use \Xtend\Helper\ArrayHelper;
    *
    * // Search from a simple array
    * $arr = [

@@ -3,8 +3,8 @@
 namespace Xtend\Library;
 
 use \Xtend\Util\Loader;
-use \Xtend\Util\ArrayHelper;
 use \Xtend\Util\Logger;
+use \Xtend\Helper\ArrayHelper;
 
 class SessionDatabaseDriver extends \CI_Session_database_driver
 {
