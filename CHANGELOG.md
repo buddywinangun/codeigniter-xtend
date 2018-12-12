@@ -2,6 +2,13 @@
 
 Semua perubahan penting pada proyek ini akan didokumentasikan dalam file ini.
 
+Format didasarkan pada [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+dan menggunakan [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased](https://github.com/buddywinangun/codeigniter-xtend/compare/1.0.0...HEAD)
+
+## [Release Changelog](https://github.com/buddywinangun/codeigniter-xtend/releases)
+
 ## Release schedule
 
 | Release | Status          | Initial Release | Active LTS Start | Maintenance LTS Start | End-of-life |
@@ -22,21 +29,3 @@ Ada tiga fase rilis: 'Current', 'Active Long Term Support (LTS)', and 'Maintenan
 ## Release plan
 
 Rilis baru dibuat dari branch `master` ke versi mayor *Active*. Lihat [Releases Phases](#release-phases) untuk rincian perubahan apa yang diharapkan terjadi pada setiap fase rilis.
-
-## Glossary
-
-- `[Added]` for new features.
-- `[Changed]` for changes in existing functionality.
-- `[Deprecated]` for soon-to-be removed features.
-- `[Removed]` for now removed features.
-- `[Fixed]` for any bug fixes.
-- `[Security]` in case of vulnerabilities.
-
-Format didasarkan pada [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-dan menggunakan [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-### [Unreleased](https://github.com/buddywinangun/codeigniter-xtend/compare/1.0.0...HEAD)
-
-### [v1.0.0](https://github.com/buddywinangun/codeigniter-xtend/tree/1.0.0) - 2018-08-17
-
-- **Full Changelog**: https://github.com/buddywinangun/codeigniter-xtend/releases/tag/1.0.0
