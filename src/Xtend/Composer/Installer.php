@@ -52,9 +52,6 @@ final class Installer
       '$config[\'composer_autoload\'] = FALSE;' => '$config[\'composer_autoload\'] = realpath(\APPPATH . \'../vendor/autoload.php\');',
       '$config[\'permitted_uri_chars\'] = \'a-z 0-9~%.:_\-\';' => '$config[\'permitted_uri_chars\'] = \'a-z 0-9~%.:_\-,\';',
       '$config[\'log_threshold\'] = 0;' => '$config[\'log_threshold\'] = 2;',
-      '$config[\'encryption_key\'] = \'\';' => '$config[\'encryption_key\'] = \'b8qmK-/BN,fB{Ce\';',
-      '$config[\'sess_driver\'] = \'files\';' => '$config[\'sess_driver\'] = \'database\';',
-      '$config[\'sess_save_path\'] = NULL;' => '$config[\'sess_save_path\'] = \'session\';',
       '$config[\'cookie_httponly\']  = FALSE;' => '$config[\'cookie_httponly\']  = TRUE;',
     ]);
 
