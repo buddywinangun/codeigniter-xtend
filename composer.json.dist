@@ -2,7 +2,7 @@
   "description": "CodeIgniter Xtend Starter",
   "require": {
     "php": "^7.0",
-    "buddywinangun/codeigniter-xtend": "dev-master"
+    "buddywinangun/codeigniter-xtend": "@dev"
   },
   "require-dev": {
     "phpunit/phpunit": "^9.6",

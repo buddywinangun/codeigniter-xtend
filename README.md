@@ -1,8 +1,8 @@
 ## About Codeigniter Xtend
 
-Codeigniter Xtend adalah alat yang kami rancang sebagai manajemen extension di atas Framework Codeigniter. Ini memungkinkan Anda untuk mengelola (menginstal/memperbarui) extension, seperti: Package dan Language (Bahasa).
+Codeigniter Xtend adalah alat yang kami rancang sebagai manajemen extension di atas Framework Codeigniter. Ini memungkinkan Anda untuk mengelola (menginstal/memperbarui) extension, seperti: Package, Tema dan Bahasa.
 
-**Codeigniter Xtend memudahkan untuk mengaktifkan dan menonaktifkan extension**, sehingga semua proyek codeigniter anda dapat menggunakannya kembali.
+**Codeigniter Xtend memudahkan untuk (mengaktifkan/menonaktifkan) extension**, sehingga semua proyek codeigniter anda dapat menggunakannya kembali.
 
 ## Release
 
