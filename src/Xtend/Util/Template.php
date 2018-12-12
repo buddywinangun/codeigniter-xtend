@@ -8,6 +8,7 @@ use Xtend\Util\Loader;
 final class Template
 {
   private $engine = null;
+  private $locations;
 
   /**
    * Construct.
@@ -19,8 +20,16 @@ final class Template
       FileHelper::makeDirectory($cache);
     }
 
+		$this->locations = config_item('template_locations');
+
+		if (null === $this->locations) {
+			$this->locations = array(\VIEWPATH);
+		} elseif (!in_array(\VIEWPATH, $this->locations)) {
+			$this->locations[] = \VIEWPATH;
+		}
+
     $option = array_merge([
-      'paths' => [\VIEWPATH],
+      'paths' => $this->locations,
       'environment' => [
         'cache' => !empty($cache) ? $cache : false,
         'debug' => \ENVIRONMENT !== 'production',
@@ -34,8 +43,8 @@ final class Template
       ],
     ], $option);
 
-    $this->engine = new \Twig_Environment(new \Twig_Loader_Filesystem($option['paths']), $option['environment']);
-    $this->engine->addFunction(new \Twig_SimpleFunction(
+    $this->engine = new \Twig\Environment(new \Twig\Loader\FilesystemLoader($option['paths']), $option['environment']);
+    $this->engine->addFunction(new \Twig\TwigFunction(
       'cache_busting',
       /**
        * This function generates a new file path with the last date of filechange to support better better client caching via Expires header:
@@ -56,7 +65,7 @@ final class Template
     $this->engine->addGlobal('session', $_SESSION ?? null);
     $CI = &get_instance();
     $this->engine->addGlobal('action', ($CI->router->directory ?? '') . $CI->router->class . '/' . $CI->router->method);
-    $this->engine->setLexer(new \Twig_Lexer($this->engine, $option['lexer']));
+    $this->engine->setLexer(new \Twig\Lexer($this->engine, $option['lexer']));
   }
 
   /**
