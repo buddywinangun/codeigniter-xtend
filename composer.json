@@ -11,10 +11,10 @@
     "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
-            "Xtend\\": "src/Xtend/"
+            "Xtend\\": "src/"
         },
         "files": [
-            "./src/Xtend/Event/Events.php"
+            "./src/Event/Events.php"
         ]
     },
     "authors": [{

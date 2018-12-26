@@ -2,6 +2,8 @@
 
 namespace Xtend\Core;
 
+use function Xtend\Event\do_action;
+
 /**
  * Loader Class
  *
@@ -41,7 +43,7 @@ class Loader extends \CI_Loader
 	{
 		parent::initialize();
 
-		do_action('pre_controller_constructor');
+		$GLOBALS['EXT']->call_hook('pre_controller_constructor');
 	}
 
 	// --------------------------------------------------------------------

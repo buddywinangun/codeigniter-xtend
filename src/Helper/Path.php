@@ -2,7 +2,7 @@
 
 namespace Xtend\Helper;
 
-final class PathHelper
+final class Path
 {
 
 	/**
@@ -11,7 +11,7 @@ final class PathHelper
 	 * @param 	string 	$path 	Path to normalize.
 	 * @return 	string 	Normalized path.
 	 */
-	function normalizePath($path)
+	public static function normalizePath($path)
 	{
 		$path = str_replace('\\', '/', $path);
 		$path = preg_replace('|(?<=.)/+|', '/', $path);
@@ -33,7 +33,7 @@ final class PathHelper
 	 * @param 	string 	$path 	The relative path to $base.
 	 * @return 	string 	The path with base or absolute path.
 	 */
-	function pathJoin($base, $path)
+	public static function pathJoin($base, $path)
 	{
 		// If the provided $path is not an absolute path, we prepare it.
 		if (!path_is_absolute($path)) {

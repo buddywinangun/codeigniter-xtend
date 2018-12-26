@@ -60,6 +60,112 @@ abstract class Router extends \CI_Router
       $this->domain_package = $domain[0];
    }
 
+	// --------------------------------------------------------------------
+
+	/**
+	 * Set route mapping
+	 *
+	 * Determines what should be served based on the URI request,
+	 * as well as any "routes" that have been set in the routing config file.
+	 *
+	 * @return	void
+	 */
+	protected function _set_routing()
+	{
+		// Load the routes.php file. It would be great if we could
+		// skip this for enable_query_strings = TRUE, but then
+		// default_controller would be empty ...
+		if (file_exists(APPPATH.'config/routes.php'))
+		{
+			include(APPPATH.'config/routes.php');
+		}
+
+		if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/routes.php'))
+		{
+			include(APPPATH.'config/'.ENVIRONMENT.'/routes.php');
+		}
+
+      // Package routes.
+      foreach (\Xtend\Util\Package::lists() as $folder => $path) {
+         if (TRUE !== \Xtend\Util\Package::is_enabled($folder)) {
+            continue;
+         }
+
+         // "config/routes.php" not found? Nothing to do.
+         if (!is_file($path . 'config/routes.php')) {
+            continue;
+         }
+
+         // Include their config/routes.php file if found.
+         require_once($path . "config/routes.php");
+      }
+
+		// Validate & get reserved routes
+		if (isset($route) && is_array($route))
+		{
+			isset($route['default_controller']) && $this->default_controller = $route['default_controller'];
+			isset($route['translate_uri_dashes']) && $this->translate_uri_dashes = $route['translate_uri_dashes'];
+			unset($route['default_controller'], $route['translate_uri_dashes']);
+			$this->routes = \Xtend\Util\Route::map($route);
+		}
+
+		// Are query strings enabled in the config file? Normally CI doesn't utilize query strings
+		// since URI segments are more search-engine friendly, but they can optionally be used.
+		// If this feature is enabled, we will gather the directory/class/method a little differently
+		if ($this->enable_query_strings)
+		{
+			// If the directory is set at this time, it means an override exists, so skip the checks
+			if ( ! isset($this->directory))
+			{
+				$_d = $this->config->item('directory_trigger');
+				$_d = isset($_GET[$_d]) ? trim($_GET[$_d], " \t\n\r\0\x0B/") : '';
+
+				if ($_d !== '')
+				{
+					$this->uri->filter_uri($_d);
+					$this->set_directory($_d);
+				}
+			}
+
+			$_c = trim($this->config->item('controller_trigger'));
+			if ( ! empty($_GET[$_c]))
+			{
+				$this->uri->filter_uri($_GET[$_c]);
+				$this->set_class($_GET[$_c]);
+
+				$_f = trim($this->config->item('function_trigger'));
+				if ( ! empty($_GET[$_f]))
+				{
+					$this->uri->filter_uri($_GET[$_f]);
+					$this->set_method($_GET[$_f]);
+				}
+
+				$this->uri->rsegments = array(
+					1 => $this->class,
+					2 => $this->method
+				);
+			}
+			else
+			{
+				$this->_set_default_controller();
+			}
+
+			// Routing rules don't apply to query strings and we don't need to detect
+			// directories, so we're done here
+			return;
+		}
+
+		// Is there anything to parse?
+		if ($this->uri->uri_string !== '')
+		{
+			$this->_parse_routes();
+		}
+		else
+		{
+			$this->_set_default_controller();
+		}
+	}
+
    // --------------------------------------------------------------------
 
    /**
@@ -156,88 +262,6 @@ abstract class Router extends \CI_Router
 
       // Let the parent handle the rest!
       return parent::_validate_request($segments);
-   }
-
-   // --------------------------------------------------------------------
-
-   /**
-    * Parse Routes
-    *
-    * Matches any routes that may exist in the config/routes.php file
-    * against the URI to determine if the class/method need to be remapped.
-    *
-    * @return	void
-    */
-   protected function _parse_routes()
-   {
-      // Turn the segment array into a URI string
-      $uri = implode('/', $this->uri->segments);
-
-      // Package routes.
-      foreach (\Xtend\Util\Package::lists() as $folder => $path) {
-         if (TRUE !== \Xtend\Util\Package::is_enabled($folder)) {
-            continue;
-         }
-
-         // "config/routes.php" not found? Nothing to do.
-         if (!is_file($path . 'config/routes.php')) {
-            continue;
-         }
-
-         // Include their config/routes.php file if found.
-         require_once($path . "config/routes.php");
-      }
-
-      // Validate & get reserved routes
-      if (isset($route) && is_array($route)) {
-         $this->routes = \Xtend\Util\Route::map($route);
-      }
-
-      if (NULL != ($named = \Xtend\Util\Route::named($uri))) {
-         $uri = $named;
-      }
-
-      // Get HTTP verb
-      $http_verb = isset($_SERVER['REQUEST_METHOD']) ? strtolower($_SERVER['REQUEST_METHOD']) : 'cli';
-
-      // Loop through the route array looking for wildcards
-      foreach ($this->routes as $key => $val) {
-         // Check if route format is using HTTP verbs
-         if (is_array($val)) {
-            $val = array_change_key_case($val, CASE_LOWER);
-            if (isset($val[$http_verb])) {
-               $val = $val[$http_verb];
-            } else {
-               continue;
-            }
-         }
-
-         // Convert wildcards to RegEx
-         $key = str_replace(array(':any', ':num'), array('[^/]+', '[0-9]+'), $key);
-
-         // Does the RegEx match?
-         if (preg_match('#^' . $key . '$#', $uri, $matches)) {
-            // Are we using callbacks to process back-references?
-            if (!is_string($val) && is_callable($val)) {
-               // Remove the original string from the matches array.
-               array_shift($matches);
-
-               // Execute the callback using the values in matches as its parameters.
-               $val = call_user_func_array($val, $matches);
-            }
-            // Are we using the default routing method for back-references?
-            elseif (strpos($val, '$') !== FALSE && strpos($key, '(') !== FALSE) {
-               $val = preg_replace('#^' . $key . '$#', $val, $uri);
-            }
-
-            $this->_set_request(explode('/', $val));
-            return;
-         }
-      }
-
-      // If we got this far it means we didn't encounter a
-      // matching route so we'll set the site default route
-      $this->_set_request(array_values($this->uri->segments));
    }
 
    // --------------------------------------------------------------------

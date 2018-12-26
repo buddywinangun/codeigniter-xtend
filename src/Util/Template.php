@@ -2,7 +2,7 @@
 
 namespace Xtend\Util;
 
-use Xtend\Helper\FileHelper;
+use Xtend\Helper\File;
 use Xtend\Util\Loader;
 
 final class Template
@@ -17,7 +17,7 @@ final class Template
   {
     $cache = Loader::config('config', 'cache_templates');
     if (!empty($cache)) {
-      FileHelper::makeDirectory($cache);
+      File::makeDirectory($cache);
     }
 
 		$this->locations = config_item('template_locations');

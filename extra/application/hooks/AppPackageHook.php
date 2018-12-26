@@ -1,5 +1,7 @@
 <?php
 
+use function Xtend\Event\do_action;
+
 defined('BASEPATH') or exit('No direct script access allowed');
 
 /**

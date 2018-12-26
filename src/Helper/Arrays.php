@@ -2,12 +2,12 @@
 
 namespace Xtend\Helper;
 
-final class ArrayHelper
+final class Arrays
 {
   /**
    * Searches and returns the value of the specified key from the array
    * ```php
-   * use \Xtend\Helper\ArrayHelper;
+   * use \Xtend\Helper\Arrays;
    *
    * // Search from a simple array
    * $arr = [
@@ -15,7 +15,7 @@ final class ArrayHelper
    *   'Sumut' => 'Medan'
    * ];
    *
-   * ArrayHelper::searchArrayByKey('Indonesia', $arr);
+   * Arrays::searchArrayByKey('Indonesia', $arr);
    * // Jakarta
    *
    * // Search from nested array
@@ -27,7 +27,7 @@ final class ArrayHelper
    * ];
    * ```
    *
-   * ArrayHelper::searchArrayByKey('Sumut', $nested);
+   * Arrays::searchArrayByKey('Sumut', $nested);
    * // Medan
    * @param  string $needle
    * @param  array $haystack

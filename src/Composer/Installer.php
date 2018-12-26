@@ -3,7 +3,7 @@
 namespace Xtend\Composer;
 
 use Composer\Script\Event;
-use Xtend\Helper\FileHelper;
+use Xtend\Helper\File;
 
 final class Installer
 {
@@ -28,23 +28,23 @@ final class Installer
     $io = $event->getIO();
 
     $io->write('Preparing the application file.');
-    FileHelper::copyDirectory(static::FRAMEWORK_DIR . 'application', 'application');
-    self::pathSrc();
+    File::copyDirectory(static::FRAMEWORK_DIR . 'application', 'application');
+    self::pathExtra();
 
     $io->write('Create an entry point.');
-    FileHelper::copyFile(static::FRAMEWORK_DIR . 'index.php', static::DOCUMENT_ROOT . 'index.php');
-    FileHelper::copyFile(static::FRAMEWORK_DIR . '.gitignore', '.gitignore');
-    FileHelper::replace(static::DOCUMENT_ROOT . 'index.php', [
+    File::copyFile(static::FRAMEWORK_DIR . 'index.php', static::DOCUMENT_ROOT . 'index.php');
+    File::copyFile(static::FRAMEWORK_DIR . '.gitignore', '.gitignore');
+    File::replace(static::DOCUMENT_ROOT . 'index.php', [
       '$system_path = \'system\';' => '$system_path = \'../' . static::FRAMEWORK_DIR . 'system\';',
       '$application_folder = \'application\';' => '$application_folder = \'../application\';',
     ]);
 
     $io->write('Create a config.');
-    FileHelper::replace('application/config/autoload.php', [
+    File::replace('application/config/autoload.php', [
       '$autoload[\'libraries\'] = array();' => '$autoload[\'libraries\'] = array(\'session\',\'form_validation\');',
       '$autoload[\'helper\'] = array();' => '$autoload[\'helper\'] = array(\'url\');'
     ]);
-    FileHelper::replace('application/config/config.php', [
+    File::replace('application/config/config.php', [
       '$config[\'base_url\'] = \'\';' => 'if (!empty($_SERVER[\'HTTP_HOST\'])) {$config[\'base_url\'] = "//".$_SERVER[\'HTTP_HOST\'] . str_replace(basename($_SERVER[\'SCRIPT_NAME\']),"",$_SERVER[\'SCRIPT_NAME\']);}',
       '$config[\'index_page\'] = \'index.php\';' => '$config[\'index_page\'] = \'\';',
       '$config[\'enable_hooks\'] = FALSE;' => '$config[\'enable_hooks\'] = TRUE;',
@@ -56,12 +56,12 @@ final class Installer
     ]);
 
     $io->write('Updating composer.');
-    FileHelper::copyFile('composer.json.dist', 'composer.json');
+    File::copyFile('composer.json.dist', 'composer.json');
     passthru('composer update');
 
     chdir($cwd);
     $io->write('Deleting unnecessary files.');
-    FileHelper::delete(
+    File::delete(
       $cwd . '/src',
       $cwd . '/.github',
       $cwd . '/composer.json.dist',
@@ -83,7 +83,7 @@ final class Installer
   {
     $io = $event->getIO();
 
-    self::pathSrc('vendor/buddywinangun/codeigniter-xtend/');
+    self::pathExtra('vendor/buddywinangun/codeigniter-xtend/');
 
     $io->write('Update is complete.');
     $io->write('See <https://packagist.org/packages/buddywinangun/codeigniter-xtend> for details.');
@@ -92,9 +92,9 @@ final class Installer
   /**
    * @param Event $event
    */
-  public static function pathSrc($path = '')
+  public static function pathExtra($path = '')
   {
-    FileHelper::copyDirectory($path . 'src/application', 'application');
-    FileHelper::copyDirectory($path . 'src/public', static::DOCUMENT_ROOT);
+    File::copyDirectory($path . 'extra/application', 'application');
+    File::copyDirectory($path . 'extra/public', static::DOCUMENT_ROOT);
   }
 }

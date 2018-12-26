@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-abstract class AppHooks extends \Xtend\Core\Hooks
+class AppRouter extends \Xtend\Core\Router
 {
 }
