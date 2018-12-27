@@ -9,7 +9,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  *
  * @category 	Hooks
  */
-class AppPackageHook
+class PackageHook
 {
 	public function __construct()
 	{

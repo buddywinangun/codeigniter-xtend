@@ -13,15 +13,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 
 $hook['pre_system'][] = array(
-	'class'    => 'AppAutoloadHook',
-	'filename' => 'AppAutoloadHook.php',
+	'class'    => 'AutoloadHook',
+	'filename' => 'AutoloadHook.php',
 	'function' => 'init',
 	'filepath' => 'hooks',
 );
 
 $hook['pre_controller_constructor'][] = array(
-	'class'    => 'AppPackageHook',
-	'filename' => 'AppPackageHook.php',
+	'class'    => 'PackageHook',
+	'filename' => 'PackageHook.php',
 	'function' => 'init',
 	'filepath' => 'hooks',
 );

@@ -7,7 +7,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  *
  * @category 	Hooks
  */
-class AppAutoloadHook
+class AutoloadHook
 {
 	function init()
 	{
