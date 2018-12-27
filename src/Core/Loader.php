@@ -2,8 +2,6 @@
 
 namespace Xtend\Core;
 
-use function Xtend\Event\do_action;
-
 /**
  * Loader Class
  *
@@ -44,26 +42,5 @@ class Loader extends \CI_Loader
 		parent::initialize();
 
 		$GLOBALS['EXT']->call_hook('pre_controller_constructor');
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * View Loader
-	 *
-	 * Loads "view" files.
-	 *
-	 * @param	string	$view	View name
-	 * @param	array	$vars	An associative array of data
-	 *				to be extracted for use in the view
-	 * @param	bool	$return	Whether to return the view output
-	 *				or leave it to the Output class
-	 * @return	object|string
-	 */
-	public function view($view = '', $vars = array(), $return = FALSE)
-	{
-		do_action('loader_view');
-
-		parent::view($view, $vars, $return);
 	}
 }
