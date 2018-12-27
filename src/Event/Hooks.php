@@ -2,6 +2,8 @@
 
 namespace Xtend\Event;
 
+use function Xtend\Event\_x_filter_build_unique_id;
+
 /**
  * Hooks Class
  *
@@ -547,38 +549,5 @@ final class Hooks implements \Iterator, \ArrayAccess
 	public function rewind()
 	{
 		reset($this->callbacks);
-	}
-}
-
-/**
- * Builds a unique string ID for a hook callback function.
- *
- * @access private
- *
- * @param string                $hook_name Unused. The name of the filter to build ID for.
- * @param callable|string|array $callback  The callback to generate ID for. The callback may
- *                                         or may not exist.
- * @param int                   $priority  Unused. The order in which the functions
- *                                         associated with a particular action are executed.
- * @return string Unique function ID for usage as array key.
- */
-function _x_filter_build_unique_id( $hook_name, $callback, $priority ) {
-	if ( is_string( $callback ) ) {
-		return $callback;
-	}
-
-	if ( is_object( $callback ) ) {
-		// Closures are currently implemented as objects.
-		$callback = array( $callback, '' );
-	} else {
-		$callback = (array) $callback;
-	}
-
-	if ( is_object( $callback[0] ) ) {
-		// Object class calling.
-		return spl_object_hash( $callback[0] ) . $callback[1];
-	} elseif ( is_string( $callback[0] ) ) {
-		// Static calling.
-		return $callback[0] . '::' . $callback[1];
 	}
 }
