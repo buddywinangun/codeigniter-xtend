@@ -24,7 +24,7 @@ final class Template
 
 		if (null === $this->locations) {
 			$this->locations = array(\VIEWPATH);
-		} elseif (!in_array(\VIEWPATH, $this->locations)) {
+		} elseif (is_array($this->locations) && !in_array(\VIEWPATH, $this->locations)) {
 			$this->locations[] = \VIEWPATH;
 		}
 
