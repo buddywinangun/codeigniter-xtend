@@ -4,6 +4,8 @@ namespace Xtend\Util;
 
 use Xtend\Helper\Path;
 
+use function Xtend\Event\do_action;
+
 /**
  * Package Class
  *
@@ -36,6 +38,35 @@ final class Package
 	 * @var array.
 	 */
 	protected static $_locations;
+
+	// -------------------------------------------------------------------------
+
+	public static function init()
+	{
+		// Lopp through all packages.
+		foreach (self::lists() as $folder => $path) {
+
+			// package enabled but folder missing? Nothing to do.
+			if (TRUE !== self::is_enabled($folder)) {
+				continue;
+			}
+
+			// "main.php" not found? Nothing to do.
+			if (!is_file($path . 'main.php')) {
+				continue;
+			}
+
+			// Include their main file if found.
+			require_once($path . "main.php");
+
+			// added package path.
+			$ci = &get_instance();
+			$ci->load->add_package_path($path);
+
+			// We always fire this action.
+			do_action('package_loaded_' . $folder);
+		}
+	}
 
 	// ------------------------------------------------------------------------
 
