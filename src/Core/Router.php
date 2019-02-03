@@ -2,6 +2,8 @@
 
 namespace Xtend\Core;
 
+use Xtend\Util\Package;
+
 /**
  * Router Class
  *
@@ -86,8 +88,8 @@ abstract class Router extends \CI_Router
 		}
 
       // Package routes.
-      foreach (\Xtend\Util\Package::lists() as $folder => $path) {
-         if (TRUE !== \Xtend\Util\Package::is_enabled($folder)) {
+      foreach (Package::lists() as $folder => $path) {
+         if (TRUE !== Package::is_enabled($folder)) {
             continue;
          }
 
@@ -187,9 +189,9 @@ abstract class Router extends \CI_Router
       $segments = array($class, $method);
 
       //creates the various parts
-      if (\Xtend\Util\Package::has($this->domain_package)) {
+      if (Package::has($this->domain_package)) {
          array_unshift($segments, $this->domain_package);
-      } elseif (\Xtend\Util\Package::has($this->default_package)) {
+      } elseif (Package::has($this->default_package)) {
          array_unshift($segments, $this->default_package);
       }
 
@@ -227,7 +229,7 @@ abstract class Router extends \CI_Router
       };
 
       //creates the various parts
-      if (\Xtend\Util\Package::has($this->domain_package)) {
+      if (Package::has($this->domain_package)) {
          array_unshift($segments, $this->domain_package);
 
          // Again, look for the controller.
@@ -239,7 +241,7 @@ abstract class Router extends \CI_Router
       }
 
       // is default_controller
-      if (\Xtend\Util\Package::has($this->default_controller)) {
+      if (Package::has($this->default_controller)) {
          array_unshift($segments, $this->default_controller);
 
          // Again, look for the controller.
@@ -285,14 +287,14 @@ abstract class Router extends \CI_Router
       // Flag to see if we are in a package.
       $is_package = false;
 
-      if (\Xtend\Util\Package::has($package)) {
+      if (Package::has($package)) {
          $is_package = true;
-         $location   = \Xtend\Util\Package::$_packages[$package];
+         $location   = Package::$_packages[$package];
       }
       // Because of revered routes ;)
-      elseif (\Xtend\Util\Package::has($directory)) {
+      elseif (Package::has($directory)) {
          $is_package = true;
-         $location   = \Xtend\Util\Package::$_packages[$directory];
+         $location   = Package::$_packages[$directory];
          $_package   = $package;
          $package    = $directory;
          $directory  = $_package;
@@ -335,9 +337,9 @@ abstract class Router extends \CI_Router
             }
 
             // Module sub-directory with default controller?
-            if (is_file($source . $directory . '/' . ucfirst($this->default_controller) . '.php')) {
+            if (is_file($source . $directory . '/' . ucfirst($package) . '.php')) {
                $this->directory .= $directory . '/';
-               $segments[1] = $this->default_controller;
+               $segments[1] = $package;
                return array_slice($segments, 1);
             }
          }

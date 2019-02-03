@@ -15,9 +15,7 @@ Lihat [Release schedule](/CHANGELOG.md#release-schedule) untuk jadwal rilis terb
 
 ## Installation
 
-Codeigniter Xtend menginstal [CodeIgniter Web Framework](https://codeigniter.com/) (versi `3.1.*`) melalui Composer.
-
-1. Create a project of **Codeigniter Xtend**.
+1. Run Composer, Create a project of **Codeigniter Xtend**.
 
 ```sh
 composer create-project buddywinangun/codeigniter-xtend my-project
