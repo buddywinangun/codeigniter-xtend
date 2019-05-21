@@ -12,15 +12,15 @@ defined('BASEPATH') or exit('No direct script access allowed');
 |
 */
 
-$hook['pre_controller_constructor'][] = [new Xtend\Util\Package, 'init'];
+$hook['pre_controller_constructor'][] = [new Xtend\Package\Package, 'init'];
 $hook['pre_controller_constructor'][] = [new Xtend\Util\Template, 'init'];
 
 /*
 | -------------------------------------------------------------------
 |  Auto-load All Classes with PSR-4
 | -------------------------------------------------------------------
-| After registering \Xtend\Composer\Psr4Autoload, you could auto-load every
+| After registering \Xtend\Autoloader\Psr4Autoload, you could auto-load every
 | classes in the whole Codeigniter application with `app` PSR-4
 | prefix by default.
  */
-$hook['pre_system'][] = [new Xtend\Composer\Psr4Autoload, 'register'];
+$hook['pre_system'][] = [new Xtend\Autoloader\Psr4Autoload, 'register'];
