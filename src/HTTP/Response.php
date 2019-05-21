@@ -1,8 +1,8 @@
 <?php
 
-namespace Xtend\Util;
+namespace Xtend\HTTP;
 
-final class HttpResponse
+final class Response
 {
   private $data = [];
   private $CI;

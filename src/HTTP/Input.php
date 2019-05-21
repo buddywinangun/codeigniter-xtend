@@ -1,8 +1,8 @@
 <?php
 
-namespace Xtend\Util;
+namespace Xtend\HTTP;
 
-final class HttpInput
+abstract class Input extends \CI_Input
 {
   /**
    * Fetch an item from the PUT array.
@@ -75,5 +75,13 @@ final class HttpInput
         $ref[] = $value;
       break;
     }
+  }
+
+  /**
+   * Fetch an item from the DELETE array.
+   */
+  public function delete($index = NULL, $xss_clean = NULL)
+  {
+    return parent::input_stream($index, $xss_clean);
   }
 }

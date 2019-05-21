@@ -1,6 +1,6 @@
 <?php
 
-namespace Xtend\Util;
+namespace Xtend\RESTful;
 
 class RestClient
 {

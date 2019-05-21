@@ -14,7 +14,7 @@
             "Xtend\\": "src/"
         },
         "files": [
-            "./src/Event/Events.php"
+            "./src/Events/Plugin.php"
         ]
     },
     "authors": [{

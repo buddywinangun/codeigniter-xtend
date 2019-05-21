@@ -2,16 +2,17 @@
 
 namespace Xtend\Event;
 
-use Xtend\Event\Hooks;
+use Xtend\Event\Hook;
 
 /**
- * The API creating filters and hooking functions, and methods. The functions or methods will
- * then be run when the filter is called.
- *
- * @subpackage Libraries
- * @author buddywinangun, who hacked at it a bit.
- * @author wordpress
+ * Adapted from WordPress Hook Class
  * @link https://github.com/WordPress/WordPress/blob/master/wp-includes/plugin.php
+ *
+ * The API, which allows for creating actions and filters and hooking functions, and methods.
+ * The functions or methods will then be run when the action or filter is called.
+ *
+ * @package Codeigniter Xtend.
+ * @author buddywinangun.
  */
 
 // Defines filters global variables.
@@ -22,7 +23,7 @@ global $filter, $actions, $filters, $current_filter;
  * build them so we can use them.
  */
 $filter = ($filter)
-  ? Hooks::build_preinitialized_hooks($filter)
+  ? Hook::build_preinitialized_hooks($filter)
   : array();
 
 // We make sure actions are always array.
@@ -51,7 +52,7 @@ function add_filter( $hook_name, $callback, $priority = 10, $accepted_args = 1 )
 	global $x_filter;
 
 	if ( ! isset( $x_filter[ $hook_name ] ) ) {
-		$x_filter[ $hook_name ] = new Hooks();
+		$x_filter[ $hook_name ] = new Hook();
 	}
 
 	$x_filter[ $hook_name ]->add_filter( $hook_name, $callback, $priority, $accepted_args );
@@ -96,7 +97,7 @@ function apply_filters( $hook_name, $value, ...$args ) {
 		$x_current_filter[] = $hook_name;
 	}
 
-	// Pass the value to Hooks.
+	// Pass the value to Hook.
 	array_unshift( $args, $value );
 
 	$filtered = $x_filter[ $hook_name ]->apply_filters( $value, $args );
@@ -282,7 +283,7 @@ function add_action( $hook_name, $callback, $priority = 10, $accepted_args = 1 )
 /**
  * Calls the callback functions that have been added to an action hook.
  *
- * @global Hooks[] $x_filter         Stores all of the filters and actions.
+ * @global Hook[] $x_filter         Stores all of the filters and actions.
  * @global int[]     $x_actions        Stores the number of times each action was triggered.
  * @global string[]  $x_current_filter Stores the list of current filters with the current one last.
  *
@@ -333,7 +334,7 @@ function do_action( $hook_name, ...$arg ) {
 /**
  * Calls the callback functions that have been added to an action hook, specifying arguments in an array.
  *
- * @global Hooks[] $x_filter         Stores all of the filters and actions.
+ * @global Hook[] $x_filter         Stores all of the filters and actions.
  * @global int[]     $x_actions        Stores the number of times each action was triggered.
  * @global string[]  $x_current_filter Stores the list of current filters with the current one last.
  *
@@ -456,7 +457,7 @@ function did_action( $hook_name ) {
  *
  * @access private
  *
- * @global Hooks[] $x_filter Stores all of the filters and actions.
+ * @global Hook[] $x_filter Stores all of the filters and actions.
  *
  * @param array $args The collected parameters from the hook that was called.
  */

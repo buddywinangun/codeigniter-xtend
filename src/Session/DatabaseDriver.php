@@ -1,12 +1,12 @@
 <?php
 
-namespace Xtend\Library;
+namespace Xtend\Session;
 
 use \Xtend\Util\Loader;
 use \Xtend\Util\Logger;
 use \Xtend\Helper\Arrays;
 
-class SessionDatabaseDriver extends \CI_Session_database_driver
+class DatabaseDriver extends \CI_Session_database_driver
 {
   public function __construct(&$params)
   {

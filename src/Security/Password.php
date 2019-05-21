@@ -1,7 +1,8 @@
 <?php
-defined('BASEPATH') or exit('No direct script access allowed');
 
-class Password_security
+namespace Xtend\Security;
+
+class Password
 {
   public function checkPasswordSimilarity(string $newPassword, string $oldPassowrd)
   {

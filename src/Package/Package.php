@@ -1,17 +1,21 @@
 <?php
 
-namespace Xtend\Util;
-
-use Xtend\Helper\Path;
-
-use function Xtend\Event\do_action;
-
 /**
- * Package Class
+ * This file is part of Codeigniter Xtend.
  *
- * Description:
  * Provides enhanced Package capabilities to CodeIgniter.
+ *
+ * @author buddywinangun.
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
  */
+
+namespace Xtend\Package;
+
+use Xtend\Helpers\Path;
+
+use function Xtend\Events\do_action;
 
 final class Package
 {

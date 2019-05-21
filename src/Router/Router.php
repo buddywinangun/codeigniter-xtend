@@ -1,19 +1,18 @@
 <?php
 
-namespace Xtend\Core;
-
-use Xtend\Util\Package;
-
 /**
  * Router Class
  *
  * Adapted from the CodeIgniter Core Classes
- * @link		https://codeigniter.com/userguide3/general/routing.html
+ * @link https://codeigniter.com/userguide3/general/routing.html
  *
- * Description:
- * This library extends the CI_Router class.
- * and adds features allowing use of events.
+ * @package Codeigniter Xtend.
+ * @author buddywinangun.
  */
+
+namespace Xtend\Router;
+
+use Xtend\Util\Package;
 
 abstract class Router extends \CI_Router
 {

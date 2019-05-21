@@ -1,6 +1,6 @@
 <?php
 
-namespace Xtend;
+namespace Xtend\Test;
 
 class UnittestSample
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Xtend\Core;
+namespace Xtend\Event;
 
 use function \Xtend\Event\do_action;
 

@@ -1,17 +1,19 @@
 <?php
 
-namespace Xtend\Util;
-
 /**
  * Route Class
  *
+ * Adapted from Patroklo Route Class
+ * @link https://github.com/Patroklo/codeigniter-static-laravel-routes
+ *
  * Provides enhanced Routing capabilities to CodeIgniter Router.
  *
- * @subpackage Libraries
- * @author Patroklo
- * @author buddywinangun, who hacked at it a bit.
- * @link https://github.com/Patroklo/codeigniter-static-laravel-routes
+ * @package Codeigniter Xtend.
+ * @author buddywinangun.
  */
+
+namespace Xtend\Router;
+
 class Route
 {
 

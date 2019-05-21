@@ -1,23 +1,22 @@
 <?php
 
+/**
+ * Hook Class
+ *
+ * Adapted from WordPress Hook Class
+ * @link https://github.com/WordPress/WordPress/blob/master/wp-includes/class-wp-hook.php
+ *
+ * Core class used to implement action and filter hook functionality.
+ *
+ * @package Codeigniter Xtend.
+ * @author buddywinangun.
+ */
+
 namespace Xtend\Event;
 
 use function Xtend\Event\_x_filter_build_unique_id;
 
-/**
- * Hooks Class
- *
- * Core class used to implement action and filter hook functionality.
- *
- * @subpackage Libraries
- * @author buddywinangun, who hacked at it a bit.
- * @author wordpress
- * @link https://github.com/WordPress/WordPress/blob/master/wp-includes/class-wp-hook.php
- *
- * @see Iterator
- * @see ArrayAccess
- */
-final class Hooks implements \Iterator, \ArrayAccess
+final class Hook implements \Iterator, \ArrayAccess
 {
 
 	/**
@@ -51,7 +50,7 @@ final class Hooks implements \Iterator, \ArrayAccess
 	private $doing_action = false;
 
 	/**
-	 * Hooks a function or method to a specific filter action.
+	 * Hook a function or method to a specific filter action.
 	 *
 	 * @param string   $hook_name     The name of the filter to add the callback to.
 	 * @param callable $callback      The callback to be run when the filter is applied.
@@ -374,23 +373,23 @@ final class Hooks implements \Iterator, \ArrayAccess
 	// -----------------------------------------------------------------------------
 
 	/**
-	 * Normalizes filters set up before WordPress has initialized to Hooks objects.
+	 * Normalizes filters set up before WordPress has initialized to Hook objects.
 	 *
 	 * @param array $filters Filters to normalize. See documentation above for details.
-	 * @return Hooks[] Array of normalized filters.
+	 * @return Hook[] Array of normalized filters.
 	 */
 	public static function build_preinitialized_hooks($filters)
 	{
-		/** @var Hooks[] $normalized */
+		/** @var Hook[] $normalized */
 		$normalized = array();
 
 		foreach ($filters as $hook_name => $callback_groups) {
-			if (is_object($callback_groups) && $callback_groups instanceof Hooks) {
+			if (is_object($callback_groups) && $callback_groups instanceof Hook) {
 				$normalized[$hook_name] = $callback_groups;
 				continue;
 			}
 
-			$hook = new Hooks();
+			$hook = new Hook();
 
 			// Loop through callback groups.
 			foreach ($callback_groups as $priority => $callbacks) {
