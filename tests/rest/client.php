@@ -5,9 +5,9 @@
  * php client.php
  * ```
  */
-require __DIR__ . '/../../src/Xtend/Util/RestClient.php';
+require __DIR__ . '/../../src/Xtend/RESTful/RestClient.php';
 
-use \Xtend\Util\RestClient;
+use \Xtend\RESTful\RestClient;
 
 // REST Client.
 $client = new RestClient([
