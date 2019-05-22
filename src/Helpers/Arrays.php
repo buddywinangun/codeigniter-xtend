@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * This file is part of Codeigniter Xtend.
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ */
+
 namespace Xtend\Helper;
 
 final class Arrays
@@ -7,7 +14,7 @@ final class Arrays
   /**
    * Searches and returns the value of the specified key from the array
    * ```php
-   * use \Xtend\Helper\Arrays;
+   * use \Xtend\Helpers\Arrays;
    *
    * // Search from a simple array
    * $arr = [

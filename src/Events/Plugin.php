@@ -1,19 +1,21 @@
 <?php
 
-namespace Xtend\Event;
-
-use Xtend\Event\Hook;
-
 /**
+ * This file is part of Codeigniter Xtend.
+ *
  * Adapted from WordPress Hook Class
  * @link https://github.com/WordPress/WordPress/blob/master/wp-includes/plugin.php
  *
  * The API, which allows for creating actions and filters and hooking functions, and methods.
  * The functions or methods will then be run when the action or filter is called.
  *
- * @package Codeigniter Xtend.
- * @author buddywinangun.
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
  */
+
+namespace Xtend\Event;
+
+use Xtend\Event\Hook;
 
 // Defines filters global variables.
 global $filter, $actions, $filters, $current_filter;

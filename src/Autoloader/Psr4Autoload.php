@@ -1,10 +1,16 @@
 <?php
 
-namespace Xtend\Composer;
-
 /**
+ * This file is part of Codeigniter Xtend.
+ *
  * PSR-4 Autoloader for Codeiginiter 3 application
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
  */
+
+namespace Xtend\Autoloader;
+
 class Psr4Autoload
 {
     /**

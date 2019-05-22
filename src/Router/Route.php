@@ -8,8 +8,8 @@
  *
  * Provides enhanced Routing capabilities to CodeIgniter Router.
  *
- * @package Codeigniter Xtend.
- * @author buddywinangun.
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
  */
 
 namespace Xtend\Router;

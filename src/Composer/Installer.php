@@ -1,9 +1,16 @@
 <?php
 
+/**
+ * This file is part of Codeigniter Xtend.
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ */
+
 namespace Xtend\Composer;
 
 use Composer\Script\Event;
-use Xtend\Helper\File;
+use Xtend\Helpers\File;
 
 final class Installer
 {

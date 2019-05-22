@@ -1,6 +1,13 @@
 <?php
 
-namespace Xtend\Core;
+/**
+ * This file is part of Codeigniter Xtend.
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ */
+
+namespace Xtend\Database;
 
 use Xtend\Util\Loader;
 
@@ -27,7 +34,7 @@ abstract class Model extends \CI_Model
   public function __construct()
   {
     parent::__construct();
-    
+
     Loader::model($this->model);
     Loader::library($this->library);
   }

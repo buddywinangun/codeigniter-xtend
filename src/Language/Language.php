@@ -1,15 +1,17 @@
 <?php
 
-namespace Xtend\Util;
-
-use Xtend\Helper\Path;
-
 /**
- * Lang Class
+ * This file is part of Codeigniter Xtend.
  *
- * Description:
  * Provides enhanced Language capabilities to CodeIgniter Language.
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
  */
+
+namespace Xtend\Language;
+
+use Xtend\Helpers\Path;
 
 final class Language
 {
@@ -282,7 +284,7 @@ final class Language
 		$message = "<?php defined('BASEPATH') OR exit('No direct script access allowed');\n\n";
 
 		$package = get_instance()->router->fetch_package();
-		$path = ($package != FALSE) ? \Xtend\Util\Package::path($package) : dirname(__FILE__) . DIRECTORY_SEPARATOR . '../';
+		$path = ($package != FALSE) ? \Xtend\Package\Package::path($package) : dirname(__FILE__) . DIRECTORY_SEPARATOR . '../';
 
 		$lang_folder = $path . 'language/' . config_item('language') . '/';
 		$filepath = $lang_folder . self::$default_lang_file;

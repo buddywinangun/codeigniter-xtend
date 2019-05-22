@@ -6,13 +6,13 @@
  * Adapted from the CodeIgniter Core Classes
  * @link https://codeigniter.com/userguide3/general/routing.html
  *
- * @package Codeigniter Xtend.
- * @author buddywinangun.
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
  */
 
 namespace Xtend\Router;
 
-use Xtend\Util\Package;
+use Xtend\Package\Package;
 
 abstract class Router extends \CI_Router
 {
@@ -107,7 +107,7 @@ abstract class Router extends \CI_Router
 			isset($route['default_controller']) && $this->default_controller = $route['default_controller'];
 			isset($route['translate_uri_dashes']) && $this->translate_uri_dashes = $route['translate_uri_dashes'];
 			unset($route['default_controller'], $route['translate_uri_dashes']);
-			$this->routes = \Xtend\Util\Route::map($route);
+			$this->routes = \Xtend\Router\Route::map($route);
 		}
 
 		// Are query strings enabled in the config file? Normally CI doesn't utilize query strings

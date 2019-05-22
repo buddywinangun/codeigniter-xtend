@@ -1,19 +1,22 @@
 <?php
 
-namespace Xtend\Core;
-
-use Xtend\Util\Language;
-
 /**
- * Controller Class
+ * This file is part of Codeigniter Xtend.
  *
  * Adapted from the CodeIgniter Core Classes
- * @link		https://codeigniter.com/userguide3/general/language.html
+ * @link https://codeigniter.com/userguide3/general/language.html
  *
- * Description:
  * This library extends the CI_Lang class
  * and adds features allowing use of events.
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
  */
+
+namespace Xtend\Language;
+
+use Xtend\Language\Language;
+
 abstract class Lang extends \CI_Lang {
 
 	/**
@@ -38,7 +41,7 @@ abstract class Lang extends \CI_Lang {
 	public function __construct()
 	{
     parent::__construct();
-		
+
 		Language::init();
 	}
 

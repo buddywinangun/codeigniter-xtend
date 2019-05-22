@@ -1,8 +1,15 @@
 <?php
 
-namespace Xtend\Library;
+/**
+ * This file is part of Codeigniter Xtend.
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ */
 
-use \Xtend\Util\Validation;
+namespace Xtend\Validation;
+
+use \Xtend\Validation\Validation;
 
 abstract class FormValidation extends \CI_Form_validation
 {

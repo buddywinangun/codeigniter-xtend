@@ -1,9 +1,7 @@
 <?php
 
-namespace Xtend\Core;
-
 /**
- * Config Class
+ * This file is part of Codeigniter Xtend.
  *
  * Adapted from the CodeIgniter Core Classes
  * @link		https://codeigniter.com/userguide3/libraries/config.html
@@ -11,7 +9,13 @@ namespace Xtend\Core;
  * Description:
  * This library extends the CI_Config class
  * and adds features allowing use of events.
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
  */
+
+namespace Xtend\Config;
+
 abstract class Config extends \CI_Config
 {
 	/**
@@ -49,7 +53,7 @@ abstract class Config extends \CI_Config
 			$uri = substr($uri, 0, $offset);
 		}
 
-		if (NULL != ($named = \Xtend\Util\Route::named($uri))) {
+		if (NULL != ($named = \Xtend\Router\Route::named($uri))) {
 			$uri = $named;
 		}
 

@@ -1,10 +1,17 @@
 <?php
 
+/**
+ * This file is part of Codeigniter Xtend.
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ */
+
 namespace Xtend\Session;
 
 use \Xtend\Util\Loader;
-use \Xtend\Util\Logger;
-use \Xtend\Helper\Arrays;
+use \Xtend\Log\Logger;
+use \Xtend\Helpers\Arrays;
 
 class DatabaseDriver extends \CI_Session_database_driver
 {

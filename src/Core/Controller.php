@@ -1,19 +1,23 @@
 <?php
 
-namespace Xtend\Core;
-
-use Xtend\Util\HttpResponse;
-use Xtend\Util\Loader;
-
 /**
- * Controller Class
+ * This file is part of Codeigniter Xtend.
  *
  * Adapted from the CodeIgniter Core Classes
  * @link		https://codeigniter.com/userguide3/general/controllers.html
  *
  * Description:
  * This library extends the CI_Controller class.
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
  */
+
+namespace Xtend\Core;
+
+use Xtend\HTTP\Response;
+use Xtend\Util\Loader;
+
 abstract class Controller extends \CI_Controller
 {
 	/**
@@ -47,7 +51,7 @@ abstract class Controller extends \CI_Controller
 
     Loader::model($this->model);
     Loader::library($this->library);
-    $this->httpResponse = new HttpResponse();
+    $this->httpResponse = new Response();
   }
 
   /**

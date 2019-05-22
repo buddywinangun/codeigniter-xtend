@@ -1,17 +1,21 @@
 <?php
 
-namespace Xtend\Core;
-
 /**
- * Loader Class
+ * This file is part of Codeigniter Xtend.
  *
  * Adapted from the CodeIgniter Core Classes
- * @link		https://codeigniter.com/userguide3/libraries/loader.html
+ * @link https://codeigniter.com/userguide3/libraries/loader.html
  *
  * Description:
  * This library extends the CI_Loader class
  * and adds features allowing use of events.
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
  */
+
+namespace Xtend\Core;
+
 class Loader extends \CI_Loader
 {
 	/**
