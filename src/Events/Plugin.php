@@ -13,9 +13,9 @@
  * the LICENSE file that was distributed with this source code.
  */
 
-namespace Xtend\Event;
+namespace Xtend\Events;
 
-use Xtend\Event\Hook;
+use Xtend\Events\Hook;
 
 // Defines filters global variables.
 global $filter, $actions, $filters, $current_filter;

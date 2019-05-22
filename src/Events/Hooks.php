@@ -14,9 +14,9 @@
  * the LICENSE file that was distributed with this source code.
  */
 
-namespace Xtend\Event;
+namespace Xtend\Events;
 
-use function \Xtend\Event\do_action;
+use function \Xtend\Events\do_action;
 
 abstract class Hooks extends \CI_Hooks
 {

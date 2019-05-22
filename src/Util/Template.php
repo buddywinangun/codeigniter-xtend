@@ -13,7 +13,7 @@ use Xtend\Helpers\File;
 use Xtend\Helpers\Path;
 use Xtend\Util\Loader;
 
-use function Xtend\Event\apply_filters;
+use function Xtend\Events\apply_filters;
 
 final class Template
 {

@@ -12,9 +12,9 @@
  * the LICENSE file that was distributed with this source code.
  */
 
-namespace Xtend\Event;
+namespace Xtend\Events;
 
-use function Xtend\Event\_x_filter_build_unique_id;
+use function Xtend\Events\_x_filter_build_unique_id;
 
 final class Hook implements \Iterator, \ArrayAccess
 {
