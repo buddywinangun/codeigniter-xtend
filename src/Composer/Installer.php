@@ -69,8 +69,9 @@ final class Installer
     chdir($cwd);
     $io->write('Deleting unnecessary files.');
     File::delete(
-      $cwd . '/src',
       $cwd . '/.github',
+      $cwd . '/extra',
+      $cwd . '/src',
       $cwd . '/composer.json.dist',
       $cwd . '/CHANGELOG.md',
       $cwd . '/README.md',
