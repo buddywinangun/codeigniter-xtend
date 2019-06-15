@@ -16,12 +16,6 @@ use Xtend\Helpers\Path;
 final class Language
 {
 	/**
-	 * default lang file that will be created if it doesn't exist
-	 * and will be used to automatically add any missing strings
-	 */
-	public static $default_lang_file = 'main_lang.php';
-
-	/**
 	 * Array of all packages and their details.
 	 * @var 	array
 	 */
@@ -63,7 +57,7 @@ final class Language
 			}
 
 			$language_path = $location . $name . '/';
-			$init_file   = $language_path . self::$default_lang_file;
+			$init_file   = $language_path . $name . '_lang.php';
 
 			// Make sure a valid module file by the same name as the folder exists
 			if (!file_exists($init_file)) {
@@ -141,7 +135,7 @@ final class Language
 		// header
 		$path = self::path($lang);
 
-		$lang_source = $path . self::$default_lang_file;
+		$lang_source = $path . $lang . '_lang.php';
 		$lang_data = @file_get_contents($lang_source); // Read the module init file.
 
 		preg_match('|Name:(.*)$|mi', $lang_data, $name);
@@ -283,11 +277,8 @@ final class Language
 		// check whether constant defined or not if not then php script exit and won't process further.
 		$message = "<?php defined('BASEPATH') OR exit('No direct script access allowed');\n\n";
 
-		$package = get_instance()->router->fetch_package();
-		$path = ($package != FALSE) ? \Xtend\Package\Package::path($package) : dirname(__FILE__) . DIRECTORY_SEPARATOR . '../';
-
-		$lang_folder = $path . 'language/' . config_item('language') . '/';
-		$filepath = $lang_folder . self::$default_lang_file;
+		$lang_folder = APPPATH . 'language/' . config_item('language') . '/';
+		$filepath = $lang_folder . config_item('language') . '_lang.php';
 
 		if (!file_exists($filepath)) {
 			@mkdir($lang_folder, 0777, true);
@@ -301,8 +292,7 @@ final class Language
 		}
 
 		$line = strtolower(str_replace(' ', '_', $line));
-		$lang = str_replace('_l_', '', $line);
-		$lang = ucfirst(str_replace('_', ' ', $lang));
+		$lang = ucfirst(str_replace('_', ' ', $line));
 
 		$lang_contents = @file_get_contents($filepath);
 		$lang_pattern = '~\$lang\[(\'|")' . preg_quote($line) . '(\'|")\]~';
