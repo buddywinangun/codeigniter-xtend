@@ -14,8 +14,6 @@
 
 namespace Xtend\Events;
 
-use function Xtend\Events\_x_filter_build_unique_id;
-
 final class Hook implements \Iterator, \ArrayAccess
 {
 

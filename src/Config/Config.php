@@ -4,7 +4,7 @@
  * This file is part of Codeigniter Xtend.
  *
  * Adapted from the CodeIgniter Core Classes
- * @link		https://codeigniter.com/userguide3/libraries/config.html
+ * @link https://codeigniter.com/userguide3/libraries/config.html
  *
  * Description:
  * This library extends the CI_Config class

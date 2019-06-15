@@ -13,8 +13,6 @@ namespace Xtend\Package;
 
 use Xtend\Helpers\Path;
 
-use function Xtend\Events\do_action;
-
 final class Package
 {
 	/**
@@ -53,17 +51,17 @@ final class Package
 				continue;
 			}
 
-			// "main.php" not found? Nothing to do.
-			if (!is_file($path . 'main.php')) {
+			// ".php" not found? Nothing to do.
+			if (!is_file($path . $folder . '.php')) {
 				continue;
 			}
-
-			// Include their main file if found.
-			require_once($path . "main.php");
 
 			// added package path.
 			$ci = &get_instance();
 			$ci->load->add_package_path($path);
+
+			// Include their  file if found.
+			require_once($path . $folder . ".php");
 
 			// We always fire this action.
 			do_action('package_loaded_' . $folder);
@@ -108,7 +106,7 @@ final class Package
 					}
 
 					$module_path = $location . $name . '/';
-					$init_file   = $module_path . 'main.php';
+					$init_file   = $module_path . $name . '.php';
 
 					// Make sure a valid module file by the same name as the folder exists
 					if (!file_exists($init_file)) {
@@ -338,7 +336,7 @@ final class Package
 	{
 		$path = $path ? $path : self::path($folder);
 
-		$module_source = $path . 'main.php';
+		$module_source = $path . $folder . '.php';
 		$module_data = @file_get_contents($module_source); // Read the module init file.
 
 		preg_match('|Name:(.*)$|mi', $module_data, $name);

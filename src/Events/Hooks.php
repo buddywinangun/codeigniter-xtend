@@ -4,7 +4,7 @@
  * This file is part of Codeigniter Xtend.
  *
  * Adapted from the CodeIgniter Core Classes
- * @link		https://codeigniter.com/userguide3/general/routing.html
+ * @link https://codeigniter.com/userguide3/general/routing.html
  *
  * Description:
  * This library extends the CI_Hooks class
@@ -16,7 +16,7 @@
 
 namespace Xtend\Events;
 
-use function \Xtend\Events\do_action;
+require_once(dirname(__FILE__) . '/Plugin.php');
 
 abstract class Hooks extends \CI_Hooks
 {

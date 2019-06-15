@@ -13,8 +13,6 @@
  * the LICENSE file that was distributed with this source code.
  */
 
-namespace Xtend\Events;
-
 use Xtend\Events\Hook;
 
 // Defines filters global variables.

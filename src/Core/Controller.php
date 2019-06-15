@@ -4,7 +4,7 @@
  * This file is part of Codeigniter Xtend.
  *
  * Adapted from the CodeIgniter Core Classes
- * @link		https://codeigniter.com/userguide3/general/controllers.html
+ * @link https://codeigniter.com/userguide3/general/controllers.html
  *
  * Description:
  * This library extends the CI_Controller class.
