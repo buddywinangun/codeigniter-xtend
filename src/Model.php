@@ -7,7 +7,7 @@
  * the LICENSE file that was distributed with this source code.
  */
 
-namespace Xtend\Database;
+namespace Xtend;
 
 use Xtend\Util\Loader;
 

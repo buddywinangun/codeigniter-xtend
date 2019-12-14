@@ -13,7 +13,7 @@
  * the LICENSE file that was distributed with this source code.
  */
 
-namespace Xtend\Core;
+namespace Xtend;
 
 use Xtend\HTTP\Response;
 use Xtend\Util\Loader;
@@ -32,8 +32,6 @@ abstract class Controller extends \CI_Controller
 	 */
 	protected $data = array();
 
-  protected $model;
-  protected $library;
   protected $httpResponse;
 
   public function __construct()
@@ -49,8 +47,6 @@ abstract class Controller extends \CI_Controller
 		// redirection URL
 		$this->redirect = $this->session->flashdata('redirect');
 
-    Loader::model($this->model);
-    Loader::library($this->library);
     $this->httpResponse = new Response();
   }
 

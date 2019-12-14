@@ -14,7 +14,7 @@
  * the LICENSE file that was distributed with this source code.
  */
 
-namespace Xtend\Core;
+namespace Xtend;
 
 class Loader extends \CI_Loader
 {

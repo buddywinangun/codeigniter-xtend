@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use \Xtend\Helpers\File;
+use \Xtend\Helpers\FileHelper;
 
 const TMP_DIR = __DIR__ . '/temp';
 const INPUT_DIR = __DIR__ . '/input';
@@ -11,15 +11,15 @@ final class FileHelperTest extends TestCase
   public static function setUpBeforeClass(): void
   {
     // During testing, files in the input directory are overwritten, so reset the input directory before testing.
-    File::delete(TMP_DIR);
-    File::copyDirectory(INPUT_DIR, TMP_DIR);
+    FileHelper::delete(TMP_DIR);
+    FileHelper::copyDirectory(INPUT_DIR, TMP_DIR);
   }
 
   public function testDeleteDirectoriesRecursively(): void
   {
     $deleteSelf = true;
     $dir = TMP_DIR . '/recursively-delete';
-    File::delete($dir, $deleteSelf);
+    FileHelper::delete($dir, $deleteSelf);
     $this->assertSame(file_exists($dir), false);
   }
 
@@ -27,7 +27,7 @@ final class FileHelperTest extends TestCase
   {
     $deleteSelf = false;
     $dir = TMP_DIR . '/recursively-delete-only-children';
-    File::delete($dir, $deleteSelf);
+    FileHelper::delete($dir, $deleteSelf);
     $numberOfFiles = count(glob($dir . '/*'));
     $this->assertSame($numberOfFiles, 0);
   }
@@ -35,7 +35,7 @@ final class FileHelperTest extends TestCase
   public function testMakeDirector(): void
   {
     $dir = TMP_DIR . '/path';
-    File::makeDirectory($dir);
+    FileHelper::makeDirectory($dir);
     $directoryExists = file_exists($dir);
     $this->assertSame($directoryExists, true);
   }
@@ -43,7 +43,7 @@ final class FileHelperTest extends TestCase
   public function testMakeDirectorAlreadyExists(): void
   {
     $dir = TMP_DIR . '/path';
-    File::makeDirectory($dir);
+    FileHelper::makeDirectory($dir);
     $directoryExists = file_exists($dir);
     $this->assertSame($directoryExists, true);
   }

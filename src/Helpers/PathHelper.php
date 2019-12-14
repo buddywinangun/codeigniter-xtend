@@ -9,7 +9,7 @@
 
 namespace Xtend\Helpers;
 
-final class Path
+final class PathHelper
 {
 
 	/**

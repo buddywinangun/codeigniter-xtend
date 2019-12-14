@@ -11,7 +11,7 @@ namespace Xtend\Helpers;
 
 use Xtend\Log\Logger;
 
-final class File
+final class FileHelper
 {
 
   /**
@@ -107,19 +107,19 @@ final class File
    * Delete directory or file.
    *
    * ```php
-   * use \Xtend\Helpers\File;
+   * use \Xtend\Helpers\FileHelper;
    *
    * // Delete all files and folders in "/ path"..
-   * File::delete('/test');
+   * FileHelper::delete('/test');
    *
    * // Delete all files and folders in the "/ path" folder and also in the "/ path" folder.
    * $deleteSelf = true;
-   * File::delete('/test', $deleteSelf);
+   * FileHelper::delete('/test', $deleteSelf);
    *
    * // Lock before deleting, Locks are disabled by default.
    * $deleteSelf = true;
    * $enableLock = true;
-   * File::delete('/test', $deleteSelf, $enableLock);
+   * FileHelper::delete('/test', $deleteSelf, $enableLock);
    * ```
    */
   public static function delete(...$paths)

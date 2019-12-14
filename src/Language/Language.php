@@ -11,7 +11,7 @@
 
 namespace Xtend\Language;
 
-use Xtend\Helpers\Path;
+use Xtend\Helpers\PathHelper;
 
 final class Language
 {
@@ -64,7 +64,7 @@ final class Language
 				continue;
 			}
 
-			self::$_languages[$name] = Path::normalizePath($language_path . '/');
+			self::$_languages[$name] = PathHelper::normalizePath($language_path . '/');
 		}
 
 		$return = self::$_languages;
@@ -115,7 +115,7 @@ final class Language
 				return false;
 			}
 
-			self::$_languages[$name] = Path::normalizePath($path . '/');
+			self::$_languages[$name] = PathHelper::normalizePath($path . '/');
 		}
 
 		return self::$_languages[$name];

@@ -9,8 +9,8 @@
 
 namespace Xtend\Util;
 
-use Xtend\Helpers\File;
-use Xtend\Helpers\Path;
+use Xtend\Helpers\FileHelper;
+use Xtend\Helpers\PathHelper;
 use Xtend\Util\Loader;
 
 final class Template
@@ -95,7 +95,7 @@ final class Template
 
           $module_path = $location . $name . '/';
 
-          self::$_templates[$name] = Path::normalizePath($module_path . '/');
+          self::$_templates[$name] = PathHelper::normalizePath($module_path . '/');
         }
 
         // Alphabetically order packages.
@@ -235,9 +235,9 @@ final class Template
       if (!file_exists($path . '/' . $uri)) {
         return false;
       }
-      $return = Path::normalizePath($path . '/' . $uri);
+      $return = PathHelper::normalizePath($path . '/' . $uri);
     } else {
-      $return = Path::normalizePath($path . '/');
+      $return = PathHelper::normalizePath($path . '/');
     }
 
     return $return;
@@ -380,7 +380,7 @@ final class Template
   {
     $cache = Loader::config('config', 'cache_templates');
     if (!empty($cache)) {
-      File::makeDirectory($cache);
+      FileHelper::makeDirectory($cache);
     }
 
     $option = array_merge([
@@ -398,7 +398,7 @@ final class Template
       ],
     ], $option);
 
-    $this->engine = new \Twig\Environment(new \Twig\Loader\FilesystemLoader($option['paths']), $option['environment']);
+    $this->engine = new \Twig\Environment(new \Twig\Loader\FileHelpersystemLoader($option['paths']), $option['environment']);
     $this->engine->addFunction(new \Twig\TwigFunction(
       'cache_busting',
       /**

@@ -11,7 +11,7 @@
 
 namespace Xtend\Package;
 
-use Xtend\Helpers\Path;
+use Xtend\Helpers\PathHelper;
 
 final class Package
 {
@@ -113,7 +113,7 @@ final class Package
 						continue;
 					}
 
-					self::$_packages[$name] = Path::normalizePath($module_path . '/');
+					self::$_packages[$name] = PathHelper::normalizePath($module_path . '/');
 				}
 			}
 
@@ -227,7 +227,7 @@ final class Package
 				return false;
 			}
 
-			self::$_packages[$name] = Path::normalizePath($path . '/');
+			self::$_packages[$name] = PathHelper::normalizePath($path . '/');
 		}
 
 		return self::$_packages[$name];
@@ -253,7 +253,7 @@ final class Package
 			$_protocol = $protocol;
 		}
 
-		// $return = Path::pathJoin(base_url('assets', $_protocol), $package);
+		// $return = PathHelper::pathJoin(base_url('assets', $_protocol), $package);
 		$return = base_url('assets', $_protocol);
 
 		if (empty($uri)) {
@@ -263,11 +263,11 @@ final class Package
 		$path = 'package/' . $package . DIRECTORY_SEPARATOR;
 		$uris = rtrim(str_replace('assets/', '', $uri), '/');
 
-		if (file_exists(Path::pathJoin(FCPATH, 'assets/' . $path . $uris))) {
-			$cached_uris[$uri] = Path::pathJoin($return, $path . $uris);
+		if (file_exists(PathHelper::pathJoin(FCPATH, 'assets/' . $path . $uris))) {
+			$cached_uris[$uri] = PathHelper::pathJoin($return, $path . $uris);
 		} else {
 			$return = base_url('loader', $_protocol);
-			$cached_uris[$uri] = Path::pathJoin($return, $path . $uri);
+			$cached_uris[$uri] = PathHelper::pathJoin($return, $path . $uri);
 		}
 
 		$return = $cached_uris[$uri];

@@ -11,7 +11,7 @@ namespace Xtend\Session;
 
 use \Xtend\Util\Loader;
 use \Xtend\Log\Logger;
-use \Xtend\Helpers\Arrays;
+use \Xtend\Helpers\ArrayHelper;
 
 class DatabaseDriver extends \CI_Session_database_driver
 {
@@ -126,7 +126,7 @@ class DatabaseDriver extends \CI_Session_database_driver
       $unserialized = [];
     foreach ($additionalColumns as $additionalColumn) {
       if (in_array($additionalColumn, $defaultColumns)) {
-        $additionalColumnValue = Arrays::searchArrayByKey($additionalColumn, $unserialized);
+        $additionalColumnValue = ArrayHelper::searchArrayByKey($additionalColumn, $unserialized);
         $insert_data[$additionalColumn] = $additionalColumnValue;
       } else
         throw new \RuntimeException("Column {$additionalColumn} is not found in the session table");

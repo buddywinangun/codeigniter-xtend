@@ -10,7 +10,7 @@
   },
   "scripts": {
     "post-update-cmd": [
-      "Xtend\\Composer\\Installer::update"
+      "Xtend\\ComposerScripts::update"
     ],
     "test": [
       "./vendor/bin/phpunit"

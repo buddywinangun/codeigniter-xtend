@@ -9,12 +9,12 @@
 
 namespace Xtend\Helpers;
 
-final class Arrays
+final class ArrayHelper
 {
   /**
    * Searches and returns the value of the specified key from the array
    * ```php
-   * use \Xtend\Helpers\Arrays;
+   * use \Xtend\Helpers\ArrayHelper;
    *
    * // Search from a simple array
    * $arr = [
@@ -22,7 +22,7 @@ final class Arrays
    *   'Sumut' => 'Medan'
    * ];
    *
-   * Arrays::searchArrayByKey('Indonesia', $arr);
+   * ArrayHelper::searchArrayByKey('Indonesia', $arr);
    * // Jakarta
    *
    * // Search from nested array
@@ -34,7 +34,7 @@ final class Arrays
    * ];
    * ```
    *
-   * Arrays::searchArrayByKey('Sumut', $nested);
+   * ArrayHelper::searchArrayByKey('Sumut', $nested);
    * // Medan
    * @param  string $needle
    * @param  array $haystack

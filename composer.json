@@ -12,10 +12,7 @@
     "autoload": {
         "psr-4": {
             "Xtend\\": "src/"
-        },
-        "files": [
-            "./src/Events/Plugin.php"
-        ]
+        }
     },
     "authors": [{
         "name": "buddywinangun",
@@ -32,7 +29,7 @@
     },
     "scripts": {
         "post-create-project-cmd": [
-            "Xtend\\Composer\\Installer::run"
+            "Xtend\\ComposerScripts::run"
         ],
         "test": [
             "./vendor/bin/phpunit"
