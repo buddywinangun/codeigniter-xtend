@@ -16,7 +16,6 @@ Lihat [Release schedule](/CHANGELOG.md#release-schedule) untuk jadwal rilis terb
 ## Installation
 
 1. Run Composer, Create a project of **Codeigniter Xtend**.
-
 ```sh
 composer create-project buddywinangun/codeigniter-xtend my-project
 ```
