@@ -51,10 +51,13 @@ final class ComposerScripts
       $cwd . '/.github',
       $cwd . '/extra',
       $cwd . '/src',
+      $cwd . '/tests',
       $cwd . '/composer.json.dist',
       $cwd . '/CHANGELOG.md',
-      $cwd . '/README.md',
-      $cwd . '/LICENSE.md'
+      $cwd . '/LICENSE.md',
+      $cwd . '/phpunit-printer.yml',
+      $cwd . '/phpunit.xml',
+      $cwd . '/README.md'
     );
 
     $io->write('Installation is complete.');
