@@ -14,5 +14,5 @@ class Xtend
   /**
    * The current version of CodeIgniter Xtend
    */
-  public const VERSION = '2.1.0';
+  public const VERSION = '2.1.2';
 }
