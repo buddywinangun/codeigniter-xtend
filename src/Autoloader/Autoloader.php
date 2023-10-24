@@ -46,9 +46,11 @@ class Autoloader
      * This maps the locations of any namespaces in your application to
      * their location on the file system. These are used by the autoloader
      * to locate files the first time they have been instantiated.
+     *
+     * @var array<string, string>
      */
-    public $psr4 = [
-        'App' => APPPATH,
+    protected $corePsr4 = [
+        'App' => APPPATH
     ];
 
     /**
@@ -56,8 +58,26 @@ class Autoloader
      */
     public function register()
     {
-        if ($this->psr4 !== []) {
-            $this->addNamespace($this->psr4);
+		if (file_exists(APPPATH.'config/autoload.php'))
+		{
+			include(APPPATH.'config/autoload.php');
+		}
+
+		if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/autoload.php'))
+		{
+			include(APPPATH.'config/'.ENVIRONMENT.'/autoload.php');
+		}
+
+        $autoload['psr4'] = array_merge($this->corePsr4, $autoload['psr4']);
+
+        // We have to have one or the other, though we don't enforce the need
+        // to have both present in order to work.
+        if ($autoload['psr4'] === []) {
+            throw new InvalidArgumentException('Config array must contain either the \'psr4\' key or the \'classmap\' key.');
+        }
+
+        if ($autoload['psr4'] !== []) {
+            $this->addNamespace($autoload['psr4']);
         }
 
         // Prepend the PSR4  autoloader for maximum performance.
