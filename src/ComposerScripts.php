@@ -76,7 +76,6 @@ final class ComposerScripts
     self::pathExtra($io, self::XTEND_DIR);
 
     $io->write('Update is complete.');
-    $io->write('See <https://packagist.org/packages/buddywinangun/codeigniter-xtend> for details.');
   }
 
   /**
@@ -98,10 +97,6 @@ final class ComposerScripts
     ]);
 
     $io->write('Create a config.');
-    FileHelper::replace('application/config/autoload.php', [
-      '$autoload[\'libraries\'] = array();' => '$autoload[\'libraries\'] = array(\'session\',\'form_validation\');',
-      '$autoload[\'helper\'] = array();' => '$autoload[\'helper\'] = array(\'url\', \'array\');'
-    ]);
     FileHelper::replace('application/config/config.php', [
       '$config[\'base_url\'] = \'\';' => '$config[\'base_url\'] = ((isset($_SERVER[\'HTTPS\']) && $_SERVER[\'HTTPS\'] == \'on\') ? \'https\' : \'http\').\'://\'.$_SERVER[\'HTTP_HOST\'].str_replace(basename($_SERVER[\'SCRIPT_NAME\']),"",$_SERVER[\'SCRIPT_NAME\']);',
       '$config[\'index_page\'] = \'index.php\';' => '$config[\'index_page\'] = \'\';',
