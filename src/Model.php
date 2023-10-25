@@ -9,7 +9,7 @@
 
 namespace Xtend;
 
-use Xtend\Util\Loader;
+use Xtend\Config\Loader;
 
 abstract class Model extends \CI_Model
 {

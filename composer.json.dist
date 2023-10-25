@@ -11,9 +11,6 @@
   "scripts": {
     "post-update-cmd": [
       "Xtend\\ComposerScripts::update"
-    ],
-    "test": [
-      "./vendor/bin/phpunit"
     ]
   }
 }

@@ -58,26 +58,26 @@ class Autoloader
      */
     public function register()
     {
-		if (file_exists(APPPATH.'config/autoload.php'))
+		if (file_exists(APPPATH.'config/locate.php'))
 		{
-			include(APPPATH.'config/autoload.php');
+			include(APPPATH.'config/locate.php');
 		}
 
-		if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/autoload.php'))
+		if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/locate.php'))
 		{
-			include(APPPATH.'config/'.ENVIRONMENT.'/autoload.php');
+			include(APPPATH.'config/'.ENVIRONMENT.'/locate.php');
 		}
 
-        $autoload['psr4'] = array_merge($this->corePsr4, $autoload['psr4']);
+        $locate['psr4'] = array_merge($this->corePsr4, $locate['psr4']);
 
         // We have to have one or the other, though we don't enforce the need
         // to have both present in order to work.
-        if ($autoload['psr4'] === []) {
+        if ($locate['psr4'] === []) {
             throw new InvalidArgumentException('Config array must contain either the \'psr4\' key or the \'classmap\' key.');
         }
 
-        if ($autoload['psr4'] !== []) {
-            $this->addNamespace($autoload['psr4']);
+        if ($locate['psr4'] !== []) {
+            $this->addNamespace($locate['psr4']);
         }
 
         // Prepend the PSR4  autoloader for maximum performance.

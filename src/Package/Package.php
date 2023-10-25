@@ -463,7 +463,17 @@ final class Package
 			return;
 		}
 
-		self::$_locations = config_item('package_locations');
+		if (file_exists(APPPATH.'config/locate.php'))
+		{
+			include(APPPATH.'config/locate.php');
+		}
+
+		if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/locate.php'))
+		{
+			include(APPPATH.'config/'.ENVIRONMENT.'/locate.php');
+		}
+
+    self::$_locations = $locate['packages'];
 
 		if (null === self::$_locations) {
 			self::$_locations = array(APPPATH . 'packages');
