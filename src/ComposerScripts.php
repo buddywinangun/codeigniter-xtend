@@ -85,8 +85,8 @@ final class ComposerScripts
   {
     $io->write('Preparing the application file.');
     FileHelper::copyDirectory(static::FRAMEWORK_DIR . 'application', 'application');
-    FileHelper::copyDirectory($path . 'extra/application', 'application');
-    FileHelper::copyDirectory($path . 'extra/public', static::DOCUMENT_ROOT);
+    FileHelper::copyDirectory($path . 'application', 'application');
+    FileHelper::copyDirectory($path . 'public', static::DOCUMENT_ROOT);
 
     $io->write('Create an entry point.');
     FileHelper::copyFile(static::FRAMEWORK_DIR . 'index.php', static::DOCUMENT_ROOT . 'index.php');
