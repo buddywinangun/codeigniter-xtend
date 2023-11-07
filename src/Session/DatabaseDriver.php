@@ -9,7 +9,7 @@
 
 namespace Xtend\Session;
 
-use \Xtend\Util\Loader;
+use \Xtend\Config\Loader;
 use \Xtend\Log\Logger;
 use \Xtend\Helpers\ArrayHelper;
 

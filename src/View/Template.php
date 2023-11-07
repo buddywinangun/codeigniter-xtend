@@ -7,11 +7,11 @@
  * the LICENSE file that was distributed with this source code.
  */
 
-namespace Xtend\Util;
+namespace Xtend\View;
 
 use Xtend\Helpers\FileHelper;
 use Xtend\Helpers\PathHelper;
-use Xtend\Util\Loader;
+use Xtend\Config\Loader;
 
 final class Template
 {
@@ -451,7 +451,17 @@ final class Template
       return;
     }
 
-    self::$_locations = config_item('template_locations');
+		if (file_exists(APPPATH.'config/locate.php'))
+		{
+			include(APPPATH.'config/locate.php');
+		}
+
+		if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/locate.php'))
+		{
+			include(APPPATH.'config/'.ENVIRONMENT.'/locate.php');
+		}
+
+    self::$_locations = $locate['template'];
 
     if (null === self::$_locations) {
       self::$_locations = array(VIEWPATH);

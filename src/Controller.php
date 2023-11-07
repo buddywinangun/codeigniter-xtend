@@ -16,7 +16,7 @@
 namespace Xtend;
 
 use Xtend\HTTP\Response;
-use Xtend\Util\Loader;
+use Xtend\Config\Loader;
 
 abstract class Controller extends \CI_Controller
 {

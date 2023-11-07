@@ -116,9 +116,6 @@ final class Package
 					self::$_packages[$name] = PathHelper::normalizePath($module_path . '/');
 				}
 			}
-
-			// Alphabetically order packages.
-			ksort(self::$_packages);
 		}
 
 		$return = self::$_packages;
@@ -463,12 +460,20 @@ final class Package
 			return;
 		}
 
-		self::$_locations = config_item('package_locations');
+		if (file_exists(APPPATH . 'config/locate.php')) {
+			include(APPPATH . 'config/locate.php');
+		}
+
+		if (file_exists(APPPATH . 'config/' . ENVIRONMENT . '/locate.php')) {
+			include(APPPATH . 'config/' . ENVIRONMENT . '/locate.php');
+		}
+
+		self::$_locations = $locate['packages'];
 
 		if (null === self::$_locations) {
 			self::$_locations = array(APPPATH . 'packages');
 		} elseif (!in_array(APPPATH . 'packages', self::$_locations)) {
-			self::$_locations[] = APPPATH . 'packages';
+			array_unshift(self::$_locations, APPPATH . 'packages');
 		}
 
 		foreach (self::$_locations as $i => &$location) {

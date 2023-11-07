@@ -85,8 +85,8 @@ final class ComposerScripts
   {
     $io->write('Preparing the application file.');
     FileHelper::copyDirectory(static::FRAMEWORK_DIR . 'application', 'application');
-    FileHelper::copyDirectory($path . 'extra/application', 'application');
-    FileHelper::copyDirectory($path . 'extra/public', static::DOCUMENT_ROOT);
+    FileHelper::copyDirectory($path . 'application', 'application');
+    FileHelper::copyDirectory($path . 'public', static::DOCUMENT_ROOT);
 
     $io->write('Create an entry point.');
     FileHelper::copyFile(static::FRAMEWORK_DIR . 'index.php', static::DOCUMENT_ROOT . 'index.php');
@@ -97,6 +97,10 @@ final class ComposerScripts
     ]);
 
     $io->write('Create a config.');
+    FileHelper::replace('application/config/autoload.php', [
+      '$autoload[\'libraries\'] = array();' => '$autoload[\'libraries\'] = array(\'session\', \'form_validation\');',
+      '$autoload[\'helper\'] = array();' => '$autoload[\'helper\'] = array(\'url\', \'array\');',
+    ]);
     FileHelper::replace('application/config/config.php', [
       '$config[\'base_url\'] = \'\';' => '$config[\'base_url\'] = ((isset($_SERVER[\'HTTPS\']) && $_SERVER[\'HTTPS\'] == \'on\') ? \'https\' : \'http\').\'://\'.$_SERVER[\'HTTP_HOST\'].str_replace(basename($_SERVER[\'SCRIPT_NAME\']),"",$_SERVER[\'SCRIPT_NAME\']);',
       '$config[\'index_page\'] = \'index.php\';' => '$config[\'index_page\'] = \'\';',

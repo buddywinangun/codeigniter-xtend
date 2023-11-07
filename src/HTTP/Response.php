@@ -36,7 +36,7 @@ final class Response
   public function view(string $path)
   {
     static $template;
-    $template = $template ?? new \Xtend\Util\Template();
+    $template = $template ?? new \Xtend\View\Template();
     self::html($template->load($path, $this->data));
   }
 

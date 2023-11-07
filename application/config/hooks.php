@@ -15,4 +15,4 @@ defined('BASEPATH') or exit('No direct script access allowed');
 $hook['pre_system'][] = [new Xtend\Autoloader\Autoloader, 'register'];
 
 $hook['pre_controller_constructor'][] = [new Xtend\Package\Package, 'init'];
-$hook['pre_controller_constructor'][] = [new Xtend\Util\Template, 'init'];
+$hook['pre_controller_constructor'][] = [new Xtend\View\Template, 'init'];

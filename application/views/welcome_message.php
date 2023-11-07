@@ -253,7 +253,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 			<h1>Welcome to CodeIgniter Xtend <?= \Xtend\Xtend::VERSION ?></h1>
 
-			<h2>alat yang kami rancang sebagai manajemen extension di atas Framework Codeigniter</h2>
+			<h2>Alat yang kami rancang sebagai manajemen extension di atas Framework Codeigniter</h2>
 
 		</div>
 
