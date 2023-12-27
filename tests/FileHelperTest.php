@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use \Xtend\Helpers\FileHelper;
+use Xtend\Helpers\FileHelper;
 
 const TMP_DIR = __DIR__ . '/temp';
 const INPUT_DIR = __DIR__ . '/input';

@@ -7,10 +7,5 @@
   "require-dev": {
     "phpunit/phpunit": "^9.6",
     "codedungeon/phpunit-result-printer": "^0.32.0"
-  },
-  "scripts": {
-    "post-update-cmd": [
-      "Xtend\\ComposerScripts::update"
-    ]
   }
 }

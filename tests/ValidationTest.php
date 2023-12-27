@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use \Xtend\Validation\Validation;
+use Xtend\Validation\Validation;
 
 final class ValidationTest extends TestCase
 {
