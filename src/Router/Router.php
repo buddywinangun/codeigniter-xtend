@@ -13,6 +13,7 @@
 namespace Xtend\Router;
 
 use Xtend\Package\Package;
+use Xtend\Router\Route;
 
 abstract class Router extends \CI_Router
 {
@@ -56,9 +57,6 @@ abstract class Router extends \CI_Router
       is_array($routing) && isset($routing['package']) && $this->default_package = $routing['package'];
 
       parent::__construct($routing);
-
-      $domain = explode('.', $_SERVER['HTTP_HOST'], 2);
-      $this->domain_package = $domain[0];
    }
 
 	// --------------------------------------------------------------------
@@ -87,7 +85,9 @@ abstract class Router extends \CI_Router
 		}
 
       // Package routes.
-      foreach (Package::lists() as $folder => $path) {
+      foreach (Package::lists(true) as $folder => $path) {
+         var_dump($folder);
+         die;
          if (TRUE !== Package::is_enabled($folder)) {
             continue;
          }
@@ -188,8 +188,8 @@ abstract class Router extends \CI_Router
       $segments = array($class, $method);
 
       //creates the various parts
-      if (Package::has($this->domain_package)) {
-         array_unshift($segments, $this->domain_package);
+      if (Package::has(Route::get_subdomain())) {
+         array_unshift($segments, Route::get_subdomain());
       } elseif (Package::has($this->default_package)) {
          array_unshift($segments, $this->default_package);
       }
@@ -228,8 +228,8 @@ abstract class Router extends \CI_Router
       };
 
       //creates the various parts
-      if (Package::has($this->domain_package)) {
-         array_unshift($segments, $this->domain_package);
+      if (Package::has(Route::get_subdomain())) {
+         array_unshift($segments, Route::get_subdomain());
 
          // Again, look for the controller.
          if ($located = $this->_locate($segments)) {

@@ -1,14 +1,18 @@
 {
     "name": "buddywinangun/codeigniter-xtend",
-    "description": "CodeIgniter Xtend for ease of use",
-    "keywords": [
-        "CodeIgniter",
-        "Xtend"
-    ],
+    "description": "CodeIgniter 3 for ease of use",
     "type": "library",
     "homepage": "https://github.com/buddywinangun/codeigniter-xtend",
     "license": "MIT",
     "minimum-stability": "stable",
+    "keywords": [
+        "CodeIgniter",
+        "Framework",
+        "Xtend"
+    ],
+    "support": {
+        "source": "https://github.com/buddywinangun/codeigniter-xtend"
+    },
     "autoload": {
         "psr-4": {
             "Xtend\\": "src/"
@@ -21,21 +25,15 @@
     "require": {
         "php": "^7.0",
         "twig/twig": "^3.8",
-        "codeigniter/framework": "^3.1"
+        "intervention/image": "^2.7"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.6",
         "codedungeon/phpunit-result-printer": "^0.32.0"
     },
     "scripts": {
-        "post-create-project-cmd": [
-            "Xtend\\ComposerScripts::run"
-        ],
         "test": [
-            "./vendor/bin/phpunit"
+            "phpunit"
         ]
-    },
-    "support": {
-        "source": "https://github.com/buddywinangun/codeIgniter-xtend"
     }
 }

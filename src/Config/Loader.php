@@ -44,17 +44,25 @@ final class Loader
    */
   public static function database($config = 'default', bool $return = false, $queryBuilder = null, bool $overwrite = false)
   {
-    $CI = &\get_instance();
-    if (
-      !$return && $queryBuilder === null
-      && isset($CI->db)
-      && is_object($CI->db)
-      && !empty($CI->db->conn_id)
-      && !$overwrite
-    )
-      return;
+    // Grab the super object
+    $CI =& \get_instance();
 
-    $CI->load->database($config, $return, $queryBuilder);
+    // Do we even need to load the database class?
+    if (!$return && $queryBuilder === null && isset($CI->db) && is_object($CI->db) && !empty($CI->db->conn_id) && !$overwrite) {
+      return;
+    }
+
+    // Load the DB class
+    $db = $CI->load->database($config, $return, $queryBuilder);
+    if (!$return || $overwrite) {
+      // Initialize the db variable. Needed to prevent
+      // reference errors with some configurations
+      $CI->db = '';
+      $CI->db =& $db;
+    }
+    if ($return) {
+      return $db;
+    }
   }
 
   /**

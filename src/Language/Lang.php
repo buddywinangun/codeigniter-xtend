@@ -42,7 +42,7 @@ abstract class Lang extends \CI_Lang {
 	{
     parent::__construct();
 
-		Language::init();
+		// Language::init();
 	}
 
 	// --------------------------------------------------------------------
