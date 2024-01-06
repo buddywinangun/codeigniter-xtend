@@ -15,12 +15,12 @@ Lihat [Release schedule](/CHANGELOG.md#release-schedule) untuk jadwal rilis terb
 
 ## Installation
 
-1. Run Composer, Create a project of **Codeigniter Xtend**.
+1. Instalasi dilakukan melalui Composer.
 ```sh
-composer create-project buddywinangun/codeigniter-xtend my-project
+composer require buddywinangun/codeigniter-xtend
 ```
 
-2. Grant write permission to logs, cache, session to WEB server.
+2. Berikan izin menulis logs, cache, session.
 ```sh
 sudo chmod -R 755 ./application/{logs,cache,session};
 sudo chown -R nginx:nginx ./application/{logs,cache,session};
