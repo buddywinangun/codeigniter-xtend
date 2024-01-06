@@ -68,16 +68,16 @@ class Autoloader
 			include(APPPATH.'config/'.ENVIRONMENT.'/locate.php');
 		}
 
-        $locate['psr4'] = array_merge($this->corePsr4, $locate['psr4']);
+        $locate['packages'] = array_merge($this->corePsr4, $locate['packages']);
 
         // We have to have one or the other, though we don't enforce the need
         // to have both present in order to work.
-        if ($locate['psr4'] === []) {
-            throw new InvalidArgumentException('Config array must contain either the \'psr4\' key or the \'classmap\' key.');
+        if ($locate['packages'] === []) {
+            throw new InvalidArgumentException('Config array must contain either the \'packages\' key or the \'classmap\' key.');
         }
 
-        if ($locate['psr4'] !== []) {
-            $this->addNamespace($locate['psr4']);
+        if ($locate['packages'] !== []) {
+            $this->addNamespace($locate['packages']);
         }
 
         // Prepend the PSR4  autoloader for maximum performance.

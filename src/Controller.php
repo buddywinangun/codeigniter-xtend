@@ -51,6 +51,57 @@ abstract class Controller extends \CI_Controller
   }
 
   /**
+   * Sets the CORS header.
+   * ```php
+   * // Allow all origins
+   * parent::setCorsHeader('*');
+   *
+   * // Allow a specific single origin
+   * parent::setCorsHeader('http://www.example.jp');
+   *
+   * // Allow specific multiple origins
+   * parent::setCorsHeader('http://www.example.jp https://www.example.jp http://sub.example.jp');
+   *
+   * // To set the same Access-Control-Allow-Origin for all responses, use the hook point called before the response
+   * // core/AppController.php:
+   * abstract class AppController extends \X\Controller\Controller {
+   *   protected function beforeResponse(string $referer) {
+   *     $this->setCorsHeader('*');
+   *   }
+   * }
+   * ```
+   */
+  protected function setCorsHeader(string $origin = '*') {
+    $this->httpResponse->setCorsHeader($origin);
+    return $this;
+  }
+
+  /**
+   * Set response
+   *
+   * @param  mixed $key
+   * @param  mixed $value
+   * @return object
+   */
+  protected function set($key, $value = null) {
+    func_num_args() === 1 ? $this->httpResponse->set($key) : $this->httpResponse->set($key, $value);
+    return $this;
+  }
+
+  /**
+   * Response JSON
+   *
+   * @param  bool $forceObject
+   * @param  bool $pretty
+   * @return void
+   */
+  protected function json(bool $forceObject = false, bool $prettyrint = false) {
+    $this->beforeResponse($this->getReferer());
+    $this->beforeResponseJson($this->getReferer());
+    $this->httpResponse->json($forceObject, $prettyrint);
+  }
+
+  /**
    * Response template.
    */
   protected function view(string $path)
@@ -64,6 +115,7 @@ abstract class Controller extends \CI_Controller
    * Response error.
    */
   protected function error(string $message, int $status = 500, bool $forceJsonResponse = false) {
+    $this->beforeResponse($this->getReferer());
     $this->httpResponse->error($message, $status, $forceJsonResponse);
   }
 
@@ -90,4 +142,12 @@ abstract class Controller extends \CI_Controller
   protected function beforeResponseView(string $referer)
   {
   }
+
+  /**
+   * Before response JSON
+   *
+   * @param  string $referer
+   * @return void
+   */
+  protected function beforeResponseJson(string $referer) {}
 }

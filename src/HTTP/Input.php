@@ -9,13 +9,11 @@
 
 namespace Xtend\HTTP;
 
-abstract class Input extends \CI_Input
-{
+abstract class Input extends \CI_Input {
   /**
    * Fetch an item from the PUT array.
    */
-  public static function put($index = NULL, $xss_clean = NULL)
-  {
+  public static function put($index = NULL, $xss_clean = NULL) {
     $data = file_get_contents('php://input');
     preg_match('/boundary=(.*)$/', $_SERVER['CONTENT_TYPE'], $matches);
     if (!count($matches)) {
@@ -51,8 +49,7 @@ abstract class Input extends \CI_Input
   /**
    * Is nested node.
    */
-  private static function isNestedNode(string $name, ?string &$parentName = null, ?string &$childNames = null): bool
-  {
+  private static function isNestedNode(string $name, ?string &$parentName = null, ?string &$childNames = null): bool {
     if (!preg_match('/^([a-z0-9\-_:\.]+)(\[..*)$/i', $name, $matches))
       return false;
     $parentName = $matches[1];
@@ -63,13 +60,12 @@ abstract class Input extends \CI_Input
   /**
    * Set nested node.
    */
-  private static function setNestedNode(array &$data, ?string $value, string $parentName, string $childNames)
-  {
+  private static function setNestedNode(array &$data, ?string $value, string $parentName, string $childNames) {
     preg_match_all('/\[([a-z0-9\-_:\.]*)\]/i', $childNames, $matches);
     $names = $matches[1];
     array_unshift($names, $parentName);
     $ref = &$data;
-    while (($name = array_shift($names)) !== null) {
+    while(($name = array_shift($names)) !== null) {
       if (!empty($name) && !array_key_exists($name, $ref ?? []))
         $ref[$name] = [];
       if (count($names) > 0) {
@@ -82,13 +78,5 @@ abstract class Input extends \CI_Input
         $ref[] = $value;
       break;
     }
-  }
-
-  /**
-   * Fetch an item from the DELETE array.
-   */
-  public function delete($index = NULL, $xss_clean = NULL)
-  {
-    return parent::input_stream($index, $xss_clean);
   }
 }
