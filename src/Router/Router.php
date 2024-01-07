@@ -12,7 +12,7 @@
 
 namespace Xtend\Router;
 
-use Xtend\Package\Package;
+use Xtend\Package\PackageManager;
 use Xtend\Router\Route;
 
 abstract class Router extends \CI_Router
@@ -85,10 +85,8 @@ abstract class Router extends \CI_Router
 		}
 
       // Package routes.
-      foreach (Package::lists(true) as $folder => $path) {
-         var_dump($folder);
-         die;
-         if (TRUE !== Package::is_enabled($folder)) {
+      foreach (PackageManager::lists(true) as $folder => $path) {
+         if (TRUE !== PackageManager::is_enabled($folder)) {
             continue;
          }
 
@@ -188,9 +186,9 @@ abstract class Router extends \CI_Router
       $segments = array($class, $method);
 
       //creates the various parts
-      if (Package::has(Route::get_subdomain())) {
+      if (PackageManager::has(Route::get_subdomain())) {
          array_unshift($segments, Route::get_subdomain());
-      } elseif (Package::has($this->default_package)) {
+      } elseif (PackageManager::has($this->default_package)) {
          array_unshift($segments, $this->default_package);
       }
 
@@ -228,7 +226,7 @@ abstract class Router extends \CI_Router
       };
 
       //creates the various parts
-      if (Package::has(Route::get_subdomain())) {
+      if (PackageManager::has(Route::get_subdomain())) {
          array_unshift($segments, Route::get_subdomain());
 
          // Again, look for the controller.
@@ -240,7 +238,7 @@ abstract class Router extends \CI_Router
       }
 
       // is default_controller
-      if (Package::has($this->default_controller)) {
+      if (PackageManager::has($this->default_controller)) {
          array_unshift($segments, $this->default_controller);
 
          // Again, look for the controller.
@@ -286,14 +284,14 @@ abstract class Router extends \CI_Router
       // Flag to see if we are in a package.
       $is_package = false;
 
-      if (Package::has($package)) {
+      if (PackageManager::has($package)) {
          $is_package = true;
-         $location   = Package::$_packages[$package];
+         $location   = PackageManager::$_packages[$package];
       }
       // Because of revered routes ;)
-      elseif (Package::has($directory)) {
+      elseif (PackageManager::has($directory)) {
          $is_package = true;
-         $location   = Package::$_packages[$directory];
+         $location   = PackageManager::$_packages[$directory];
          $_package   = $package;
          $package    = $directory;
          $directory  = $_package;
