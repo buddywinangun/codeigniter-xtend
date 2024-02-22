@@ -1,26 +1,25 @@
-<!--
-Terima kasih telah membuat PR ini 🤗
+**IMPORTANT: Please do not create a Pull Request without creating an issue first.**
 
-Harap pastikan bahwa PR dibatasi pada satu jenis (dokumen, fitur, dll.) dan usahakan sekecil mungkin. Lebih baik anda membuka banyak PR dan sederhana daripada membuka PR yang rumit.
--->
+Closes #
 
-<!-- Jika PR ini menyelesaikan issue, harap sebutkan nomor issue di bawah -->
-Closes # <!-- Issue # disini -->
+## Description
 
-## 📑 Keterangan
-<!-- Tambahkan deskripsi singkat tentang PR -->
+<!-- Describe your changes in detail -->
 
-<!-- Anda juga dapat memilih untuk menambahkan daftar perubahan dan apakah perubahan tersebut telah selesai atau belum dengan menggunakan sintaks daftar tugas markdown
-- [ ] Not Completed
-- [x] Completed
--->
+## Type of changes
 
-## ✅ Tinjau
-<!-- Pastikan PR anda telah menyelesaikan kolom berikut sesuai kebutuhan - -->
-- [ ] PR saya mengikuti gaya kode proyek ini
-- [ ] Kode saya memerlukan perubahan pada dokumentasi
-- [ ] Saya telah memperbarui dokumentasi sesuai kebutuhan
-- [ ] Lulus test
+<!-- What types of changes does your code introduce? Put an `x` in all the boxes that apply. -->
 
-## ℹ Informasi Tambahan
-<!-- Informasi tambahan apa pun seperti perubahan terkini, dependensi yang ditambahkan, screenshots, dll. -->
+- [ ] Bug fix (non-breaking change which fixes an issue)
+- [ ] New feature (non-breaking change which adds functionality)
+- [ ] Refactoring (non-breaking change)
+- [ ] Breaking change (fix or feature that would change existing functionality)
+
+## Checklist
+
+<!-- Go over all the following points, and put an `x` in all the boxes that apply. -->
+
+- [ ] My code follows the code style of this project.
+- [ ] My change introduces changes to the documentation
+- [ ] I have updated the documentation accordingly
+- [ ] All new and existing tests passed

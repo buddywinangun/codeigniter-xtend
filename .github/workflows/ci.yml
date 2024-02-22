@@ -1,0 +1,106 @@
+name: Continuous Integration
+on:
+    push: null
+    pull_request: null
+env:
+    CHECKOUT_SUBMODULES: ""
+
+jobs:
+    provide_data:
+        name: Provide list of package paths
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v4
+                with:
+                    submodules: ${{ env.CHECKOUT_SUBMODULES }}
+
+            -   uses: shivammathur/setup-php@v2
+                with:
+                    php-version: 8.1
+                    coverage: none
+                env:
+                    COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            -   uses: "ramsey/composer-install@v2"
+
+            -   id: output_data
+                run: |
+                    echo "package_code_paths=$(vendor/bin/monorepo-builder source-packages --config=monorepo-builder-without-upstream-packages.php --psr4-only --subfolder=src --subfolder=tests)" >> $GITHUB_OUTPUT
+
+        outputs:
+            package_code_paths: ${{ steps.output_data.outputs.package_code_paths }}
+
+    standard:
+        needs: provide_data
+        name: Execute PHP Code Sniffer
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout code
+                uses: actions/checkout@v4
+                with:
+                    submodules: ${{ env.CHECKOUT_SUBMODULES }}
+
+            # -   name: Set-up PHP
+            #     uses: shivammathur/setup-php@v2
+            #     with:
+            #         php-version: 8.1
+            #         coverage: none
+            #     env:
+            #         COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            # -   name: Install Composer dependencies
+            #     uses: "ramsey/composer-install@v2"
+
+            # -   name: Run PHP Code Sniffer
+            #     run: vendor/bin/phpcs -n src ${{ needs.provide_data.outputs.package_code_paths }}
+
+    analyse:
+        needs: [provide_data, standard]
+        name: Execute PHPStan
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout code
+                uses: actions/checkout@v4
+                with:
+                    submodules: ${{ env.CHECKOUT_SUBMODULES }}
+
+            # -   name: Set-up PHP
+            #     uses: shivammathur/setup-php@v2
+            #     with:
+            #         php-version: 8.1
+            #         coverage: none
+            #     env:
+            #         COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            # -   name: Install Composer dependencies
+            #     uses: "ramsey/composer-install@v2"
+
+            # -   name: Regenerate Monorepo PHPStan config
+            #     run: vendor/bin/monorepo-builder merge-phpstan --config=config/monorepo-builder/merge-phpstan.php --ansi
+
+            # -   name: Run PHPStan
+            #     run: vendor/bin/phpstan analyse --ansi
+
+    test:
+        needs: [provide_data, standard, analyse]
+        name: Execute unit tests
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout code
+                uses: actions/checkout@v4
+                with:
+                    submodules: ${{ env.CHECKOUT_SUBMODULES }}
+
+            # -   name: Set-up PHP
+            #     uses: shivammathur/setup-php@v2
+            #     with:
+            #         php-version: 8.1
+            #         coverage: none
+            #     env:
+            #         COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            # -   name: Install Composer dependencies
+            #     uses: "ramsey/composer-install@v2"
+
+            # -   name: Run tests
+            #     run: vendor/bin/phpunit --filter='/^((?!Integration).)*$/'

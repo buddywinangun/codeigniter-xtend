@@ -1,0 +1,7 @@
+parameters:
+    level: 8
+
+includes:
+    - phpstan.neon.dist
+    - packages/auth\phpstan.neon.dist
+    - packages/framework\phpstan.neon.dist

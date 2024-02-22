@@ -1,0 +1,21 @@
+{
+    "name": "buddywinangun/codeigniter-xtend-auth",
+    "description": "Codeigniter Xtend Auth",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "CodeigniterXtend\\Auth\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "buddywinangun",
+            "email": "buddywinangun@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "firebase/php-jwt": "^6.10"
+    }
+}

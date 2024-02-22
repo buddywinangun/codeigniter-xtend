@@ -1,51 +1,78 @@
-name: 🐛Bug Report
-description: Ajukan laporan bug di sini
-title: "[BUG]: "
+name: Bug Report
+description: Create a new ticket for a bug.
+title: "🐛 [BUG] - <title>"
 labels: ["bug"]
-assignees: ["buddywinangun"]
 body:
-  - type: markdown
+  - type: checkboxes
     attributes:
-      value: |
-        Terima kasih telah meluangkan waktu untuk mengisi laporan bug ini 🤗
-        Pastikan tidak ada issues terbuka/tertutup untuk topik ini 😃
+      label: Prerequisites
+      description: Take a couple minutes to help our maintainers work faster.
+      options:
+        - label: I have [searched] for duplicate or closed issues
+          required: true
+        - label: I have read the [contributing guidelines](../CONTRIBUTING.md)
+          required: true
 
   - type: textarea
-    id: bug-description
+    id: description
     attributes:
-      label: Keterangan bug
-      description: Beri kami gambaran singkat tentang apa yang terjadi dan apa yang seharusnya terjadi
+      label: "Description"
+      description: Please enter an explicit description of your issue
+      placeholder: Short and explicit description of your incident...
     validations:
       required: true
 
   - type: textarea
-    id: steps-to-reproduce
+    id: reprod
     attributes:
-      label: Langkah-langkah
-      description: Langkah-langkah untuk melihat issue terkait topik ini.
-      placeholder: |
+      label: "Reproduction steps"
+      description: Please enter an explicit description of your issue
+      value: |
         1. Go to '...'
         2. Click on '...'
         3. Scroll down to '...'
         4. See error
-    validations:
-      required: true
-
-  - type: dropdown
-    id: versions
-    attributes:
-      label: Versi mana yang anda gunakan?
-      description: Jika issue ini terjadi pada lebih dari 1 versi, pilih versi yang sesuai.
-      multiple: true
-      options:
-        - 1.0.0
-        - 2.0.0
+      render: bash
     validations:
       required: true
 
   - type: textarea
-    id: additional-information
+    id: screenshot
     attributes:
-      label: informasi tambahan
-      description: |
-        Berikan informasi tambahan apa pun seperti log, screenshots, skenario terjadinya bug sehingga memudahkan penyelesaian issue.
+      label: "Screenshots"
+      description: If applicable, add screenshots to help explain your problem.
+      value: |
+        ![DESCRIPTION](LINK.png)
+      render: bash
+    validations:
+      required: false
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: "Browsers"
+      description: What browsers are you seeing the problem on ?
+      multiple: true
+      options:
+        - Chrome
+        - Safari
+        - Firefox
+        - Microsoft Edge
+        - Opera
+    validations:
+      required: false
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: "OS"
+      description: What is the impacted environment ?
+      multiple: true
+      options:
+        - Windows
+        - macOS
+        - Android
+        - iOS
+        - Linux
+    validations:
+      required: false

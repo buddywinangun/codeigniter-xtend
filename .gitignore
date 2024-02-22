@@ -1,2 +1,9 @@
-/vendor/
-composer.lock
+.phpunit.result.cache
+charcoal_test
+node_modules/
+packages/**/composer.lock
+phpcs.xml
+# phpstan.neon
+phpunit.xml
+psalm.xml
+vendor/

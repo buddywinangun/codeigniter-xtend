@@ -1,0 +1,17 @@
+{
+  "name": "buddywinangun/codeigniter-xtend-appstarter",
+  "description": "CodeIgniter 3 for ease of use",
+  "type": "project",
+  "homepage": "https://github.com/buddywinangun/codeigniter-xtend",
+  "license": "MIT",
+  "require": {
+    "php": "^7.0|^8.0",
+    "codeigniter/framework": "~3.1",
+    "buddywinangun/codeigniter-xtend-framework": "^2.2"
+  },
+  "require-dev": {
+    "mikey179/vfsstream": "1.1.*",
+    "phpunit/phpunit": "^9.6",
+    "codedungeon/phpunit-result-printer": "^0.32.0"
+  }
+}
