@@ -25,6 +25,8 @@ class ContainerConfigurationService
 
     public function configureContainer(): void
     {
+        $this->containerConfigurator->disableDefaultWorkers();
+
         $parameters = $this->containerConfigurator->parameters();
 
         $parameters->set(Option::DEFAULT_BRANCH_NAME, MonorepoMetadata::GIT_BASE_BRANCH);

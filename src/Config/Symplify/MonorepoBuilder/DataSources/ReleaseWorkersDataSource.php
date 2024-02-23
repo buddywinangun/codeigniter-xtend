@@ -37,8 +37,15 @@ class ReleaseWorkersDataSource
 
             // Default workers
             UpdateReplaceReleaseWorker::class,
+            // SetCurrentMutualConflictsReleaseWorker::class,
+            // SetCurrentMutualDependenciesReleaseWorker::class,
+            // TagVersionReleaseWorker::class,
+            // PushTagReleaseWorker::class,
             SetNextMutualDependenciesReleaseWorker::class,
-            UpdateBranchAliasReleaseWorker::class
+            UpdateBranchAliasReleaseWorker::class,
+
+            // Default workers
+            // PushNextDevReleaseWorker::class,
         ];
     }
 }
