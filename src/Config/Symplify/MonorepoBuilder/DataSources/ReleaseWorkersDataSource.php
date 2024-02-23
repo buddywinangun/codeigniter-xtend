@@ -8,10 +8,7 @@ use Xtend\OnDemand\Symplify\MonorepoBuilder\Release\ReleaseWorker\GuardOnDefault
 use Xtend\OnDemand\Symplify\MonorepoBuilder\Release\ReleaseWorker\ConvertVersionForProdInMonorepoMetadataFileReleaseWorker;
 use Xtend\OnDemand\Symplify\MonorepoBuilder\Release\ReleaseWorker\UpdateCurrentBranchAliasReleaseWorker;
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\UpdateReplaceReleaseWorker;
-use Symplify\MonorepoBuilder\Release\ReleaseWorker\SetCurrentMutualConflictsReleaseWorker;
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\SetCurrentMutualDependenciesReleaseWorker;
-use Symplify\MonorepoBuilder\Release\ReleaseWorker\TagVersionReleaseWorker;
-use Symplify\MonorepoBuilder\Release\ReleaseWorker\PushTagReleaseWorker;
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\SetNextMutualDependenciesReleaseWorker;
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\UpdateBranchAliasReleaseWorker;
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\PushNextDevReleaseWorker;
@@ -37,14 +34,9 @@ class ReleaseWorkersDataSource
 
             // Default workers
             UpdateReplaceReleaseWorker::class,
-            // SetCurrentMutualConflictsReleaseWorker::class,
-            // SetCurrentMutualDependenciesReleaseWorker::class,
-            // TagVersionReleaseWorker::class,
-            // PushTagReleaseWorker::class,
-            SetNextMutualDependenciesReleaseWorker::class,
+            SetCurrentMutualDependenciesReleaseWorker::class,
+            // SetNextMutualDependenciesReleaseWorker::class,
             UpdateBranchAliasReleaseWorker::class,
-
-            // Default workers
             // PushNextDevReleaseWorker::class,
         ];
     }
