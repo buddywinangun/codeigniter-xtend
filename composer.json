@@ -19,11 +19,11 @@
         }
     },
     "require": {
+        "php": "^7.0|^8.0",
         "codeigniter/framework": "~3.1",
         "firebase/php-jwt": "^6.10",
         "intervention/image": "^2.7",
         "nette/neon": "^3.4",
-        "php": "^7.0|^8.0",
         "twig/twig": "^3.8"
     },
     "require-dev": {
@@ -42,9 +42,9 @@
         }
     },
     "replace": {
-        "buddywinangun/codeigniter-xtend-appstarter": "self.version",
-        "buddywinangun/codeigniter-xtend-auth": "self.version",
-        "buddywinangun/codeigniter-xtend-framework": "self.version"
+        "buddywinangun/codeigniter-xtend-appstarter": "3.1.0",
+        "buddywinangun/codeigniter-xtend-auth": "3.1.0",
+        "buddywinangun/codeigniter-xtend-framework": "3.1.0"
     },
     "config": {
         "sort-packages": true
