@@ -38,7 +38,7 @@ class ReleaseWorkersDataSource
             // Default workers
             UpdateReplaceReleaseWorker::class,
             // SetCurrentMutualConflictsReleaseWorker::class,
-            SetCurrentMutualDependenciesReleaseWorker::class,
+            // SetCurrentMutualDependenciesReleaseWorker::class,
             // TagVersionReleaseWorker::class,
             // PushTagReleaseWorker::class,
             SetNextMutualDependenciesReleaseWorker::class,
