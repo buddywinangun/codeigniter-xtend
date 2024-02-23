@@ -1,9 +1,11 @@
-name: Split monorepo - dev-master
+name: Split monorepo - tagged
 
 on:
-    push: null
+    release:
+        types: [ released ]
+
 env:
-    CHECKOUT_SUBMODULES: "recursive"
+    CHECKOUT_SUBMODULES: ""
 
 jobs:
     provide_data:
@@ -27,28 +29,12 @@ jobs:
 
             -   uses: "ramsey/composer-install@v2"
 
-            # git diff to generate matrix with modified packages only
-            -   uses: technote-space/get-diff-action@v6
-                with:
-                    PATTERNS: layers/*/*/*/**
-
-            # get package json list - if filter is empty, don't launch any split
-            # Enhancement: produce the packages already, avoid potentially sending thousands of CLI args
-            # Steps to process string:
-            # 1. remove single quotes
-            # 2. Extract 4 first layers only (for package path) and get unique entries
-            # 3. Add --filter= in between entries
             -   id: output_data
                 run: |
-                    # quote=\'
-                    # clean_diff="$(echo "${{ env.GIT_DIFF }}" | sed -e s/$quote//g)"
-                    # packages_in_diff="$(echo $clean_diff | grep -E -o 'layers/[A-Za-z0-9_\-]*/[A-Za-z0-9_\-]*/[A-Za-z0-9_\-]*/' | sort -u)"
-                    # echo "[Packages in diff] $(echo $packages_in_diff | tr '\n' ' ')"
-                    # filter_arg="--filter=$(echo $packages_in_diff | sed -e 's/ / --filter=/g')"
                     exclude_package_paths="$(vendor/bin/monorepo-builder skip-monorepo-split-packages --config=config/monorepo-builder/skip-monorepo-split-packages.php)"
                     echo "[Excluded package paths] $(echo $exclude_package_paths)"
                     exclude_package_path_arg="--exclude-package-path=$(echo $exclude_package_paths | sed -e 's/ / --exclude-package-path=/g')"
-                    echo "matrix=$(vendor/bin/monorepo-builder package-entries-json --config=config/monorepo-builder/package-entries-json.php $(echo $filter_arg) $(echo $exclude_package_path_arg))" >> $GITHUB_OUTPUT
+                    echo "matrix=$(vendor/bin/monorepo-builder package-entries-json --config=config/monorepo-builder/package-entries-json.php $(echo $exclude_package_path_arg))" >> $GITHUB_OUTPUT
                     echo "git_base_branch=$(vendor/bin/monorepo-builder env-var GIT_BASE_BRANCH --config=config/monorepo-builder/env-var.php)" >> $GITHUB_OUTPUT
                     echo "git_user_name=$(vendor/bin/monorepo-builder env-var GIT_USER_NAME --config=config/monorepo-builder/env-var.php)" >> $GITHUB_OUTPUT
                     echo "git_user_email=$(vendor/bin/monorepo-builder env-var GIT_USER_EMAIL --config=config/monorepo-builder/env-var.php)" >> $GITHUB_OUTPUT
@@ -62,33 +48,30 @@ jobs:
 
     split_monorepo:
         needs: provide_data
-        if: needs.provide_data.outputs.matrix != '[]'
         runs-on: ubuntu-latest
         strategy:
             fail-fast: false
             matrix:
                 package: ${{fromJson(needs.provide_data.outputs.matrix)}}
 
-        name: Monorepo Split of ${{ matrix.package.name }} (${{ matrix.package.path }})
+        name: Split with tag - ${{ matrix.package.name }} (${{ matrix.package.path }})
 
         steps:
             -   uses: actions/checkout@v4
                 with:
                     submodules: ${{ env.CHECKOUT_SUBMODULES }}
+                    # this is required for "WyriHaximus/github-action-get-previous-tag" workflow
+                    # see https://github.com/actions/checkout#fetch-all-history-for-all-tags-and-branches
+                    fetch-depth: 0
 
                 # Uses an action in the root directory
-            -   name: Split ${{ matrix.package.name }} (${{ matrix.package.path }})
-                if: "!startsWith(github.ref, 'refs/tags/')"
+            -   name: Monorepo Split of ${{ matrix.package.name }} (${{ matrix.package.path }})
                 uses: symplify/monorepo-split-github-action@v2.3.0
                 env:
                     GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
                 with:
+                    tag: ${{ github.event.release.tag_name }}
                     branch: "${{ needs.provide_data.outputs.git_base_branch }}"
-                    # package-directory: '${{ matrix.package.path }}'
-                    # split-repository-organization: '${{ matrix.package.organization }}'
-                    # split-repository-name: '${{ matrix.package.name }}'
-                    # user-name: "${{ needs.provide_data.outputs.git_user_name }}"
-                    # user-email: "${{ needs.provide_data.outputs.git_user_email }}"
 
                     # ↓ split "packages/easy-coding-standard" directory
                     package_directory: '${{ matrix.package.path }}'
@@ -103,3 +86,4 @@ jobs:
                     # ↓ the user signed under the split commit
                     user_name: "${{ needs.provide_data.outputs.git_user_name }}"
                     user_email: "${{ needs.provide_data.outputs.git_user_email }}"
+

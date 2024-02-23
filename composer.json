@@ -13,6 +13,11 @@
             "email": "buddywinangun@gmail.com"
         }
     ],
+    "extra": {
+        "branch-alias": {
+            "dev-main": "3.x-dev"
+        }
+    },
     "require": {
         "codeigniter/framework": "~3.1",
         "firebase/php-jwt": "^6.10",
@@ -40,6 +45,9 @@
         "buddywinangun/codeigniter-xtend-appstarter": "self.version",
         "buddywinangun/codeigniter-xtend-auth": "self.version",
         "buddywinangun/codeigniter-xtend-framework": "self.version"
+    },
+    "config": {
+        "sort-packages": true
     },
     "minimum-stability": "dev",
     "prefer-stable": true
