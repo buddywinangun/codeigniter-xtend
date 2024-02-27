@@ -9,7 +9,7 @@
 
 namespace App\Core;
 
-abstract class AppController extends \Xtend\Controller
+abstract class AppController extends \CodeigniterXtend\Framework\Controller
 {
   protected function beforeResponse(string $referer) {}
 }

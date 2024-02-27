@@ -7,6 +7,6 @@
  * the LICENSE file that was distributed with this source code.
  */
 
-class AppLang extends \Xtend\Language\Lang
+class AppLang extends \CodeigniterXtend\Framework\Language\Lang
 {
 }

@@ -13,7 +13,7 @@
  * the LICENSE file that was distributed with this source code.
  */
 
-namespace CodeigniterXtend\Frameworks;
+namespace CodeigniterXtend\Framework;
 
 use CodeigniterXtend\Framework\HTTP\Response;
 use CodeigniterXtend\Framework\Config\Loader;

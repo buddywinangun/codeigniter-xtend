@@ -12,7 +12,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 |
 */
 
-$hook['pre_system'][] = [new Xtend\Autoloader\Autoloader, 'register'];
+$hook['pre_system'][] = [new CodeigniterXtend\Framework\Autoloader\Autoloader, 'register'];
 
-$hook['pre_controller_constructor'][] = [new Xtend\Package\Package, 'init'];
-$hook['pre_controller_constructor'][] = [new Xtend\View\Template, 'init'];
+$hook['pre_controller_constructor'][] = [new CodeigniterXtend\Framework\Package\Package, 'init'];
+$hook['pre_controller_constructor'][] = [new CodeigniterXtend\Framework\View\Template, 'init'];

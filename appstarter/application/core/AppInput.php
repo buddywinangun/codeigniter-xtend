@@ -7,6 +7,6 @@
  * the LICENSE file that was distributed with this source code.
  */
 
-class AppInput extends \Xtend\HTTP\Input
+class AppInput extends \CodeigniterXtend\Framework\HTTP\Input
 {
 }

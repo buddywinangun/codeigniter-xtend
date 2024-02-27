@@ -33,6 +33,11 @@
         "phpunit/phpunit": "^9.6",
         "codedungeon/phpunit-result-printer": "^0.32.0"
     },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "3.x-dev"
+        }
+    },
     "scripts": {
         "test": [
             "phpunit"

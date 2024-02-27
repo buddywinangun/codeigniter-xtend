@@ -9,6 +9,6 @@
 
 namespace App\Core;
 
-abstract class AppModel extends \Xtend\Model
+abstract class AppModel extends \CodeigniterXtend\Framework\Model
 {
 }

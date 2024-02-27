@@ -278,7 +278,7 @@ abstract class Router extends \CI_Router
       if ($this->translate_uri_dashes === TRUE) {
          $package = str_replace('-', '_', $package);
          $directory = str_replace('-', '_', $directory);
-         $controller = str_replace('-', '_', $controller);
+         $controller = $controller ? str_replace('-', '_', $controller) : '';
       }
 
       // Flag to see if we are in a package.

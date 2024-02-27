@@ -117,7 +117,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 			<div class="heroe">
 
-				<h1>Welcome to CodeIgniter Xtend <?= \Xtend\Xtend::VERSION ?></h1>
+				<h1>Welcome to CodeIgniter Xtend <?= \CodeigniterXtend\Framework\Application::VERSION ?></h1>
 
 				<h2>Alat yang kami rancang sebagai manajemen extension di atas Framework Codeigniter</h2>
 

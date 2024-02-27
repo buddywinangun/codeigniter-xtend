@@ -7,6 +7,6 @@
  * the LICENSE file that was distributed with this source code.
  */
 
-class AppLoader extends \Xtend\Loader
+class AppLoader extends \CodeigniterXtend\Framework\Loader
 {
 }

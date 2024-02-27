@@ -7,6 +7,6 @@
  * the LICENSE file that was distributed with this source code.
  */
 
-class AppRouter extends \Xtend\Router\Router
+class AppRouter extends \CodeigniterXtend\Framework\Router\Router
 {
 }

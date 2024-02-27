@@ -7,6 +7,6 @@
  * the LICENSE file that was distributed with this source code.
  */
 
-class AppConfig extends \Xtend\Config\Config
+class AppConfig extends \CodeigniterXtend\Framework\Config\Config
 {
 }
