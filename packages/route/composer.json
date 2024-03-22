@@ -1,0 +1,26 @@
+{
+    "name": "buddywinangun/codeigniter-xtend-route",
+    "description": "Codeigniter Xtend Route",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "CodeigniterXtend\\Route\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "buddywinangun",
+            "email": "buddywinangun@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "firebase/php-jwt": "^6.10"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.2-dev"
+        }
+    }
+}
