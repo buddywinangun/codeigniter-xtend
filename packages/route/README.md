@@ -2,12 +2,6 @@
 
 A little group or libraries that let Codeigniter work as a static routing system with filters as simmilar to the Laravel routing system as I could have done.
 
-## Requirements
-
-Codeigniter 3.x (For the 2.x branch look at: [LINK](https://github.com/Patroklo/codeigniter-static-laravel-routes/tree/for-codeigniter-2.X)
-
-Php 5.3 or above
-
 ## Licensing
 
 For now I'm not licensing this work. It has some code from the Bonfire Project, wich keeps their license rights.

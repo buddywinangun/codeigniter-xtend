@@ -49,24 +49,14 @@ class Route
    * Example:
    *     $route['default_controller'] = 'home';
    *     Route::resource('posts');
-   *     $route = Route::map($route);
+   *     $route = Route::getRoutes($route);
    *
    * @param  array $routes The array to merge
    * @return array         The merge route array.
    */
-  public static function map($routes = array())
+  public static function getRoutes($routes = array())
   {
     $controller = isset($routes['default_controller']) ? $routes['default_controller'] : self::$default_home;
-
-    // Load the routes.php file.
-    if (is_dir(APPPATH . 'routes')) {
-      $file_list = scandir(APPPATH . 'routes');
-      foreach ($file_list as $file) {
-        if (is_file(APPPATH . 'routes/' . $file) and pathinfo($file, PATHINFO_EXTENSION) == 'php') {
-          include(APPPATH . 'routes/' . $file);
-        }
-      }
-    }
 
     //we mount the route object array with all the from routes remade
     foreach (self::$pre_route_objects as &$object) {

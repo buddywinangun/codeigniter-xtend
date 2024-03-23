@@ -43,6 +43,18 @@ class Hook
       mkdir(APPPATH . '/routes');
     }
 
+    if (!file_exists(APPPATH . '/core/DefaultController.php')) {
+      copy(__DIR__ . '/Resources/DefaultController.php', APPPATH . '/core/MY_Controller.php');
+    }
+
+    if (!file_exists(APPPATH . '/core/DefaultRouter.php')) {
+      copy(__DIR__ . '/Resources/DefaultRouter.php', APPPATH . '/core/MY_Router.php');
+    }
+
+    if (!file_exists(APPPATH . '/core/DefaultURI.php')) {
+      copy(__DIR__ . '/Resources/DefaultURI.php', APPPATH . '/core/MY_URI.php');
+    }
+
     require_once(__DIR__ . '/Functions.php');
   }
 }
