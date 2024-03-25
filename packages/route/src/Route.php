@@ -58,12 +58,20 @@ class Route
   {
     $controller = isset($routes['default_controller']) ? $routes['default_controller'] : self::$default_home;
 
+    // Load the routes.php file.
+    if (is_dir(APPPATH . 'routes')) {
+      $file_list = scandir(APPPATH . 'routes');
+      foreach ($file_list as $file) {
+        if (is_file(APPPATH . 'routes/' . $file) and pathinfo($file, PATHINFO_EXTENSION) == 'php') {
+          include(APPPATH . 'routes/' . $file);
+        }
+      }
+    }
+
     //we mount the route object array with all the from routes remade
     foreach (self::$pre_route_objects as &$object) {
       self::$route_objects[$object->get_from()] = &$object;
     }
-
-    self::$pre_route_objects = array();
 
     foreach (self::$route_objects as $key => $route_object) {
       $add_route = TRUE;
@@ -215,7 +223,7 @@ class Route
     $return = NULL;
 
     foreach ($requests as $request) {
-      if (method_exists('Route', $request)) {
+      if (method_exists(Route::class, $request)) {
         $r = self::$request($from, $to, $options, $nested);
 
         if (!is_null($r)) {
@@ -371,7 +379,7 @@ class Route
     if (isset($subdomain)) {
       self::subdomain($subdomain, $callback);
     } else {
-      call_user_func($callback);
+      call_user_func($callback());
     }
 
     self::_delete_prefix();
@@ -633,7 +641,7 @@ class Route
   {
     if (self::_CheckSubdomain($subdomain_rules) === TRUE) {
       self::$active_subdomain = $subdomain_rules;
-      call_user_func($callback);
+      call_user_func($callback());
     }
 
     self::$active_subdomain = NULL;

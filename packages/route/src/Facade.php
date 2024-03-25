@@ -13,7 +13,6 @@ use CodeigniterXtend\Route\Builder;
 
 class Facade
 {
-
 	private $loaded_object;
 
 	function __construct(Builder &$object)

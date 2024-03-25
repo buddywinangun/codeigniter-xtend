@@ -17,5 +17,5 @@
  */
 function route($name = null, $params = [])
 {
-  return Route::named($name, $params);
+  return \CodeigniterXtend\Route\Route::named($name, $params);
 }

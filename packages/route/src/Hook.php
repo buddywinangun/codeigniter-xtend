@@ -39,10 +39,6 @@ class Hook
    */
   private static function preSystemHook()
   {
-    require_once __DIR__ . '/Facade.php';
-    require_once __DIR__ . '/Builder.php';
-    require_once __DIR__ . '/Route.php';
-
     if (!file_exists(APPPATH . '/routes')) {
       mkdir(APPPATH . '/routes');
     }
