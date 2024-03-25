@@ -51,11 +51,4 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
-$route['translate_uri_dashes'] = TRUE;
-
-// The basic URL of the API.
-$route['^api/(:any)/(:num)$']['GET'] = 'api/$1/get/$2';
-$route['^api/(:any)\??']['GET'] = 'api/$1/index';
-$route['^api/(:any)$']['POST'] = 'api/$1/post';
-$route['^api/(:any)/(:num)$']['PUT'] = 'api/$1/put/$2';
-$route['^api/(:any)/([^/,]+(,[^/,]+)*)$']['DELETE'] = 'api/$1/delete/$2';
+$route['translate_uri_dashes'] = FALSE;

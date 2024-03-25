@@ -260,9 +260,11 @@ final class Template
         return \base_url($filePath) . '?' . $modified;
       }
     ));
+
     $baseUrl = \base_url();
     $this->engine->addGlobal('baseUrl', $baseUrl);
     $this->engine->addGlobal('session', $_SESSION ?? null);
+
     $CI = &get_instance();
     $this->engine->addGlobal('action', ($CI->router->directory ?? '') . $CI->router->class . '/' . $CI->router->method);
     $this->engine->setLexer(new \Twig\Lexer($this->engine, $option['lexer']));

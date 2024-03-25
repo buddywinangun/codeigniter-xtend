@@ -17,5 +17,10 @@
     "minimum-stability": "stable",
     "require": {
         "firebase/php-jwt": "^6.10"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.2-dev"
+        }
     }
 }
