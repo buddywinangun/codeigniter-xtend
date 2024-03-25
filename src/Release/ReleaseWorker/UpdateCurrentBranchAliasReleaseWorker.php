@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Release\ReleaseWorker;
+namespace Xtend\Monorepo\Release\ReleaseWorker;
 
 use PharIo\Version\Version;
-use Xtend\Extensions\Utils\VersionUtils;
+use Xtend\Monorepo\Extensions\Utils\VersionUtils;
 use Symplify\MonorepoBuilder\DevMasterAliasUpdater;
 use Symplify\MonorepoBuilder\FileSystem\ComposerJsonProvider;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;

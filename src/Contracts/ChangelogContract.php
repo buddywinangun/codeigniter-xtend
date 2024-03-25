@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Contracts;
+namespace Xtend\Monorepo\Contracts;
 
 /**
  * @see https://github.com/marcocesarato/php-conventional-changelog

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Release\ReleaseWorker;
+namespace Xtend\Monorepo\Release\ReleaseWorker;
 
-use Xtend\Extensions\SmartFile\FileContentReplacerSystem;
-use Xtend\Extensions\Utils\VersionUtils;
+use Xtend\Monorepo\Extensions\SmartFile\FileContentReplacerSystem;
+use Xtend\Monorepo\Extensions\Utils\VersionUtils;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;
 
 abstract class AbstractConvertVersionInMonorepoMetadataFileReleaseWorker implements ReleaseWorkerInterface

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Release\ReleaseWorker;
+namespace Xtend\Monorepo\Release\ReleaseWorker;
 
 use PharIo\Version\Version;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;

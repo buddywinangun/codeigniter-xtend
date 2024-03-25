@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Extensions\Command;
+namespace Xtend\Monorepo\Extensions\Command;
 
-use Xtend\Extensions\Json\SkipMonorepoSplitPackagesProvider;
-use Xtend\Extensions\Command\CommandNaming;
+use Xtend\Monorepo\Extensions\Json\SkipMonorepoSplitPackagesProvider;
+use Xtend\Monorepo\Extensions\Command\CommandNaming;
 use MonorepoBuilderPrefix202311\Symfony\Component\Console\Input\InputInterface;
 use MonorepoBuilderPrefix202311\Symfony\Component\Console\Output\OutputInterface;
 use MonorepoBuilderPrefix202311\Symplify\PackageBuilder\Console\Command\AbstractSymplifyCommand;

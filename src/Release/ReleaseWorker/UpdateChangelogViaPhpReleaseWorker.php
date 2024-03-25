@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Release\ReleaseWorker;
+namespace Xtend\Monorepo\Release\ReleaseWorker;
 
-use Xtend\Contracts\ChangelogContract;
+use Xtend\Monorepo\Contracts\ChangelogContract;
 use MonorepoBuilderPrefix202311\Webmozart\Assert\Assert;
 use PharIo\Version\Version;
 use Symplify\MonorepoBuilder\Release\Process\ProcessRunner;

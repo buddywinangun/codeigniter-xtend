@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Config\DataSources;
+namespace Xtend\Monorepo\Config\DataSources;
 
 class PHPStanDataSource
 {

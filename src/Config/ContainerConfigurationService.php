@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Config;
+namespace Xtend\Monorepo\Config;
 
-use Xtend\Config\DataSources\MonorepoSplitPackageDataSource;
-use Xtend\Config\DataSources\PackageOrganizationDataSource;
-use Xtend\Config\DataSources\EnvironmentVariablesDataSource;
-use Xtend\Config\DataSources\PHPStanDataSource;
-use Xtend\Config\DataSources\ReleaseWorkersDataSource;
-use Xtend\Extensions\ValueObject\Option as CustomOption;
-use Xtend\Monorepo\MonorepoMetadata;
+use Xtend\Monorepo\Config\DataSources\MonorepoSplitPackageDataSource;
+use Xtend\Monorepo\Config\DataSources\PackageOrganizationDataSource;
+use Xtend\Monorepo\Config\DataSources\EnvironmentVariablesDataSource;
+use Xtend\Monorepo\Config\DataSources\PHPStanDataSource;
+use Xtend\Monorepo\Config\DataSources\ReleaseWorkersDataSource;
+use Xtend\Monorepo\Extensions\ValueObject\Option as CustomOption;
+use Xtend\Monorepo\Monorepo\MonorepoMetadata;
 use Symplify\MonorepoBuilder\ValueObject\Option;
-use Xtend\Extensions\Neon\NeonPrinter;
+use Xtend\Monorepo\Extensions\Neon\NeonPrinter;
 use MonorepoBuilderPrefix202311\Symfony\Component\DependencyInjection\Loader\Configurator\ServicesConfigurator;
 
 class ContainerConfigurationService
@@ -138,9 +138,9 @@ class ContainerConfigurationService
     {
         $services
             ->set(NeonPrinter::class) // Required to inject into PHPStanNeonContentProvider
-            ->load('Xtend\\Config\\', $this->rootDirectory . '/src/Config/*')
-            ->load('Xtend\\Extensions\\', $this->rootDirectory . '/src/Extensions/*')
-            ->load('Xtend\\Monorepo\\', $this->rootDirectory . '/src/Monorepo/*');
+            ->load('Xtend\Monorepo\\Config\\', $this->rootDirectory . '/src/Config/*')
+            ->load('Xtend\Monorepo\\Extensions\\', $this->rootDirectory . '/src/Extensions/*')
+            ->load('Xtend\Monorepo\\Monorepo\\', $this->rootDirectory . '/src/Monorepo/*');
     }
 
     protected function setReleaseWorkerServices(ServicesConfigurator $services): void

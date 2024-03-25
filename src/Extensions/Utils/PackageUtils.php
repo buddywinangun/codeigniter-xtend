@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Extensions\Utils;
+namespace Xtend\Monorepo\Extensions\Utils;
 
 final class PackageUtils
 {

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Config\DataSources;
+namespace Xtend\Monorepo\Config\DataSources;
 
-use Xtend\Monorepo\MonorepoMetadata;
+use Xtend\Monorepo\Monorepo\MonorepoMetadata;
 
 class EnvironmentVariablesDataSource
 {

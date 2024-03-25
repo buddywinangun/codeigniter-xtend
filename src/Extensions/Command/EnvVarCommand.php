@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Extensions\Command;
+namespace Xtend\Monorepo\Extensions\Command;
 
-use Xtend\Extensions\ValueObject\Option;
-use Xtend\Extensions\Command\CommandNaming;
+use Xtend\Monorepo\Extensions\ValueObject\Option;
+use Xtend\Monorepo\Extensions\Command\CommandNaming;
 use MonorepoBuilderPrefix202311\Symfony\Component\Console\Input\InputArgument;
 use MonorepoBuilderPrefix202311\Symfony\Component\Console\Input\InputInterface;
 use MonorepoBuilderPrefix202311\Symfony\Component\Console\Output\OutputInterface;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Extensions\ValueObject;
+namespace Xtend\Monorepo\Extensions\ValueObject;
 
 use MonorepoBuilderPrefix202311\Nette\Utils\Strings;
 use MonorepoBuilderPrefix202311\Symplify\SmartFileSystem\SmartFileInfo;

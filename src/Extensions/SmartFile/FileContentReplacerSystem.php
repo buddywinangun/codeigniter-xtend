@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Extensions\SmartFile;
+namespace Xtend\Monorepo\Extensions\SmartFile;
 
 use MonorepoBuilderPrefix202311\Nette\Utils\Strings;
 use MonorepoBuilderPrefix202311\Symplify\SmartFileSystem\SmartFileInfo;

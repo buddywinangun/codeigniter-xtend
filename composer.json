@@ -1,6 +1,6 @@
 {
     "type": "library",
-    "name": "codeigniter-xtend/codeigniter-xtend",
+    "name": "codeigniter-xtend/monorepo",
     "description": "The CodeIgniter Xtend Monorepo",
     "keywords": [
         "framework",
@@ -35,7 +35,7 @@
             "CodeigniterXtend\\Auth\\": "packages/auth/src/",
             "CodeigniterXtend\\Framework\\": "packages/framework/src/",
             "CodeigniterXtend\\Route\\": "packages/route/src/",
-            "Xtend\\": "src/"
+            "Xtend\\Monorepo\\": "src/"
         }
     },
     "extra": {
