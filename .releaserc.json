@@ -9,12 +9,7 @@
             "prepareCmd": "./scripts/build-monorepo.sh ${nextRelease.version}"
          }
       ],
-      [
-         "@semantic-release/git",
-         {
-            "assets": ["composer.json", "packages/**/composer.json", "CHANGELOG.md"]
-         }
-      ],
+      "@semantic-release/git",
       "@semantic-release/github"
    ]
 }
