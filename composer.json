@@ -1,6 +1,6 @@
 {
     "type": "library",
-    "name": "codeigniter-xtend",
+    "name": "codeigniter-xtend/codeigniter-xtend",
     "description": "The CodeIgniter Xtend Monorepo",
     "keywords": [
         "framework",
@@ -13,11 +13,6 @@
             "email": "buddywinangun@gmail.com"
         }
     ],
-    "extra": {
-        "branch-alias": {
-            "dev-main": "3.x-dev"
-        }
-    },
     "require": {
         "php": "^7.0|^8.0",
         "codeigniter/framework": "~3.1",
@@ -28,6 +23,7 @@
     },
     "require-dev": {
         "codedungeon/phpunit-result-printer": "^0.32.0",
+        "marcocesarato/php-conventional-changelog": "^1.17",
         "mikey179/vfsstream": "1.1.*",
         "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^9.6",
@@ -38,16 +34,24 @@
         "psr-4": {
             "CodeigniterXtend\\Auth\\": "packages/auth/src/",
             "CodeigniterXtend\\Framework\\": "packages/framework/src/",
+            "CodeigniterXtend\\Route\\": "packages/route/src/",
             "Xtend\\": "src/"
         }
     },
-    "replace": {
-        "buddywinangun/codeigniter-xtend-appstarter": "3.1.0",
-        "buddywinangun/codeigniter-xtend-auth": "3.1.0",
-        "buddywinangun/codeigniter-xtend-framework": "3.1.0"
+    "extra": {
+        "branch-alias": {
+            "dev-main": "3.x-dev"
+        }
     },
     "config": {
+        "optimize-autoloader": true,
         "sort-packages": true
+    },
+    "replace": {
+        "codeigniter-xtend/appstarter": "4.0.0",
+        "codeigniter-xtend/auth": "4.0.0",
+        "codeigniter-xtend/framework": "4.0.0",
+        "codeigniter-xtend/route": "4.0.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true
