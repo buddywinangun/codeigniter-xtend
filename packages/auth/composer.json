@@ -1,5 +1,5 @@
 {
-    "name": "buddywinangun/codeigniter-xtend-auth",
+    "name": "codeigniter-xtend/auth",
     "description": "Codeigniter Xtend Auth",
     "type": "library",
     "license": "MIT",

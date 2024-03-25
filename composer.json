@@ -1,6 +1,6 @@
 {
     "type": "library",
-    "name": "buddywinangun/codeigniter-xtend",
+    "name": "codeigniter-xtend",
     "description": "The CodeIgniter Xtend Monorepo",
     "keywords": [
         "framework",
