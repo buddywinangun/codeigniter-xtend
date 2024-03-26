@@ -16,8 +16,8 @@ class PackageOrganizationDataSource
     public function getPackagePathOrganizations(): array
     {
         return [
-            'packages' => 'codeigniter-xtend',
-            'starter' => 'codeigniter-xtend',
+            'packages' => 'buddywinangun',
+            'starter' => 'buddywinangun',
         ];
     }
 

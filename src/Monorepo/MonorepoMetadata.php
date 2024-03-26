@@ -31,6 +31,6 @@ final class MonorepoMetadata
     final public const GIT_USER_NAME = 'buddywinangun';
     final public const GIT_USER_EMAIL = 'buddywinangun@gmail.com';
 
-    final public const GITHUB_REPO_OWNER = 'codeigniter-xtend';
-    final public const GITHUB_REPO_NAME = 'release';
+    final public const GITHUB_REPO_OWNER = 'buddywinangun';
+    final public const GITHUB_REPO_NAME = 'codeigniter-xtend';
 }
