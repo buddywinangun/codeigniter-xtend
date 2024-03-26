@@ -1,5 +1,5 @@
 {
-    "name": "codeigniter-xtend/starter",
+    "name": "buddywinangun/codeigniter-starter",
     "description": "CodeIgniter 3 for ease of use",
     "type": "project",
     "homepage": "https://github.com/buddywinangun/codeigniter-xtend",
@@ -15,14 +15,5 @@
     },
     "config": {
         "platform-check": false
-    },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../packages/*",
-            "options": {
-                "symlink": true
-            }
-        }
-    ]
+    }
 }
