@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Monorepo\Concerns;
+namespace Xtend\Release\Concerns;
 
 use MonorepoBuilderPrefix202311\Symfony\Component\Console\Input\ArgvInput;
 use MonorepoBuilderPrefix202311\Symfony\Component\Console\Input\InputInterface;

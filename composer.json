@@ -1,6 +1,6 @@
 {
     "type": "library",
-    "name": "codeigniter-xtend/monorepo",
+    "name": "codeigniter-xtend/release",
     "description": "The CodeIgniter Xtend Monorepo",
     "keywords": [
         "framework",
@@ -35,7 +35,7 @@
             "CodeigniterXtend\\Auth\\": "packages/auth/src/",
             "CodeigniterXtend\\Framework\\": "packages/framework/src/",
             "CodeigniterXtend\\Route\\": "packages/route/src/",
-            "Xtend\\Monorepo\\": "src/"
+            "Xtend\\Release\\": "src/"
         }
     },
     "extra": {
@@ -48,10 +48,10 @@
         "sort-packages": true
     },
     "replace": {
-        "codeigniter-xtend/appstarter": "4.0.0",
         "codeigniter-xtend/auth": "4.0.0",
         "codeigniter-xtend/framework": "4.0.0",
-        "codeigniter-xtend/route": "4.0.0"
+        "codeigniter-xtend/route": "4.0.0",
+        "codeigniter-xtend/starter": "4.0.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true

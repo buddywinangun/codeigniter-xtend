@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Monorepo\Extensions\Json;
+namespace Xtend\Release\Extensions\Json;
 
-use Xtend\Monorepo\Extensions\Package\CustomPackageProvider;
-use Xtend\Monorepo\Extensions\Utils\PackageUtils;
-use Xtend\Monorepo\Extensions\ValueObject\CustomPackage;
+use Xtend\Release\Extensions\Package\CustomPackageProvider;
+use Xtend\Release\Extensions\Utils\PackageUtils;
+use Xtend\Release\Extensions\ValueObject\CustomPackage;
 
 final class SourcePackagesProvider
 {

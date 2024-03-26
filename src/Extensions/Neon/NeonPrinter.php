@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Monorepo\Extensions\Neon;
+namespace Xtend\Release\Extensions\Neon;
 
 use Nette\Neon\Encoder;
 use Nette\Neon\Neon;

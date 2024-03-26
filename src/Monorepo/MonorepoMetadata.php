@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Monorepo\Monorepo;
+namespace Xtend\Release\Monorepo;
 
 final class MonorepoMetadata
 {
@@ -32,5 +32,5 @@ final class MonorepoMetadata
     final public const GIT_USER_EMAIL = 'buddywinangun@gmail.com';
 
     final public const GITHUB_REPO_OWNER = 'codeigniter-xtend';
-    final public const GITHUB_REPO_NAME = 'codeigniter-xtend';
+    final public const GITHUB_REPO_NAME = 'release';
 }

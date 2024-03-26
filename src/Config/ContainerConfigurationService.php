@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Monorepo\Config;
+namespace Xtend\Release\Config;
 
-use Xtend\Monorepo\Config\DataSources\MonorepoSplitPackageDataSource;
-use Xtend\Monorepo\Config\DataSources\PackageOrganizationDataSource;
-use Xtend\Monorepo\Config\DataSources\EnvironmentVariablesDataSource;
-use Xtend\Monorepo\Config\DataSources\PHPStanDataSource;
-use Xtend\Monorepo\Config\DataSources\ReleaseWorkersDataSource;
-use Xtend\Monorepo\Extensions\ValueObject\Option as CustomOption;
-use Xtend\Monorepo\Monorepo\MonorepoMetadata;
+use Xtend\Release\Config\DataSources\MonorepoSplitPackageDataSource;
+use Xtend\Release\Config\DataSources\PackageOrganizationDataSource;
+use Xtend\Release\Config\DataSources\EnvironmentVariablesDataSource;
+use Xtend\Release\Config\DataSources\PHPStanDataSource;
+use Xtend\Release\Config\DataSources\ReleaseWorkersDataSource;
+use Xtend\Release\Extensions\ValueObject\Option as CustomOption;
+use Xtend\Release\Monorepo\MonorepoMetadata;
 use Symplify\MonorepoBuilder\ValueObject\Option;
-use Xtend\Monorepo\Extensions\Neon\NeonPrinter;
+use Xtend\Release\Extensions\Neon\NeonPrinter;
 use MonorepoBuilderPrefix202311\Symfony\Component\DependencyInjection\Loader\Configurator\ServicesConfigurator;
 
 class ContainerConfigurationService
@@ -138,9 +138,9 @@ class ContainerConfigurationService
     {
         $services
             ->set(NeonPrinter::class) // Required to inject into PHPStanNeonContentProvider
-            ->load('Xtend\Monorepo\\Config\\', $this->rootDirectory . '/src/Config/*')
-            ->load('Xtend\Monorepo\\Extensions\\', $this->rootDirectory . '/src/Extensions/*')
-            ->load('Xtend\Monorepo\\Monorepo\\', $this->rootDirectory . '/src/Monorepo/*');
+            ->load('Xtend\\Release\\Config\\', $this->rootDirectory . '/src/Config/*')
+            ->load('Xtend\\Release\\Extensions\\', $this->rootDirectory . '/src/Extensions/*')
+            ->load('Xtend\\Release\\Monorepo\\', $this->rootDirectory . '/src/Monorepo/*');
     }
 
     protected function setReleaseWorkerServices(ServicesConfigurator $services): void

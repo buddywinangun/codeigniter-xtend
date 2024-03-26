@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Monorepo\Config\DataSources;
+namespace Xtend\Release\Config\DataSources;
 
 class MonorepoSplitPackageDataSource
 {

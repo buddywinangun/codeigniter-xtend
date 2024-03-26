@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Monorepo\Extensions\ValueObject;
+namespace Xtend\Release\Extensions\ValueObject;
 
 final class Option
 {

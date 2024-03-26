@@ -1,11 +1,6 @@
-# CodeIgniter Laravel-like static routes and filters
+# CodeIgniter Xtend routes and filters
 
 A little group or libraries that let Codeigniter work as a static routing system with filters as simmilar to the Laravel routing system as I could have done.
-
-## Licensing
-
-For now I'm not licensing this work. It has some code from the Bonfire Project, wich keeps their license rights.
-
 
 ## Future plans
 

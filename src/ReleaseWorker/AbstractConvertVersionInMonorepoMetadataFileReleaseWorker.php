@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Monorepo\Release\ReleaseWorker;
+namespace Xtend\Release\ReleaseWorker;
 
-use Xtend\Monorepo\Extensions\SmartFile\FileContentReplacerSystem;
-use Xtend\Monorepo\Extensions\Utils\VersionUtils;
+use Xtend\Release\Extensions\SmartFile\FileContentReplacerSystem;
+use Xtend\Release\Extensions\Utils\VersionUtils;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;
 
 abstract class AbstractConvertVersionInMonorepoMetadataFileReleaseWorker implements ReleaseWorkerInterface
@@ -21,6 +21,6 @@ abstract class AbstractConvertVersionInMonorepoMetadataFileReleaseWorker impleme
 
     protected function getMonorepoMetadataFile(): string
     {
-        return dirname(__DIR__, 3) . '/src/Monorepo/MonorepoMetadata.php';
+        return dirname(__DIR__, 2) . '/src/Monorepo/MonorepoMetadata.php';
     }
 }

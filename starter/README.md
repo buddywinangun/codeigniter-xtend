@@ -1,4 +1,4 @@
-## About Codeigniter Xtend Appstarter
+## About Codeigniter Xtend starter
 
 Codeigniter Xtend adalah alat yang kami rancang sebagai manajemen extension di atas Framework Codeigniter. Ini memungkinkan Anda untuk mengelola (menginstal/memperbarui) extension, seperti: Package, Tema dan Bahasa.
 
@@ -20,7 +20,7 @@ php -S localhost:8000
 
 This project is meant to be composer-installed:
 ```sh
-composer create-project buddywinangun/codeigniter-xtend
+composer create-project codeigniter-xtend/starter
 ```
 
 Berikan izin menulis logs, cache, session.

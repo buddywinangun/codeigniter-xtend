@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Monorepo\Config\DataSources;
+namespace Xtend\Release\Config\DataSources;
 
-use Xtend\Monorepo\Release\ReleaseWorker\GuardOnDefaultBranchReleaseWorker;
-use Xtend\Monorepo\Release\ReleaseWorker\ConvertVersionForProdInMonorepoMetadataFileReleaseWorker;
-use Xtend\Monorepo\Release\ReleaseWorker\UpdateCurrentBranchAliasReleaseWorker;
-use Xtend\Monorepo\Release\ReleaseWorker\UpdateChangelogViaPhpReleaseWorker;
+use Xtend\Release\ReleaseWorker\GuardOnDefaultBranchReleaseWorker;
+use Xtend\Release\ReleaseWorker\ConvertVersionForProdInMonorepoMetadataFileReleaseWorker;
+use Xtend\Release\ReleaseWorker\UpdateCurrentBranchAliasReleaseWorker;
+use Xtend\Release\ReleaseWorker\UpdateChangelogViaPhpReleaseWorker;
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\UpdateReplaceReleaseWorker;
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\SetCurrentMutualDependenciesReleaseWorker;
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\SetNextMutualDependenciesReleaseWorker;

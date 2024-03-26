@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Monorepo\Extensions\Command;
+namespace Xtend\Release\Extensions\Command;
 
-use Xtend\Monorepo\Extensions\Neon\NeonFilePrinter;
-use Xtend\Monorepo\Extensions\PHPStanNeonContentProvider;
-use Xtend\Monorepo\Extensions\ValueObject\Option;
-use Xtend\Monorepo\Extensions\Command\CommandNaming;
+use Xtend\Release\Extensions\Neon\NeonFilePrinter;
+use Xtend\Release\Extensions\PHPStanNeonContentProvider;
+use Xtend\Release\Extensions\ValueObject\Option;
+use Xtend\Release\Extensions\Command\CommandNaming;
 use MonorepoBuilderPrefix202311\Symfony\Component\Console\Input\InputInterface;
 use MonorepoBuilderPrefix202311\Symfony\Component\Console\Input\InputOption;
 use MonorepoBuilderPrefix202311\Symfony\Component\Console\Output\OutputInterface;

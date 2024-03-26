@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Monorepo\Extensions\Command;
+namespace Xtend\Release\Extensions\Command;
 
-use Xtend\Monorepo\Extensions\Json\SourcePackagesProvider;
-use Xtend\Monorepo\Extensions\ValueObject\Option;
-use Xtend\Monorepo\Extensions\Command\CommandNaming;
+use Xtend\Release\Extensions\Json\SourcePackagesProvider;
+use Xtend\Release\Extensions\ValueObject\Option;
+use Xtend\Release\Extensions\Command\CommandNaming;
 use MonorepoBuilderPrefix202311\Nette\Utils\Json;
 use MonorepoBuilderPrefix202311\Symfony\Component\Console\Input\InputInterface;
 use MonorepoBuilderPrefix202311\Symfony\Component\Console\Input\InputOption;

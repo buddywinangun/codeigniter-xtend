@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Monorepo\Extensions\Command;
+namespace Xtend\Release\Extensions\Command;
 
 use MonorepoBuilderPrefix202311\Nette\Utils\Strings;
 use MonorepoBuilderPrefix202311\Symfony\Component\Console\Command\Command;

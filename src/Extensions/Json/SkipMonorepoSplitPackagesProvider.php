@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Monorepo\Extensions\Json;
+namespace Xtend\Release\Extensions\Json;
 
-use Xtend\Monorepo\Extensions\Package\CustomPackageProvider;
-use Xtend\Monorepo\Extensions\Utils\PackageUtils;
-use Xtend\Monorepo\Extensions\ValueObject\Option;
+use Xtend\Release\Extensions\Package\CustomPackageProvider;
+use Xtend\Release\Extensions\Utils\PackageUtils;
+use Xtend\Release\Extensions\ValueObject\Option;
 use MonorepoBuilderPrefix202311\Symplify\PackageBuilder\Parameter\ParameterProvider;
 
 final class SkipMonorepoSplitPackagesProvider

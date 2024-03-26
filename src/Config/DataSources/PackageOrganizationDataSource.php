@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Monorepo\Config\DataSources;
+namespace Xtend\Release\Config\DataSources;
 
 class PackageOrganizationDataSource
 {
@@ -16,8 +16,8 @@ class PackageOrganizationDataSource
     public function getPackagePathOrganizations(): array
     {
         return [
-            'packages' => 'buddywinangun',
-            'appstarter' => 'buddywinangun',
+            'packages' => 'codeigniter-xtend',
+            'starter' => 'codeigniter-xtend',
         ];
     }
 

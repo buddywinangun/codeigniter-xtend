@@ -1,7 +1,3 @@
-## Release
-
-Lihat [Release schedule](/CHANGELOG.md#release-schedule) untuk jadwal rilis terbaru. Dan daftar riwayat dapat ditemukan di [CHANGELOG](/CHANGELOG.md#changelog).
-
 ## Requirements
 
 -  PHP 7.0.0 or later
@@ -11,7 +7,7 @@ Lihat [Release schedule](/CHANGELOG.md#release-schedule) untuk jadwal rilis terb
 
 1. Instalasi dilakukan melalui Composer.
 ```sh
-composer require buddywinangun/codeigniter-xtend
+composer require codeigniter-xtend/framework
 ```
 
 ## Unit testing
@@ -29,7 +25,6 @@ composer test
 ## Reference
 
 -  [Composer Installation](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-macos)
--  [CodeIgniter Web Framework](https://codeigniter.com/)
 
 ## Contributing
 
