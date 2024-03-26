@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Release\Extensions\Json;
+namespace Xtend\Extensions\Json;
 
-use Xtend\Release\Extensions\Package\CustomPackageProvider;
-use Xtend\Release\Extensions\Utils\PackageUtils;
-use Xtend\Release\Extensions\ValueObject\CustomPackage;
+use Xtend\Extensions\Package\CustomPackageProvider;
+use Xtend\Extensions\Utils\PackageUtils;
+use Xtend\Extensions\ValueObject\CustomPackage;
 
 final class SourcePackagesProvider
 {

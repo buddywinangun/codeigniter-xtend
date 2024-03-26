@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Release\Config\DataSources;
+namespace Xtend\Config\DataSources;
 
 class PHPStanDataSource
 {

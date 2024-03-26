@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Release\Monorepo;
+namespace Xtend\Monorepo;
 
 final class MonorepoMetadata
 {

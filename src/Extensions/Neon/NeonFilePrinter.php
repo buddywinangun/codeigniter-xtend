@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Release\Extensions\Neon;
+namespace Xtend\Extensions\Neon;
 
 use MonorepoBuilderPrefix202311\Symfony\Component\Console\Style\SymfonyStyle;
 use MonorepoBuilderPrefix202311\Symplify\SmartFileSystem\SmartFileInfo;

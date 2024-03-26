@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Release\Extensions\ValueObject;
+namespace Xtend\Extensions\ValueObject;
 
 final class Option
 {

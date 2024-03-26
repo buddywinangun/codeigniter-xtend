@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Release\Extensions;
+namespace Xtend\Extensions;
 
 use Nette\Neon\Neon;
-use Xtend\Release\Extensions\Json\SourcePackagesProvider;
-use Xtend\Release\Extensions\Neon\NeonPrinter;
+use Xtend\Extensions\Json\SourcePackagesProvider;
+use Xtend\Extensions\Neon\NeonPrinter;
 use MonorepoBuilderPrefix202311\Symplify\SmartFileSystem\SmartFileInfo;
 use MonorepoBuilderPrefix202311\Symplify\SymplifyKernel\Exception\ShouldNotHappenException;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Release\Contracts;
+namespace Xtend\Contracts;
 
 /**
  * @see https://github.com/marcocesarato/php-conventional-changelog

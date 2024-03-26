@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Release\Extensions\Json;
+namespace Xtend\Extensions\Json;
 
-use Xtend\Release\Extensions\Package\CustomPackageProvider;
-use Xtend\Release\Extensions\Utils\PackageUtils;
-use Xtend\Release\Extensions\ValueObject\Option;
+use Xtend\Extensions\Package\CustomPackageProvider;
+use Xtend\Extensions\Utils\PackageUtils;
+use Xtend\Extensions\ValueObject\Option;
 use MonorepoBuilderPrefix202311\Symplify\PackageBuilder\Parameter\ParameterProvider;
 use MonorepoBuilderPrefix202311\Symplify\SymplifyKernel\Exception\ShouldNotHappenException;
 

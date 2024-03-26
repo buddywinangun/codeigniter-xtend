@@ -1,7 +1,7 @@
 {
     "type": "library",
-    "name": "codeigniter-xtend/release",
-    "description": "The CodeIgniter Xtend Monorepo",
+    "name": "buddywinangun/codeigniter-xtend",
+    "description": "A collection of beautiful full-stack components for CodeIgniter. The perfect starting point for your next app.",
     "keywords": [
         "framework",
         "codeigniter"
@@ -35,7 +35,7 @@
             "CodeigniterXtend\\Auth\\": "packages/auth/src/",
             "CodeigniterXtend\\Framework\\": "packages/framework/src/",
             "CodeigniterXtend\\Route\\": "packages/route/src/",
-            "Xtend\\Release\\": "src/"
+            "Xtend\\": "src/"
         }
     },
     "extra": {

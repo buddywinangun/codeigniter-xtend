@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Release\Extensions\Package;
+namespace Xtend\Extensions\Package;
 
-use Xtend\Release\Extensions\ValueObject\CustomPackage;
+use Xtend\Extensions\ValueObject\CustomPackage;
 use Symplify\MonorepoBuilder\ComposerJsonManipulator\FileSystem\JsonFileManager;
 use Symplify\MonorepoBuilder\ComposerJsonManipulator\ValueObject\ComposerJsonSection;
 use Symplify\MonorepoBuilder\FileSystem\ComposerJsonProvider;

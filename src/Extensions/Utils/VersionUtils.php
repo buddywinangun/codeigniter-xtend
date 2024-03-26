@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Xtend\Release\Extensions\Utils;
+namespace Xtend\Extensions\Utils;
 
 use PharIo\Version\Version;
 use Symplify\MonorepoBuilder\Utils\VersionUtils as UpstreamVersionUtils;
