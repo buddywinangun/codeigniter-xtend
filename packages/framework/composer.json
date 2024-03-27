@@ -4,7 +4,6 @@
     "type": "library",
     "homepage": "https://github.com/buddywinangun/codeigniter-xtend",
     "license": "MIT",
-    "minimum-stability": "stable",
     "keywords": [
         "CodeIgniter",
         "Framework",
@@ -42,5 +41,10 @@
         "test": [
             "phpunit"
         ]
-    }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }

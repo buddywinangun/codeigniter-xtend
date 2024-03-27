@@ -14,10 +14,14 @@
             "email": "buddywinangun@gmail.com"
         }
     ],
-    "minimum-stability": "stable",
     "extra": {
         "branch-alias": {
             "dev-master": "3.2-dev"
         }
-    }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }
