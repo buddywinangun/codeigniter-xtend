@@ -40,6 +40,7 @@ class ReleaseWorkersDataSource
             // Default workers
             UpdateReplaceReleaseWorker::class,
             SetCurrentMutualDependenciesReleaseWorker::class,
+            // UpdateChangelogViaPhpReleaseWorker::class,
             // SetNextMutualDependenciesReleaseWorker::class,
             // UpdateBranchAliasReleaseWorker::class,
 
