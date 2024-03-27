@@ -15,6 +15,7 @@
         }
     ],
     "require": {
+        "php": "^7.0|~8.1.0",
         "firebase/php-jwt": "^6.10"
     },
     "extra": {
@@ -25,6 +26,6 @@
     "config": {
         "sort-packages": true
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }

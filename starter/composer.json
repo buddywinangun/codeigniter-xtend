@@ -5,7 +5,7 @@
     "homepage": "https://github.com/buddywinangun/codeigniter-xtend",
     "license": "MIT",
     "require": {
-        "php": "^5.6|^8.0",
+        "php": "^7.0|~8.1.0",
         "codeigniter/framework": "~3.1"
     },
     "require-dev": {
@@ -17,6 +17,6 @@
         "sort-packages": true,
         "platform-check": false
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }
