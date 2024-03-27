@@ -14,5 +14,5 @@ class Application
   /**
    * The current version of CodeIgniter Xtend Framework
    */
-  public const VERSION = '4.0.0';
+  public const VERSION = '4.1.0';
 }

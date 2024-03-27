@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
+# [4.1.0](https://github.com/buddywinangun/codeigniter-xtend/compare/v4.0.0...v4.1.0) (2024-03-27)
+
+
+### Bug Fixes
+
+* cannot use final constant ([0182b7c](https://github.com/buddywinangun/codeigniter-xtend/commit/0182b7c8025cdc7a3521df7499e8193bba244332))
+* composer file incorrectly ([65391b8](https://github.com/buddywinangun/codeigniter-xtend/commit/65391b86886dccfb0835eb7b36b6920eba18d8d8))
+* missing property package ([5654841](https://github.com/buddywinangun/codeigniter-xtend/commit/5654841c3e897710da0026a901a820a679c8400a))
+* semantic release git ([195609d](https://github.com/buddywinangun/codeigniter-xtend/commit/195609dd0c764cceb16d6bdb40d3d4e2d8069359))
+* version utils release worker ([f2622d9](https://github.com/buddywinangun/codeigniter-xtend/commit/f2622d9f98d3d8a82f055d67680d92af9645862f))
+
+
+### Features
+
+* added release worker version stable in package ([38b6e00](https://github.com/buddywinangun/codeigniter-xtend/commit/38b6e001f91f8581efb1eae88d3e20049a31d41c))
+
+
+### Performance Improvements
+
+* added config composer ([92797e1](https://github.com/buddywinangun/codeigniter-xtend/commit/92797e101dbbbf4366db7152f71b97e508885ee2))
+* php version ([05f1692](https://github.com/buddywinangun/codeigniter-xtend/commit/05f1692a60a457223ad43ba7bf55b71f5545212b))
+* push release monorepo ([eebc8b8](https://github.com/buddywinangun/codeigniter-xtend/commit/eebc8b814f1863aa4bb3ad416e9687a7620c1f9d))
+* readme.md ([a0cb7d9](https://github.com/buddywinangun/codeigniter-xtend/commit/a0cb7d9ac8dd233aa469e0f6882beec386efd799))
+
 # [4.0.0](https://github.com/buddywinangun/codeigniter-xtend/compare/v3.1.0...v4.0.0) (2024-03-27)
 
 

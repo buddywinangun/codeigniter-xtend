@@ -15,7 +15,7 @@ final class MonorepoMetadata
      * (i.e. via `composer release-major|minor|patch`).
      *
      */
-    public const VERSION = '4.0.0-dev';
+    public const VERSION = '4.1.0-dev';
     /**
      * This const will reflect the latest published tag in GitHub.
      *
@@ -25,7 +25,7 @@ final class MonorepoMetadata
      * (i.e. via `composer release-major|minor|patch`).
      *
      */
-    public const LATEST_PROD_VERSION = '4.0.0';
+    public const LATEST_PROD_VERSION = '4.1.0';
 
     public const GIT_BASE_BRANCH = 'master';
     public const GIT_USER_NAME = 'buddywinangun';
