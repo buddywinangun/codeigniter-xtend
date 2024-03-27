@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Xtend\Config\DataSources;
 
 use Xtend\ReleaseWorker\GuardOnDefaultBranchReleaseWorker;
+use Xtend\ReleaseWorker\ConvertStableTagVersionForProdInPackageReleaseWorker;
 use Xtend\ReleaseWorker\ConvertVersionForProdInMonorepoMetadataFileReleaseWorker;
+use Xtend\ReleaseWorker\BumpVersionForDevInMonorepoMetadataFileReleaseWorker;
 use Xtend\ReleaseWorker\UpdateCurrentBranchAliasReleaseWorker;
 use Xtend\ReleaseWorker\UpdateChangelogViaPhpReleaseWorker;
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\UpdateReplaceReleaseWorker;
@@ -26,6 +28,7 @@ class ReleaseWorkersDataSource
             GuardOnDefaultBranchReleaseWorker::class,
 
             // Remove "-dev" from the version
+            ConvertStableTagVersionForProdInPackageReleaseWorker::class,
             ConvertVersionForProdInMonorepoMetadataFileReleaseWorker::class,
 
             /**
@@ -37,11 +40,14 @@ class ReleaseWorkersDataSource
             // Default workers
             UpdateReplaceReleaseWorker::class,
             SetCurrentMutualDependenciesReleaseWorker::class,
-            // AddTagToChangelogReleaseWorker::class,
-            // UpdateChangelogViaPhpReleaseWorker::class,
-            // SetNextMutualDependenciesReleaseWorker::class,
-            // UpdateBranchAliasReleaseWorker::class,
-            // PushNextDevReleaseWorker::class,
+            SetNextMutualDependenciesReleaseWorker::class,
+            UpdateBranchAliasReleaseWorker::class,
+
+            // Add "-dev" again to the version
+            BumpVersionForDevInMonorepoMetadataFileReleaseWorker::class,
+
+            // Default workers
+            PushNextDevReleaseWorker::class,
         ];
     }
 }
