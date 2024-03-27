@@ -9,7 +9,7 @@ use Symplify\MonorepoBuilder\Release\Process\ProcessRunner;
 use Symplify\MonorepoBuilder\Utils\VersionUtils;
 use Symplify\MonorepoBuilder\ValueObject\Option;
 use MonorepoBuilderPrefix202311\Symplify\PackageBuilder\Parameter\ParameterProvider;
-final class PushNextDevReleaseWorker implements ReleaseWorkerInterface
+final class PushReleaseWorker implements ReleaseWorkerInterface
 {
     /**
      * @var \Symplify\MonorepoBuilder\Release\Process\ProcessRunner
@@ -31,17 +31,17 @@ final class PushNextDevReleaseWorker implements ReleaseWorkerInterface
     }
     public function work(Version $version) : void
     {
-        $versionInString = $this->getVersionDev($version);
-        $gitAddCommitCommand = \sprintf('git add . && git commit --allow-empty -m "chore: open %s" && git push origin "%s"', $versionInString, $this->branchName);
+        $versionInString = $this->getVersion($version);
+        $gitAddCommitCommand = \sprintf('git add --force --ignore-errors . && git commit -m "chore(release): open %s" && git push --tags origin HEAD:%s', $versionInString, $this->branchName);
         $this->processRunner->run($gitAddCommitCommand);
     }
     public function getDescription(Version $version) : string
     {
-        $versionInString = $this->getVersionDev($version);
+        $versionInString = $this->getVersion($version);
         return \sprintf('Push "%s" open to remote repository', $versionInString);
     }
-    private function getVersionDev(Version $version) : string
+    private function getVersion(Version $version) : string
     {
-        return $this->versionUtils->getNextAliasFormat($version);
+        return $this->versionUtils->getCurrentAliasFormat($version);
     }
 }

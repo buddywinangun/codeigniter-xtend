@@ -15,7 +15,7 @@ use Symplify\MonorepoBuilder\Release\ReleaseWorker\SetCurrentMutualDependenciesR
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\SetNextMutualDependenciesReleaseWorker;
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\AddTagToChangelogReleaseWorker;
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\UpdateBranchAliasReleaseWorker;
-use Xtend\ReleaseWorker\PushNextDevReleaseWorker;
+use Xtend\ReleaseWorker\PushReleaseWorker;
 
 class ReleaseWorkersDataSource
 {
@@ -40,14 +40,14 @@ class ReleaseWorkersDataSource
             // Default workers
             UpdateReplaceReleaseWorker::class,
             SetCurrentMutualDependenciesReleaseWorker::class,
-            SetNextMutualDependenciesReleaseWorker::class,
-            UpdateBranchAliasReleaseWorker::class,
+            // SetNextMutualDependenciesReleaseWorker::class,
+            // UpdateBranchAliasReleaseWorker::class,
 
             // Add "-dev" again to the version
             BumpVersionForDevInMonorepoMetadataFileReleaseWorker::class,
 
             // Default workers
-            PushNextDevReleaseWorker::class,
+            PushReleaseWorker::class,
         ];
     }
 }
