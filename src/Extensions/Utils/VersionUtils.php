@@ -25,7 +25,7 @@ final class VersionUtils
 
     public function getNextVersion(Version | string $version): string
     {
-        $requiredNextFormat = $this->upstreamVersionUtils->getRequiredNextFormat($version);
+        $requiredNextFormat = $this->getRequiredCurrentFormat($version);
         return substr(
             $requiredNextFormat,
             strlen('^')
