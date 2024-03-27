@@ -7,7 +7,7 @@
 
 1. Instalasi dilakukan melalui Composer.
 ```sh
-composer require codeigniter-xtend/framework
+composer require buddywinangun/codeigniter-framework
 ```
 
 ## Unit testing

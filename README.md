@@ -33,15 +33,15 @@ Core packages can be found in the [`packages`](packages/) directory.
 
 | Directory                           | Distribution                                      |
 |:------------------------------------|:--------------------------------------------------|
-| [`auth`](packages/auth)             | [codeigniter-xtend/auth]            |
-| [`framework`](packages/framework)   | [codeigniter-xtend/framework]       |
+| [`auth`](packages/auth)             | [buddywinangun/codeigniter-auth]            |
+| [`framework`](packages/framework)   | [buddywinangun/codeigniter-framework]       |
 
 ## Installation
 
 To start from a working skeleton:
 
 ```shell
-composer create-project codeigniter-xtend/starter
+composer create-project buddywinangun/codeigniter-starter
 ```
 
 ### Standalone packages
@@ -50,5 +50,5 @@ The Codeigniter Xtend framework is split into standalone packages which can be u
 independently.
 
 ```shell
-composer require codeigniter-xtend/auth codeigniter-xtend/framework
+composer require buddywinangun/codeigniter-auth buddywinangun/codeigniter-framework
 ```

@@ -20,7 +20,7 @@ php -S localhost:8000
 
 This project is meant to be composer-installed:
 ```sh
-composer create-project codeigniter-xtend/starter
+composer create-project buddywinangun/codeigniter-starter
 ```
 
 Berikan izin menulis logs, cache, session.
