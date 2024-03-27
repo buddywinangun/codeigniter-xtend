@@ -13,7 +13,7 @@ use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterfa
 abstract class AbstractConvertStableTagVersionInPackageReleaseWorker implements ReleaseWorkerInterface
 {
   protected string $monorepoMetadataFile;
-  protected array $packages;
+  protected $packages;
 
   public function __construct(
     protected FileContentReplacerSystem $fileContentReplacerSystem,

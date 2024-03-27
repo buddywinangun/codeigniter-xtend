@@ -44,6 +44,7 @@
             "php": "8.1.27"
         },
         "optimize-autoloader": true,
+        "platform-check": false,
         "sort-packages": true
     },
     "replace": {

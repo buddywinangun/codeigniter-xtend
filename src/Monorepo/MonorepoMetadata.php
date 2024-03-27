@@ -15,7 +15,7 @@ final class MonorepoMetadata
      * (i.e. via `composer release-major|minor|patch`).
      *
      */
-    final public const VERSION = '4.2.0-dev';
+    public const VERSION = '4.2.0-dev';
     /**
      * This const will reflect the latest published tag in GitHub.
      *
@@ -25,12 +25,12 @@ final class MonorepoMetadata
      * (i.e. via `composer release-major|minor|patch`).
      *
      */
-    final public const LATEST_PROD_VERSION = '4.1.0';
+    public const LATEST_PROD_VERSION = '4.1.0';
 
-    final public const GIT_BASE_BRANCH = 'master';
-    final public const GIT_USER_NAME = 'buddywinangun';
-    final public const GIT_USER_EMAIL = 'buddywinangun@gmail.com';
+    public const GIT_BASE_BRANCH = 'master';
+    public const GIT_USER_NAME = 'buddywinangun';
+    public const GIT_USER_EMAIL = 'buddywinangun@gmail.com';
 
-    final public const GITHUB_REPO_OWNER = 'buddywinangun';
-    final public const GITHUB_REPO_NAME = 'codeigniter-xtend';
+    public const GITHUB_REPO_OWNER = 'buddywinangun';
+    public const GITHUB_REPO_NAME = 'codeigniter-xtend';
 }
