@@ -15,7 +15,7 @@ use Symplify\MonorepoBuilder\Release\ReleaseWorker\SetCurrentMutualDependenciesR
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\SetNextMutualDependenciesReleaseWorker;
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\AddTagToChangelogReleaseWorker;
 use Symplify\MonorepoBuilder\Release\ReleaseWorker\UpdateBranchAliasReleaseWorker;
-use Symplify\MonorepoBuilder\Release\ReleaseWorker\PushNextDevReleaseWorker;
+use Xtend\ReleaseWorker\PushNextDevReleaseWorker;
 
 class ReleaseWorkersDataSource
 {

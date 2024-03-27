@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Xtend\ReleaseWorker;
 
-use Xtend\DataSourceAccessors\PackageDataSourceAccessor;
+use Xtend\Config\DataSourceAccessors\PackageDataSourceAccessor;
+use Xtend\Config\DataSources\PackageDataSource;
 use Xtend\Extensions\SmartFile\FileContentReplacerSystem;
 use Xtend\Extensions\Utils\VersionUtils;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;
 
-abstract class AbstractConvertVersionInMonorepoMetadataFileReleaseWorker implements ReleaseWorkerInterface
+abstract class AbstractConvertStableTagVersionInPackageReleaseWorker implements ReleaseWorkerInterface
 {
   protected string $monorepoMetadataFile;
 

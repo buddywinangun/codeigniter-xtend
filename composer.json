@@ -47,10 +47,10 @@
         "sort-packages": true
     },
     "replace": {
-        "buddywinangun/codeigniter-auth": "self.version",
-        "buddywinangun/codeigniter-framework": "self.version",
-        "buddywinangun/codeigniter-route": "self.version",
-        "buddywinangun/codeigniter-starter": "self.version"
+        "buddywinangun/codeigniter-auth": "4.1.0",
+        "buddywinangun/codeigniter-framework": "4.1.0",
+        "buddywinangun/codeigniter-route": "4.1.0",
+        "buddywinangun/codeigniter-starter": "4.1.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true

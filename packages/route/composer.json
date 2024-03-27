@@ -14,9 +14,13 @@
             "email": "buddywinangun@gmail.com"
         }
     ],
+    "require": {
+        "php": "^7.0|~8.1.0",
+        "maximebf/debugbar": "^1.21"
+    },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.2-dev"
+            "dev-master": "4.2-dev"
         }
     },
     "config": {

@@ -1,746 +1,429 @@
 <?php
 
-/**
- * This file is part of Codeigniter Xtend Route.
- *
- * For the full copyright and license information, please view
- * the LICENSE file that was distributed with this source code.
- */
-
 namespace CodeigniterXtend\Route;
 
-/**
- * Provides enhanced Routing capabilities to CodeIgniter-based applications.
- */
 class Route
 {
+  /**
+   * @var string[]
+   */
+  private $methods = [];
 
   /**
-   * Our built routes.
+   * @var string
+   */
+  private $path;
+
+  /**
+   * @var string|callable
+   */
+  private $action;
+
+  /**
+   * @var string
+   */
+  private $prefix = '';
+
+  /**
+   * @var string
+   */
+  private $namespace = '';
+
+  /**
    * @var array
    */
-  protected static $routes = array();
-
-  protected static $prefix = NULL;
-
-  protected static $named_routes = array();
-
-  protected static $default_home = 'home';
-
-  protected static $pre_route_objects = array();
-
-  protected static $route_objects = array();
-
-  protected static $pattern_list = array();
-
-  protected static $filter_list = array();
-
-  protected static $active_subdomain;
-
-  protected static $subdomain;
-
-  //--------------------------------------------------------------------
+  private $middleware = [];
 
   /**
-   * Combines the routes that we've defined with the Route class with the
-   * routes passed in. This is intended to be used  after all routes have been
-   * defined to merge CI's default $route array with our routes.
-   *
-   * Example:
-   *     $route['default_controller'] = 'home';
-   *     Route::resource('posts');
-   *     $route = Route::getRoutes($route);
-   *
-   * @param  array $routes The array to merge
-   * @return array         The merge route array.
+   * @var string
    */
-  public static function getRoutes($routes = array())
-  {
-    $controller = isset($routes['default_controller']) ? $routes['default_controller'] : self::$default_home;
+  private $fullPath;
 
-    //we mount the route object array with all the from routes remade
-    foreach (self::$pre_route_objects as &$object) {
-      self::$route_objects[$object->get_from()] = &$object;
+  /**
+   * @var RouteParam[]
+   */
+  public $params = [];
+
+  /**
+   * @var int
+   */
+  public $paramOffset;
+
+  /**
+   * @var int
+   */
+  public $optionalParamOffset;
+
+  /**
+   * @var bool
+   */
+  private $hasOptionalParams = false;
+
+  /**
+   * @var bool
+   */
+  public $isCli = false;
+
+  /**
+   * @var bool
+   */
+  public $is404 = false;
+
+  /**
+   * @var string
+   */
+  public $requestMethod;
+
+  /**
+   * @var string
+   */
+  private $name;
+
+  /**
+   * @param string|array  $methods  Route accepted HTTP verbs
+   * @param array         $route    Route attributes
+   */
+  public function __construct($methods, $route)
+  {
+    if ($methods == 'any') {
+      $methods = RouteBuilder::HTTP_VERBS;
+    } elseif (is_string($methods)) {
+
+      $methods = [strtoupper($methods)];
+    } else {
+      array_shift($route);
     }
 
-    foreach (self::$route_objects as $key => $route_object) {
-      $add_route = TRUE;
-      //if there is a subdomain, we will check if it's ok with the route.
-      //all the previously checked subdomain routes should be ignored because
-      //we already have checked them
-      if ($route_object->get_options('subdomain') != FALSE) {
-        $add_route = self::_CheckSubdomain($route_object->get_options('subdomain'));
+    foreach ($methods as $method) {
+      $this->methods[] = strtoupper($method);
+    }
+
+    // Required route attributes
+    list($path, $action) = $route;
+    $this->path = trim($path, '/') == '' ? '/' : trim($path, '/');
+
+    if (!is_callable($action) && count(explode('@', $action)) != 2) {
+      // show_error('Route action must be in <strong>controller@method</strong> syntax or be a valid callback');
+    }
+
+    $this->action = $action;
+    $attributes = isset($route[2]) && is_array($route[2]) ? $route[2] : NULL;
+
+    // Route group inherited attributes
+    if (!empty(RouteBuilder::getContext('prefix'))) {
+      $prefixes = RouteBuilder::getContext('prefix');
+      foreach ($prefixes as $prefix) {
+        $this->prefix .= trim($prefix, '/') != '' ? '/' . trim($prefix, '/') : '';
+      }
+      $this->prefix = trim($this->prefix, '/');
+    }
+
+    if (!empty(RouteBuilder::getContext('namespace'))) {
+      $namespaces = RouteBuilder::getContext('namespace');
+      foreach ($namespaces as $namespace) {
+        $this->namespace .= trim($namespace, '/') != '' ? '/' . trim($namespace, '/') : '';
+      }
+      $this->namespace = trim($this->namespace, '/');
+    }
+
+    if (!empty(RouteBuilder::getContext('middleware')['route'])) {
+      $middlewares = RouteBuilder::getContext('middleware')['route'];
+      foreach ($middlewares as $middleware) {
+        if (!in_array($middleware, $this->middleware)) {
+          $this->middleware[] = $middleware;
+        }
+      }
+    }
+
+    // Optional route attributes
+    if ($attributes !== NULL) {
+      if (isset($attributes['namespace'])) {
+        $this->namespace = (!empty($this->namespace) ? '/' : '') . trim($attributes['namespace'], '/');
       }
 
-      if ($add_route) {
-        $from = $route_object->get_from();
-        $to = $route_object->get_to();
-
-        $routes[$from] = str_replace('{default_controller}', $controller, $to);
+      if (isset($attributes['prefix'])) {
+        $this->prefix .= (!empty($this->prefix) ? '/' : '') . trim($attributes['prefix'], '/');
       }
+
+      if (isset($attributes['middleware'])) {
+        if (is_string($attributes['middleware'])) {
+          $attributes['middleware'] = [$attributes['middleware']];
+        }
+
+        $this->middleware = array_merge($this->middleware, array_unique($attributes['middleware']));
+      }
+    }
+
+    // Parsing route parameters
+    $_names   = [];
+    $fullPath = trim($this->prefix, '/') != '' ? $this->prefix . '/' . $this->path : $this->path;
+    $fullPath = trim($fullPath, '/') == '' ? '/' : trim($fullPath, '/');
+
+    $this->fullPath = $fullPath;
+
+    foreach (explode('/', $fullPath) as $i => $segment) {
+      if (preg_match_all('/\{(.*?)\}+/', $segment, $matches)) {
+        if ($this->paramOffset === null) {
+          $this->paramOffset = $i;
+        }
+
+        $params = [];
+
+        foreach ($matches[0] as $paramCode) {
+          $params[] = new RouteParam($paramCode, $i, $segment);
+        }
+
+        foreach ($params as $key => $param) {
+          if (in_array($param->getName(), $_names)) {
+            show_error('Duplicate route parameter <strong>' . $param->getName() . '</strong> in route <strong>"' .  $this->path . '</strong>"');
+          }
+
+          $_names[] = $param->getName();
+
+          if ($param->isOptional()) {
+            $this->hasOptionalParams = true;
+            if ($this->optionalParamOffset === null) {
+              $this->optionalParamOffset = $i;
+            }
+          } else {
+            if ($this->hasOptionalParams) {
+              show_error('Required <strong>' . $param->getName() . '</strong> route parameter is not allowed at this position in <strong>"' . $this->path . '"</strong> route');
+            }
+          }
+          $this->params[] = $param;
+        }
+      }
+    }
+
+    // Automatically set the default controller if the path is "/"
+    if ($fullPath == '/' && in_array('GET', $this->methods)) {
+      RouteBuilder::$compiled['reserved']['default_controller'] = is_string($action)
+        ? (empty($this->namespace) ? str_ireplace('@', '/', $action) : RouteBuilder::DEFAULT_CONTROLLER)
+        :  RouteBuilder::DEFAULT_CONTROLLER;
+    }
+
+    $this->isCli = is_cli();
+  }
+
+  /**
+   * Compiles route to a CodeIgniter native route
+   *
+   * @return array
+   */
+  public function compile()
+  {
+    $routes = [];
+
+    foreach ($this->methods as $method) {
+      $path = $this->fullPath;
+
+      foreach ($this->params as $param) {
+        $path = str_ireplace($param->getSegment(),  $param->getPlaceholder(), $path);
+      }
+
+      $pCount = 0;
+
+      if (is_callable($this->action)) {
+        $target = RouteBuilder::DEFAULT_CONTROLLER;
+        $baseTarget = $target;
+      } else {
+        $baseTarget = (!empty($this->namespace) ? $this->namespace . '/' : '')
+          . str_ireplace('@', '/', $this->action);
+
+        $target = $baseTarget;
+
+        foreach ($this->params as $c => $param) {
+          $target .= '/$' . ($c + 1);
+          if (!$param->isOptional()) {
+            $baseTarget .= '/$' . ($c + 1);
+            $pCount++;
+          }
+        }
+      }
+
+      // Fallback routes
+      if ($this->optionalParamOffset !== null) {
+        $segments = explode('/', $path);
+        $sCount   = count($segments);
+        $basePath = implode('/', array_slice($segments, 0, $this->optionalParamOffset));
+        $routes[][$basePath][$method] = $baseTarget;
+
+        for ($i = $this->optionalParamOffset; $i < $sCount; $i++) {
+          $basePath .= '/' . $segments[$i];
+          if (is_string($this->action)) {
+            $baseTarget .= '/$' . ++$pCount;
+          }
+          $routes[][$basePath][$method] = $baseTarget;
+        }
+      }
+
+      // Main route
+      $routes[][$path][$method] = $target;
     }
 
     return $routes;
   }
 
-  //--------------------------------------------------------------------
-
   /**
-   * Returns the parameters of the selected route in case of we have defined
-   * a parameter. This will be used in the URI library for naming uris purpouse
+   * Builds the route absolute url
    *
-   * Example:
-   *     Route::get_parameters('welcome/index');
+   * @param  mixed $params Route parameters
    *
-   * @param  array $route The string with the route to search
-   * @return array         The parameters
+   * @return string
    */
-  public static function get_parameters($route)
+  public function buildUrl($params)
   {
-    if (array_key_exists($route, self::$route_objects)) {
-      return self::$route_objects[$route]->get_parameters();
+    $defaults = RouteBuilder::getDefaultParams();
+
+    // Thanks to @Ihabafia for the suggest!
+    if (is_object($params)) {
+      $params = (array) $params;
     }
 
-    return array();
-  }
-
-  //--------------------------------------------------------------------
-
-
-  /**
-   * A single point to the basic routing. Can be used in place of CI's $route
-   * array if desired. Used internally by many of the methods.
-   *
-   * @param string $from
-   * @param string $to
-   * @return void
-   */
-  public static function any($from, $to, $options = array(), $nested = FALSE)
-  {
-    return self::createRoute($from, $to, $options, $nested);
-  }
-
-  //--------------------------------------------------------------------
-
-  //--------------------------------------------------------------------
-  // HTTP Verb-based routing
-  //--------------------------------------------------------------------
-  // Verb-based Routing works by only creating routes if the
-  // $_SERVER['REQUEST_METHOD'] is the proper type.
-  //
-
-  /**
-   * @param string $from
-   * @param string $to
-   */
-  public static function get($from, $to, $options = array(), $nested = FALSE)
-  {
-    if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'GET') {
-      return self::createRoute($from, $to, $options, $nested);
-    }
-  }
-
-  //--------------------------------------------------------------------
-
-  /**
-   * @param string $from
-   * @param string $to
-   */
-  public static function post($from, $to, $options = array(), $nested = FALSE)
-  {
-    if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
-      return self::createRoute($from, $to, $options, $nested);
-    }
-  }
-
-  //--------------------------------------------------------------------
-
-  /**
-   * @param string $from
-   * @param string $to
-   */
-  public static function put($from, $to, $options = array(), $nested = FALSE)
-  {
-    if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'PUT') {
-      return self::createRoute($from, $to, $options, $nested);
-    }
-  }
-
-  //--------------------------------------------------------------------
-
-  /**
-   * @param string $from
-   * @param string $to
-   */
-  public static function delete($from, $to, $options = array(), $nested = FALSE)
-  {
-    if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'DELETE') {
-      return self::createRoute($from, $to, $options, $nested);
-    }
-  }
-
-  //--------------------------------------------------------------------
-
-  public static function head($from, $to, $options = array(), $nested = FALSE)
-  {
-    if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'HEAD') {
-      return self::createRoute($from, $to, $options, $nested);
-    }
-  }
-
-  //--------------------------------------------------------------------
-
-  public static function patch($from, $to, $options = array(), $nested = FALSE)
-  {
-    if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'PATCH') {
-      return self::createRoute($from, $to, $options, $nested);
-    }
-  }
-
-  //--------------------------------------------------------------------
-
-  public static function options($from, $to, $options = array(), $nested = FALSE)
-  {
-    if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-      return self::createRoute($from, $to, $options, $nested);
-    }
-  }
-
-  //--------------------------------------------------------------------
-
-  public static function match(array $requests, $from, $to, $options = array(), $nested = FALSE)
-  {
-    $return = NULL;
-
-    foreach ($requests as $request) {
-      if (method_exists(Route::class, $request)) {
-        $r = self::$request($from, $to, $options, $nested);
-
-        if (!is_null($r)) {
-          $return = $r;
-        }
-      }
-    }
-    return $return;
-  }
-
-  //--------------------------------------------------------------------
-
-  /**
-   * Creates HTTP-verb based routing for a controller.
-   *
-   * Generates the following routes, assuming a controller named 'photos':
-   *
-   *      Route::resources('photos');
-   *
-   *      Verb    Path            Action      used for
-   *      ------------------------------------------------------------------
-   *      GET     /photos         index       displaying a list of photos
-   *      GET     /photos/new     create_new  return an HTML form for creating a photo
-   *      POST    /photos         create      create a new photo
-   *      GET     /photos/{id}    show        display a specific photo
-   *      GET     /photos/{id}/edit   edit    return the HTML form for editing a single photo
-   *      PUT     /photos/{id}    update      update a specific photo
-   *      DELETE  /photos/{id}    delete      delete a specific photo
-   *
-   * @param  string $name The name of the controller to route to.
-   * @param  array $options An list of possible ways to customize the routing.
-   */
-  public static function resources($name, $options = array(), $nested = FALSE)
-  {
-    if (empty($name)) {
-      return;
-    }
-
-    $nest_offset = '';
-
-    // In order to allow customization of the route the
-    // resources are sent to, we need to have a new name
-    // to store the values in.
-    $new_name = $name;
-
-    // If a new controller is specified, then we replace the
-    // $name value with the name of the new controller.
-    if (isset($options['controller'])) {
-      $new_name = $options['controller'];
-      unset($options['controller']);
-    }
-
-    // If a new module was specified, simply put that path
-    // in front of the controller.
-    if (isset($options['module'])) {
-      $new_name = $options['module'] . '/' . $new_name;
-      unset($options['module']);
-    }
-
-    // In order to allow customization of allowed id values
-    // we need someplace to store them.
-    $id = '([a-zA-Z0-9\-_]+)';
-
-    if (isset($options['constraint'])) {
-      $id = $options['constraint'];
-      unset($options['constraint']);
-    }
-
-    // If the 'offset' option is passed in, it means that all of our
-    // parameter placeholders in the $to ($1, $2, etc), need to be
-    // offset by that amount. This is useful when we're using an API
-    // with versioning in the URL.
-
-    $offset = 0;
-
-    if (isset($options['offset'])) {
-      $offset = (int) $options['offset'];
-      unset($options['offset']);
-    }
-
-    if (is_array(self::$prefix) && !empty(self::$prefix)) {
-      foreach (self::$prefix as $key => $p) {
-        $nest_offset .= '/$' . ($key + 1);
-        $offset++;
+    if (!is_array($params)) {
+      if (!empty($params) && count($this->params) == 1) {
+        $params = [$this->params[0]->getName() => $params];
+      } else {
+        $params = [];
       }
     }
 
+    $path = $this->getPrefix() . '/' . $this->getPath();
+    $skippedOptional = null;
 
-    self::get($name, $new_name . '/index' . $nest_offset, $options, $nested);
-    self::get($name . '/new', $new_name . '/create_new' . $nest_offset, $options, $nested);
-    self::get($name . '/' . $id . '/edit', $new_name . '/edit' . $nest_offset . '/$' . (1 + $offset), $options, $nested);
-    self::get($name . '/' . $id, $new_name . '/show' . $nest_offset . '/$' . (1 + $offset), $options, $nested);
-    self::post($name, $new_name . '/create' . $nest_offset, $options, $nested);
-    self::put($name . '/' . $id, $new_name . '/update' . $nest_offset . '/$' . (1 + $offset), $options, $nested);
-    self::delete($name . '/' . $id, $new_name . '/delete' . $nest_offset . '/$' . (1 + $offset), $options, $nested);
-  }
+    foreach ($this->params as &$param) {
+      $name = $param->getName();
+      $isMissingRequiredField = !$param->isOptional() && !isset($defaults[$name]) && !isset($params[$param->getName()]);
+      $alreadySkippedOptionalField = $param->isOptional() && $skippedOptional !== null && (isset($defaults[$name]) || isset($params[$name]));
 
-  //--------------------------------------------------------------------
-  /**
-   * Adds a global pattern that will be used along all the routes
-   *
-   *      Route::pattern('user_name', '[a-z][A-Z]');
-   *
-   * @param  string $pattern The pattern to search
-   * @param  string $regex The regex to substitute for
-   */
-  public static function pattern($pattern, $regex)
-  {
-    self::$pattern_list[$pattern] = $regex;
-  }
-
-  //--------------------------------------------------------------------
-  /**
-   * Return the pattern in the list if exists. If not, returns NULL
-   *
-   * @param  string $pattern The pattern to search
-   */
-  public static function get_pattern($pattern)
-  {
-    if (array_key_exists($pattern, self::$pattern_list)) {
-      return self::$pattern_list[$pattern];
-    } else {
-      return NULL;
-    }
-  }
-
-  //--------------------------------------------------------------------
-
-  /**
-   * Add a prefix to the $from portion of the route. This is handy for
-   * grouping items under a similar URL, like:
-   *
-   *      Route::prefix('admin', function()
-   *      {
-   *          Route::resources('users');
-   *      });
-   *
-   * @param  string|array $name The prefix to add to the routes.
-   * @param  Closure $callback
-   */
-  public static function prefix($name, Closure $callback)
-  {
-    if (is_array($name)) {
-      if (array_key_exists('subdomain', $name)) {
-        $subdomain = $name['subdomain'];
+      if ($isMissingRequiredField || $alreadySkippedOptionalField) {
+        throw new \Exception('Missing "' . ($skippedOptional === null ? $name : $skippedOptional) . '" parameter for "' . $this->getName() . '" route');
       }
 
-      $name = $name['name'];
-    }
+      if (isset($defaults[$name])) {
+        $param->value = $defaults[$param->getName()];
+      }
 
-    self::_add_prefix($name);
+      if (isset($params[$param->getName()])) {
+        $param->value = $params[$param->getName()];
+      }
 
-    if (isset($subdomain)) {
-      self::subdomain($subdomain, $callback);
-    } else {
-      call_user_func($callback());
-    }
+      if (isset($defaults[$name]) || isset($params[$param->getName()])) {
+        $path = str_replace($param->getSegment(), $param->value, $path);
+      } else {
+        $skippedOptional = $skippedOptional === null
+          ? $param->getName()
+          : $skippedOptional;
 
-    self::_delete_prefix();
-  }
-
-  //--------------------------------------------------------------------
-
-  /**
-   * Add a prefix to the $prefix array
-   *
-   * @param  string $prefix The prefix to add to the routes.
-   */
-
-  private static function _add_prefix($prefix)
-  {
-
-    self::$prefix[] = $prefix;
-  }
-  //--------------------------------------------------------------------
-
-  /**
-   * Deletes a prefix from the $prefix array
-   */
-
-  private static function _delete_prefix()
-  {
-    array_pop(self::$prefix);
-  }
-  //--------------------------------------------------------------------
-
-  /**
-   * Return the actual prefix of the routes
-   */
-
-  public static function get_prefix()
-  {
-    if (!empty(self::$prefix)) {
-      return implode('/', self::$prefix) . '/';
-    } else {
-      return '';
-    }
-  }
-
-  //--------------------------------------------------------------------
-
-  /**
-   * Returns the $from portion of the route if it has been saved with a name
-   * previously.
-   *
-   * Example:
-   *
-   *      Route::get('posts', 'posts/show', array('as' => 'posts'));
-   *      redirect( Route::named('posts') );
-   *
-   * @param  [type] $name [description]
-   * @return [type]       [description]
-   */
-  public static function named($name, $parameters = array())
-  {
-    if (isset(self::$named_routes[$name])) {
-      $return_url = self::$named_routes[$name];
-    } else {
-      return NULL;
-    }
-
-    if (!empty($parameters)) {
-      foreach ($parameters as $key => $parameter) {
-        $return_url = str_replace('$' . ($key + 1), $parameter, $return_url);
+        $_path = explode('/', $path);
+        unset($_path[array_search($param->getSegment(), $_path)]);
+        $path  = implode('/', $_path);
       }
     }
 
-    return $return_url;
+    return base_url() . trim($path, '/');
   }
-
-  //--------------------------------------------------------------------
 
   /**
-   * Sets a name for a route with $from portion of the route
+   * Gets compiled routes (Alias of RouteBuilder::getRoutes())
    *
-   * Example:
-   *
-   *      Route::get('posts', 'posts/show', array('as' => 'posts'));
-   *      redirect( Route::named('posts') );
-   *
-   * @param  [type] $name [description]
-   * @param  string $route the route itself
+   * @return array
    */
-  public static function set_name($name, $route)
+  public static function getRoutes()
   {
-    self::$named_routes[$name] = $route;
+    return RouteBuilder::getRoutes();
   }
-
-  //--------------------------------------------------------------------
-
-  //--------------------------------------------------------------------
-  // Contexts
-  //--------------------------------------------------------------------
 
   /**
-   * Contexts provide a way for modules to assign controllers to an area of the
-   * site based on the name of the controller. This can be used for making a
-   * '/developer' area of the site that all modules can create functionality into.
+   * Sets route name
    *
-   * @param  string $name The name of the URL segment
-   * @param  string $controller The name of the controller
-   * @param  array $options
+   * @param  string $name route name
    *
-   * @return void
+   * @return self
    */
-  public static function context($name, $controller = NULL, $options = array())
+  public function name($name)
   {
-    // If $controller is an array, then it's actually the options array,
-    // so we'll reorganize parameters.
-    if (is_array($controller)) {
-      $options = $controller;
-      $controller = NULL;
-    }
-
-    // If $controller is empty, then we need to rename it to match
-    // the $name value.
-    if (empty($controller)) {
-      $controller = $name;
-    }
-
-    $offset = isset($options['offset']) ? (int) $options['offset'] : 0;
-
-    // Some helping hands
-    $first = 1 + $offset;
-    $second = 2 + $offset;
-    $third = 3 + $offset;
-    $fourth = 4 + $offset;
-    $fifth = 5 + $offset;
-    $sixth = 6 + $offset;
-
-    self::any($name . '/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)', "\${$first}/{$controller}/\${$second}/\${$third}/\${$fourth}/\${$fifth}/\${$sixth}");
-    self::any($name . '/(:any)/(:any)/(:any)/(:any)/(:any)', "\${$first}/{$controller}/\${$second}/\${$third}/\${$fourth}/\${$fifth}");
-    self::any($name . '/(:any)/(:any)/(:any)/(:any)', "\${$first}/{$controller}/\${$second}/\${$third}/\${$fourth}");
-    self::any($name . '/(:any)/(:any)/(:any)', "\${$first}/{$controller}/\${$second}/\${$third}");
-    self::any($name . '/(:any)/(:any)', "\${$first}/{$controller}/\${$second}");
-    self::any($name . '/(:any)', "\${$first}/{$controller}");
-
-    unset($first, $second, $third, $fourth, $fifth, $sixth);
-
-    // Are we creating a home controller?
-    if (isset($options['home']) && !empty($options['home'])) {
-      self::any($name, "{$options['home']}");
-    }
+    $this->name = $name;
+    return $this;
   }
-
-  //--------------------------------------------------------------------
 
   /**
-   * Allows you to easily block access to any number of routes by setting
-   * that route to an empty path ('').
+   * Gets route name
    *
-   * Example:
-   *     Route::block('posts', 'photos/(:num)');
-   *
-   *     // Same as...
-   *     $route['posts']          = '';
-   *     $route['photos/(:num)']  = '';
+   * @return string
    */
-  public static function block()
+  public function getName()
   {
-    $paths = func_get_args();
-
-    if (!is_array($paths)) {
-      return;
-    }
-
-    foreach ($paths as $path) {
-      self::createRoute($path, '');
-    }
+    return $this->name;
   }
-
-  //--------------------------------------------------------------------
-
-
-  //--------------------------------------------------------------------
-  // Utility Methods
-  //--------------------------------------------------------------------
 
   /**
-   * Resets the class to a first-load state. Mainly useful during testing.
+   * Gets route accepted HTTP Verbs
    *
-   * @return void
+   * @return mixed
    */
-  public static function reset()
+  public function getMethods()
   {
-    self::$route_objects = array();
-    self::$named_routes = array();
-    self::$routes = array();
-    self::$prefix = NULL;
-    self::$pre_route_objects = array();
-    self::$pattern_list = array();
-    self::$filter_list = array();
+    return $this->methods;
   }
-
-  //--------------------------------------------------------------------
-
-  //--------------------------------------------------------------------
-  // Create Route Methods
-  //--------------------------------------------------------------------
 
   /**
-   * Does the heavy lifting of creating an actual route. You must specify
-   * the request method(s) that this route will work for. They can be separated
-   * by a pipe character "|" if there is more than one.
+   * Gets route full path
    *
-   * @param  string $from
-   * @param  array $to
-   * @param  array $options
-   * @param  boolean $nested
-   *
-   * @return array          The built route.
+   * @return string
    */
-  static function createRoute($from, $to, $options = array(), $nested = FALSE)
+  public function getFullPath()
   {
-    if (!is_null(self::$active_subdomain)) {
-      $options['subdomain'] = self::$active_subdomain;
-    }
-
-    if (array_key_exists('subdomain', $options) && self::_CheckSubdomain($options['subdomain']) === FALSE) {
-      return FALSE;
-    }
-
-    $new_route = new \CodeigniterXtend\Route\Builder($from, $to, $options, $nested);
-
-    self::$pre_route_objects[] = $new_route;
-
-    $new_route->make();
-
-    return new \CodeigniterXtend\Route\Facade($new_route);
+    return $this->fullPath;
   }
-
-
-  //--------------------------------------------------------------------
-
-  //--------------------------------------------------------------------
-  // Subdomain Methods
-  //--------------------------------------------------------------------
-
-
-  static function get_subdomain()
-  {
-
-    if (is_null(self::$subdomain)) {
-      if (defined('ROUTE_DOMAIN_NAME') === FALSE) {
-        define('ROUTE_DOMAIN_NAME', $_SERVER['HTTP_HOST']);
-      }
-
-      self::$subdomain = preg_replace('/^(?:([^\.]+)\.)?' . ROUTE_DOMAIN_NAME . '$/', '\1', $_SERVER['HTTP_HOST']);
-    }
-
-    return self::$subdomain;
-  }
-
-  static function subdomain($subdomain_rules, closure $callback)
-  {
-    if (self::_CheckSubdomain($subdomain_rules) === TRUE) {
-      self::$active_subdomain = $subdomain_rules;
-      call_user_func($callback());
-    }
-
-    self::$active_subdomain = NULL;
-  }
-
-
-  static private function _CheckSubdomain($subdomain_rules = NULL)
-  {
-    $subdomain = self::get_subdomain();
-
-    //if the subdomain rules are "FALSE" then if we have a subdomain we won't make the route, because
-    //that's the indication of not allowing subdomains in that route
-    if ($subdomain != '' and $subdomain_rules == FALSE) {
-      return FALSE;
-    } elseif ($subdomain == '' and $subdomain_rules == FALSE) {
-      return TRUE;
-    }
-
-    //if subdomain it's empty, then we will return false, because there is no subdomain in the url
-    if ($subdomain == '') {
-      return FALSE;
-    }
-
-    $i = preg_match('/^\{(.+)\}$/', $subdomain_rules);
-
-    //if the subdomain rules have a named parameter, we will wait till the end of the
-    //route generation for it's rule
-    if ($i > 0) {
-      return TRUE;
-    }
-
-    $i = preg_match('/^\(\:any\)/', $subdomain_rules);
-
-    if ($i > 0) {
-      return TRUE;
-    }
-
-    $i = preg_match('/^\(\:num\)/', $subdomain_rules);
-
-    if ($i > 0) {
-      return is_numeric($subdomain);
-    }
-
-    //if we arrive here we will count the subdomain_rules as a regex, so se will check it
-    $i = preg_match($subdomain_rules, $subdomain);
-
-    if ($i > 0) {
-      return TRUE;
-    }
-
-    return FALSE;
-  }
-
-
-  //--------------------------------------------------------------------
-
-  //--------------------------------------------------------------------
-  // Filter Methods
-  //--------------------------------------------------------------------
 
   /**
-   * Adds a new filter into the list
+   * Gets route namespace
    *
-   * @param  string $name
-   * @param  Closure $callback
-   *
+   * @return string
    */
-  static function filter($name, $callback)
+  public function getNamespace()
   {
-    self::$filter_list[$name] = $callback;
+    return $this->namespace;
   }
 
-
-  //--------------------------------------------------------------------
-
-  static function get_filters($route, $type = 'before')
+  /**
+   * Get route middleware
+   *
+   * @return array
+   */
+  public function getMiddleware()
   {
-    if (array_key_exists($route, self::$route_objects)) {
-      $filter_list = self::$route_objects[$route]->get_filters($type);
+    return $this->middleware;
+  }
 
-      $callback_list = array();
+  /**
+   * Gets route action
+   *
+   * @return string|callable
+   */
+  public function getAction()
+  {
+    return $this->action;
+  }
 
-      foreach ($filter_list as $filter) {
-        if (is_callable($filter)) {
-          $callback_list[] = array(
-            'filter' => $filter,
-            'parameters' => NULL
-          );
-        } else {
-          $param = NULL;
+  /**
+   * Gets route prefix
+   *
+   * @return string
+   */
+  public function getPrefix()
+  {
+    return $this->prefix;
+  }
 
-          // check if callback has parameters
-          if (preg_match('/(.*?)\[(.*)\]/', $filter, $match)) {
-            $filter = $match[1];
-            $param = $match[2];
-          }
-
-          if (array_key_exists($filter, self::$filter_list)) {
-            $callback_list[] = array(
-              'filter' => self::$filter_list[$filter],
-              'parameters' => $param
-            );
-          }
-        }
-      }
-
-      return $callback_list;
-    }
-
-    return array();
+  /**
+   * Gets route path
+   *
+   * @return string
+   */
+  public function getPath()
+  {
+    return $this->path;
   }
 }

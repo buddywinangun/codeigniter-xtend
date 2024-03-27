@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PoP\PoP\OnDemand\Symplify\MonorepoBuilder\Release\ReleaseWorker;
+namespace Xtend\ReleaseWorker;
 
 use PharIo\Version\Version;
 
