@@ -48,7 +48,7 @@ class ReleaseWorkersDataSource
             BumpVersionForDevInMonorepoMetadataFileReleaseWorker::class,
 
             // Default workers
-            PushReleaseWorker::class,
+            // PushReleaseWorker::class,
         ];
     }
 }
