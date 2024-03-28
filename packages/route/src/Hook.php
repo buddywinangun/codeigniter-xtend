@@ -110,6 +110,7 @@ class Hook
 
     // Compiling all routes
     Route::compileAll();
+    Route::setAutoRoute(true);
 
     // HTTP verb tweak
     //

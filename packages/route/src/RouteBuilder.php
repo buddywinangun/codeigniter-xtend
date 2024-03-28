@@ -2,6 +2,8 @@
 
 namespace CodeigniterXtend\Route;
 
+use CodeigniterXtend\Route\Exception\RouteNotFoundException;
+
 class RouteBuilder
 {
   const DEFAULT_CONTROLLER = 'Welcome';
@@ -77,6 +79,18 @@ class RouteBuilder
     self::$routes[] = $route;
 
     return $route;
+  }
+
+  /**
+   * Allow to match URI against the controllers and methods
+   *
+   * @param boolean          $active
+   *
+   * @return void
+   */
+  public static function setAutoRoute($active)
+  {
+    self::$autoRoute = $active;
   }
 
   /**
