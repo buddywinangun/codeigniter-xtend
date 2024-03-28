@@ -17,6 +17,6 @@
         "sort-packages": true,
         "platform-check": false
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }
