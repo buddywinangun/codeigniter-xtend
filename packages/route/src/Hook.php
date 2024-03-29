@@ -7,15 +7,13 @@ use DebugBar\DataCollector\MessagesCollector;
 
 class Hook
 {
-  public static function getHooks($config = null)
+  public static function getHooks($hooks = [], $config = null)
   {
     if (empty($config)) {
       $config = [
         'modules' => [],
       ];
     }
-
-    $hooks = [];
 
     $hooks['pre_system'][] = function () use ($config) {
       self::preSystemHook($config);
