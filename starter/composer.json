@@ -6,6 +6,8 @@
     "license": "MIT",
     "require": {
         "php": "^7.0|~8.1.0",
+        "buddywinangun/codeigniter-auth": "dev-master",
+        "buddywinangun/codeigniter-route": "dev-master",
         "codeigniter/framework": "~3.1"
     },
     "require-dev": {
