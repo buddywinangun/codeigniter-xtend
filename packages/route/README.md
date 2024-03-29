@@ -37,7 +37,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 // (...)
 
-$hook = CodeigniterXtend\Route\Hook::getHooks();
+$hook = [];
+$hook = CodeigniterXtend\Route\Hook::getHooks($hook);
 ```
 
 Set the routes:
