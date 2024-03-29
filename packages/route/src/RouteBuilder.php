@@ -52,6 +52,11 @@ class RouteBuilder
   /**
    * @var string|callable
    */
+  private static $_404;
+
+  /**
+   * @var string|callable
+   */
   private static $autoRoute = false;
 
   public static function __callStatic($callback, array $args)
@@ -140,6 +145,27 @@ class RouteBuilder
   }
 
   /**
+   * Creates a new middleware
+   *
+   * @param mixed   $middleware  Middleware callable
+   * @param string  $point       Middleware execution point
+   *
+   * @return void
+   */
+  public static function middleware($middleware, $point = 'pre_controller')
+  {
+    if (!is_array($middleware)) {
+      $middleware = [$middleware];
+    }
+
+    foreach ($middleware as $_middleware) {
+      if (!in_array($_middleware, self::$context['middleware']['global'][$point])) {
+        self::$context['middleware']['global'][$point][] = $_middleware;
+      }
+    }
+  }
+
+  /**
    * Compiles all routes
    *
    * @return void
@@ -183,6 +209,30 @@ class RouteBuilder
       self::$compiled['reserved']['404_override'] : '';
 
     self::$compiled['routes'] = $routes;
+  }
+
+  /**
+   * Sets a CodeIgniter special route
+   *
+   * @param string $name  Route name
+   * @param string $value Route value
+   *
+   * @return void
+   *
+   * @throws \Exception
+   */
+  public static function set($name, $value)
+  {
+    if (!in_array($name, ['404_override', 'default_controller', 'translate_uri_dashes'])) {
+      throw new \Exception('Unknown reserved route "' . $name . '"');
+    }
+
+    if ($name == '404_override' && is_callable($value)) {
+      self::$_404 = $value;
+      $value = '';
+    }
+
+    self::$compiled['reserved'][$name] = $value;
   }
 
   /**
@@ -337,13 +387,16 @@ class RouteBuilder
   }
 
   /**
-   * Gets the global middleware
+   * Sets a (global) default value for a sticky parameter
    *
-   * @return array
+   * @param string $name   Parameter name
+   * @param string $value  Parameter value
+   *
+   * @return void
    */
-  public static function getGlobalMiddleware()
+  public static function setDefaultParam($name, $value)
   {
-    return self::$context['middleware']['global'];
+      self::$context['params'][$name] = $value;
   }
 
   /**
@@ -353,6 +406,16 @@ class RouteBuilder
   public static function getDefaultParams()
   {
     return self::$context['params'];
+  }
+
+  /**
+   * Gets the global middleware
+   *
+   * @return array
+   */
+  public static function getGlobalMiddleware()
+  {
+    return self::$context['middleware']['global'];
   }
 
   /**

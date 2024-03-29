@@ -103,7 +103,7 @@ class Route
     $this->path = trim($path, '/') == '' ? '/' : trim($path, '/');
 
     if (!is_callable($action) && count(explode('@', $action)) != 2) {
-      // show_error('Route action must be in <strong>controller@method</strong> syntax or be a valid callback');
+      show_error('Route action must be in <strong>controller@method</strong> syntax or be a valid callback');
     }
 
     $this->action = $action;
@@ -358,6 +358,43 @@ class Route
   }
 
   /**
+   * Gets or sets a route parameter
+   *
+   * @param  string  $name  Parameter name
+   * @param  string  $value Parameter value
+   *
+   * @return mixed
+   */
+  public function param($name, $value = null)
+  {
+    foreach ($this->params as &$_param) {
+      if ($name == $_param->getName()) {
+        if ($value !== null) {
+          $_param->value = $value;
+        }
+        return $_param->value;
+      }
+    }
+  }
+
+  /**
+   * Checks if the route has a specific parameter
+   *
+   * @param  string  $name Parameter name
+   *
+   * @return bool
+   */
+  public function hasParam($name)
+  {
+    foreach ($this->params as &$_param) {
+      if ($name == $_param->getName()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
    * Gets route accepted HTTP Verbs
    *
    * @return mixed
@@ -365,16 +402,6 @@ class Route
   public function getMethods()
   {
     return $this->methods;
-  }
-
-  /**
-   * Gets route full path
-   *
-   * @return string
-   */
-  public function getFullPath()
-  {
-    return $this->fullPath;
   }
 
   /**
@@ -425,5 +452,15 @@ class Route
   public function getPath()
   {
     return $this->path;
+  }
+
+  /**
+   * Gets route full path
+   *
+   * @return string
+   */
+  public function getFullPath()
+  {
+    return $this->fullPath;
   }
 }
