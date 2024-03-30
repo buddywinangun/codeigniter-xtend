@@ -2,7 +2,6 @@
 
 namespace CodeigniterXtend\Auth;
 
-use CodeigniterXtend\Route\RouteBuilder as Route;
 use CodeigniterXtend\Route\Debug;
 
 class Auth
@@ -22,28 +21,57 @@ class Auth
   }
 
   /**
-   * Sets the SimpleAuth default routing
+   * Loads an User class and his related User Provider class
    *
-   * @param boolean $secureLogout Disable logout with GET requests
+   * @param  string $userClass User class name
    *
-   * @return void
+   * @return \CodeigniterXtend\Auth\UserProviderInterface
    */
-  public static function getRoutes($secureLogout = true)
+  public static function loadUserProvider($userProviderClass)
   {
-    Route::match(['get', 'post'], 'login', 'SimpleAuthController@login')->name('login');
+    if (isset(self::$providers[$userProviderClass])) {
+      return self::$providers[$userProviderClass];
+    }
 
-    Route::match($secureLogout === true ? ['post'] : ['get', 'post'], 'logout', 'SimpleAuthController@logout')->name('logout');
+    if (substr($userProviderClass, -8) != 'Provider') {
+      $userProviderClass .= 'Provider';
+    }
 
-    Route::get('email_verification/{token}', 'SimpleAuthController@emailVerification')->name('email_verification');
+    if (file_exists(APPPATH . '/security/providers/' . $userProviderClass . '.php')) {
+      require_once APPPATH . '/security/providers/' . $userProviderClass . '.php';
 
-    Route::match(['get', 'post'], 'signup', 'SimpleAuthController@signup')->name('signup');
+      if (!class_exists($userProviderClass)) {
+        show_error('User provider class "' . $userProviderClass . '" not found');
+      }
+    } else {
+      show_error('Unable to find "' . $userProviderClass . '" User Provider class file');
+    }
 
-    Route::match(['get', 'post'], 'confirm_password', 'SimpleAuthController@confirmPassword')->name('confirm_password');
+    $userProviderInstance = new $userProviderClass();
+    $userClass = $userProviderInstance->getUserClass();
 
-    Route::group('password-reset', function () {
-      Route::match(['get', 'post'], '/', 'SimpleAuthController@passwordReset')->name('password_reset');
-      Route::match(['get', 'post'], '{token}', 'SimpleAuthController@passwordResetForm')->name('password_reset_form');
-    });
+    if (!file_exists(APPPATH . '/security/providers/' . $userClass . '.php')) {
+      show_error('Unable to find "' . $userClass . '" attached User class file');
+    }
+
+    require_once APPPATH . '/security/providers/' . $userClass . '.php';
+
+    if (!class_exists($userClass)) {
+      show_error('User attached class "' . $userClass . '" not found');
+    }
+
+    self::$providers[$userClass] = $userProviderInstance;
+    return $userProviderInstance;
+  }
+
+  /**
+   * Checks if the current user is guest (not authenticated)
+   *
+   * @return bool
+   */
+  public static function isGuest()
+  {
+    return self::user() === null;
   }
 
   /**
@@ -122,5 +150,19 @@ class Auth
         ci()->session->set_userdata(self::getSessionName(), $authSession);
       }
     }
+  }
+
+  /**
+   * Gets the current authentication messages (useful for validations, etc)
+   *
+   * @return array
+   */
+  public static function messages()
+  {
+    $messages = ci()->session->flashdata('_auth_messages');
+
+    return !empty($messages)
+      ? $messages
+      : [];
   }
 }
