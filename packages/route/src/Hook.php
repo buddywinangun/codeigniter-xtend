@@ -2,6 +2,7 @@
 
 namespace CodeigniterXtend\Route;
 
+use CodeigniterXtend\Route\Exception\RouteNotFoundException;
 use CodeigniterXtend\Route\RouteBuilder as Route;
 use DebugBar\DataCollector\MessagesCollector;
 
@@ -165,7 +166,7 @@ class Hook
    */
   private static function preControllerHook(&$params, &$URI, &$class, &$method)
   {
-    $route  = Route::getCurrentRoute();
+    $route = Route::getCurrentRoute();
 
     // Is a 404 route? stop this hook
     if ($route->is404) {
@@ -302,6 +303,7 @@ class Hook
     // Current route configuration and dispatch
     ci()->route = Route::getCurrentRoute();
 
+    // run middleware
     if (!ci()->route->is404) {
       ci()->load->helper('url');
       ci()->middleware = new Middleware();
@@ -330,10 +332,10 @@ class Hook
           ci()->middleware->run($_middleware);
         }
       }
+    }
 
-      if (is_callable(ci()->route->getAction())) {
-        call_user_func_array(ci()->route->getAction(), $params);
-      }
+    if (is_callable(ci()->route->getAction())) {
+      call_user_func_array(ci()->route->getAction(), $params);
     }
   }
 
@@ -350,6 +352,7 @@ class Hook
       return;
     }
 
+    // run middleware
     foreach (Route::getGlobalMiddleware()['post_controller'] as $middleware) {
       ci()->middleware->run($middleware);
     }
