@@ -2,7 +2,7 @@
 
 namespace CodeigniterXtend\Auth;
 
-use CodeigniterXtend\Auth\Auth\Middleware as AuthMiddlewareInterface;
+use CodeigniterXtend\Auth\Middleware as AuthMiddlewareInterface;
 use CodeigniterXtend\Auth\Auth;
 use CodeigniterXtend\Route\Middleware;
 use CodeigniterXtend\Route\MiddlewareInterface;

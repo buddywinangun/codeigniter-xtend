@@ -8,7 +8,7 @@ use CodeigniterXtend\Auth\Exception\UserNotFoundException;
 use CodeigniterXtend\Auth\Exception\InactiveUserException;
 use CodeigniterXtend\Auth\Exception\UnverifiedUserException;
 use CodeigniterXtend\Route\Route;
-use CodeigniterXtend\Debug;
+use CodeigniterXtend\Route\Debug;
 use CodeigniterXtend\Route\MiddlewareInterface;
 
 /**

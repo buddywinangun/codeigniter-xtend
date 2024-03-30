@@ -50,5 +50,6 @@ php index.php migrate
 In your web.php route file, add the following line:
 
 ```php
-CodeigniterXtend\Auth\Auth::getRoutes();
+// Sets the default routing
+\CodeigniterXtend\Auth\SimpleAuth\Routes::getRoutes();
 ```
