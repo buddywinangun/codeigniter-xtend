@@ -332,7 +332,6 @@ class Library
         }
         catch(PermissionNotFoundException $e)
         {
-
             return false;
         }
 

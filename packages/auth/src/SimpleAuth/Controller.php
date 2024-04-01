@@ -199,12 +199,10 @@ class Controller extends \CI_Controller implements AuthControllerInterface
         $this->load->library('form_validation');
 
         // Setting required paths and fields
-        $assetsPath   = base_url(config_item('simpleauth_assets_dir'));
         $signupFields = $this->getSignupFields();
 
         if ($_POST) {
             $this->load->database();
-            $this->copyAssets(config_item('simpleauth_skin'));
 
             // Processing the submitted form
             $user = [];
