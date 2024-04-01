@@ -58,37 +58,37 @@ return [
     /*
      * Email verification
      */
-     'email_verification_failed'          => 'Email verification error',
-     'email_verification_failed_message'  => 'The token is not valid or already used',
-     'email_verification_success'         => 'Success!',
-     'email_verification_success_message' => 'Your account email is now verified. <a href="{login_url}">Login</a>',
+    'email_verification_failed'          => 'Email verification error',
+    'email_verification_failed_message'  => 'The token is not valid or already used',
+    'email_verification_success'         => 'Success!',
+    'email_verification_success_message' => 'Your account email is now verified. <a href="{login_url}">Login</a>',
 
 
     /*
      * Password reset
      */
 
-     'password_reset'               => 'Password reset',
-     'password_reset_email_label'   => 'Please enter your email address:',
-     'password_reset_email_field'   => 'Email',
-     'password_reset_btn'           => 'Submit',
-     'password_reset_form_btn'      => 'Change password',
-     'password_reset_new_pwd'       => 'New Password',
-     'password_reset_repeat_pwd'    => 'Repeat Password',
-     'password_reset_result_notice' => 'If the email address exists, instructions will be sent there',
-     'password_reset_token_error'   => 'Error',
-     'password_reset_token_error_message' => 'The token is not valid or already used',
-     'password_reset_validation_password' => 'The new passwords does not match',
-     'password_reset_success'         => 'Password changed successfully',
-     'password_reset_success_message' => 'Go to <a href="{login_url}">Login</a> page',
+    'password_reset'               => 'Password reset',
+    'password_reset_email_label'   => 'Please enter your email address:',
+    'password_reset_email_field'   => 'Email',
+    'password_reset_btn'           => 'Submit',
+    'password_reset_form_btn'      => 'Change password',
+    'password_reset_new_pwd'       => 'New Password',
+    'password_reset_repeat_pwd'    => 'Repeat Password',
+    'password_reset_result_notice' => 'If the email address exists, instructions will be sent there',
+    'password_reset_token_error'   => 'Error',
+    'password_reset_token_error_message' => 'The token is not valid or already used',
+    'password_reset_validation_password' => 'The new passwords does not match',
+    'password_reset_success'         => 'Password changed successfully',
+    'password_reset_success_message' => 'Go to <a href="{login_url}">Login</a> page',
 
 
     /*
      * Password prompt
      */
-     'password_prompt'     => 'Confirm your password',
-     'password_prompt_btn' => 'Continue',
-     'password_prompt_pwd_field' => 'Current Password',
-     'password_prompt_validation_required' => 'Please enter your password',
-     'password_prompt_validation_password' => 'The password is incorrect',
+    'password_prompt'     => 'Confirm your password',
+    'password_prompt_btn' => 'Continue',
+    'password_prompt_pwd_field' => 'Current Password',
+    'password_prompt_validation_required' => 'Please enter your password',
+    'password_prompt_validation_password' => 'The password is incorrect',
 ];
