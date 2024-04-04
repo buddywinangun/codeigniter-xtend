@@ -27,7 +27,6 @@ class Debug
         }
 
         self::$debugBar = new DebugBar();
-        self::setDebugBarRoutes();
     }
 
     /**
@@ -45,7 +44,7 @@ class Debug
      *
      * @return void
      */
-    private static function setDebugBarRoutes()
+    public static function setDebugBarRoutes()
     {
         RouteBuilder::any('_debug_bar/css', function(){
 

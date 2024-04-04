@@ -104,6 +104,8 @@ class Hook
     // Debug module
     if (ENVIRONMENT != 'production' && !$isCli && !$isAjax && in_array('debug', $config['modules'])) {
       Debug::init();
+      Debug::setDebugBarRoutes();
+      Debug::addCollector(new MessagesCollector('auth'));
       Debug::addCollector(new MessagesCollector('routing'));
     }
 
