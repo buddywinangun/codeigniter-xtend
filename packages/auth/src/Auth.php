@@ -75,6 +75,103 @@ class Auth
   }
 
   /**
+   * Checks if current user has the provided role name
+   *
+   * @param  string $role Role name
+   *
+   * @return bool
+   */
+  public static function isRole($user, $role = null)
+  {
+    if (self::isGuest()) {
+      return false;
+    }
+
+    if ($role === null) {
+      $role = $user;
+      $user = self::user();
+    }
+
+    $roles = $user->getRoles();
+
+    if (!is_array($roles)) {
+      show_error('The getRoles()  method  of ' . get_class($user) . ' class method must return an array', 500, 'Auth error');
+    }
+
+    return in_array($role, $user->getRoles());
+  }
+
+  /**
+   * Checks if current user has a the provided permission name
+   *
+   * @param  string  $permission
+   *
+   * @return bool
+   */
+  public static function isGranted($user, $permission = null)
+  {
+    if (self::isGuest()) {
+      return false;
+    }
+
+    if ($permission === null) {
+      $permission = $user;
+      $user = self::user();
+    }
+
+    $permissions = $user->getPermissions();
+
+    if (!is_array($permissions)) {
+      show_error('The getPermissions()  method  of ' . get_class($user) . ' class must return an array', 500, 'Auth error');
+    }
+
+    if (substr($permission, -2) != '.*') {
+      return in_array($permission, $permissions);
+    } else {
+      foreach ($permissions as $_permission) {
+        if (preg_match('/^' . substr($permission, 0, -2) . '/', $_permission)) {
+          return true;
+        }
+      }
+      return false;
+    }
+  }
+
+  /**
+   * Stores an user in the authentication session
+   *
+   * @param  UserInterface $user Authenticated user
+   * @param  array         $data User data
+   *
+   * @return void
+   */
+  final public static function store(UserInterface $user, $data = [])
+  {
+    $storedSessionUser = [
+      'user' =>
+      [
+        'class'       => get_class($user),
+        'entity'      => $user->getEntity(),
+        'username'    => $user->getUsername(),
+        'roles'       => $user->getRoles(),
+        'permissions' => $user->getPermissions(),
+      ],
+      'validated' => false,
+      'fully_authenticated' => true,
+    ];
+
+    foreach ($data as $name => $value) {
+      if ($name == 'user') {
+        continue;
+      }
+
+      $storedSessionUser[$name] = $value;
+    }
+
+    ci()->session->set_userdata(self::getSessionName(), $storedSessionUser);
+  }
+
+  /**
    * Initializes the authentication session
    *
    * @return void
@@ -87,6 +184,30 @@ class Auth
         'validated'   => false,
         'fully_authenticated' => false
       ]);
+    }
+  }
+
+  /**
+   * Gets (or sets) an authentication session variable
+   *
+   * @param  string  $name
+   * @param  mixed   $value
+   *
+   * @return mixed
+   */
+  public static function session($name = null, $value = null)
+  {
+    $authSession  = ci()->session->userdata(self::getSessionName());
+
+    if ($name === null) {
+      return $authSession;
+    } else {
+      if ($value === null) {
+        return isset($authSession[$name]) ? $authSession[$name] : null;
+      } else {
+        $authSession[$name] = $value;
+        ci()->session->set_userdata(self::getSessionName(), $authSession);
+      }
     }
   }
 
@@ -129,27 +250,79 @@ class Auth
   }
 
   /**
-   * Gets (or sets) an authentication session variable
+   * Deletes the current authenticated user
    *
-   * @param  string  $name
-   * @param  mixed   $value
-   *
-   * @return mixed
+   * @return void
    */
-  public static function session($name = null, $value = null)
+  public static function destroy()
   {
-    $authSession  = ci()->session->userdata(self::getSessionName());
+    ci()->session->unset_userdata(self::getSessionName());
+    self::init();
+  }
 
-    if ($name === null) {
-      return $authSession;
-    } else {
-      if ($value === null) {
-        return isset($authSession[$name]) ? $authSession[$name] : null;
-      } else {
-        $authSession[$name] = $value;
-        ci()->session->set_userdata(self::getSessionName(), $authSession);
-      }
+  /**
+   * Attempts login using an username, password and a User Provider class
+   *
+   * (You must catch any exception produced here manually)
+   *
+   * @param string                 $username      Username
+   * @param string                 $password
+   * @param UserProviderInterface  $userProvider
+   *
+   * @throws \Exception
+   *
+   * @return UserInterface
+   */
+  final public static function attempt($username, $password, $userProvider)
+  {
+    if (!is_string($userProvider) && !$userProvider instanceof UserProviderInterface) {
+      throw new \Exception("Invalid user provider. Must be a string or an instance of UserProviderInterface");
     }
+
+    if (is_string($userProvider)) {
+      $userProvider = self::loadUserProvider($userProvider);
+    }
+
+    $user = $userProvider->loadUserByUsername($username, $password);
+    $userProvider->checkUserIsActive($user);
+    $userProvider->checkUserIsVerified($user);
+
+    return $user;
+  }
+
+  /**
+   * Forces a user login
+   *
+   * (Even if you can bypass the authentication process with this method, is still
+   * required that the target user exists)
+   *
+   * @param string                       $username
+   * @param string|UserProviderInterface $userProvider
+   *
+   * @throws \Exception
+   *
+   * @return UserInterface
+   */
+  final public static function bypass($username, $userProvider)
+  {
+    if (!is_string($userProvider) && !$userProvider instanceof UserProviderInterface) {
+      throw new \Exception("Invalid user provider. Must be a string or an instance of UserProviderInterface");
+    }
+
+    if (is_string($userProvider)) {
+      $userProvider = self::loadUserProvider($userProvider);
+    }
+
+    $user = $userProvider->loadUserByUsername($username, null);
+
+    if (!$user instanceof UserInterface) {
+      show_error('Returned user MUST be an instance of UserInterface');
+    }
+
+    $userProvider->checkUserIsActive($user);
+    $userProvider->checkUserIsVerified($user);
+
+    return $user;
   }
 
   /**

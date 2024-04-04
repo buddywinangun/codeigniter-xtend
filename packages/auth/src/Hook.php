@@ -6,20 +6,13 @@ use CodeigniterXtend\Route\Utils;
 use CodeigniterXtend\Route\RouteBuilder as Route;
 use CodeigniterXtend\Auth\Dispatcher as AuthDispatcher;
 use CodeigniterXtend\Route\Debug;
-use DebugBar\DataCollector\MessagesCollector;
 
 class Hook
 {
-  public static function getHooks($hooks = [], $config = null)
+  public static function getHooks($hooks = [])
   {
-    if (empty($config)) {
-      $config = [
-        'modules' => [],
-      ];
-    }
-
-    $hooks['pre_system'][] = function () use ($config) {
-      self::preSystemHook($config);
+    $hooks['pre_system'][] = function () {
+      self::preSystemHook();
     };
 
     $hooks['post_controller_constructor'][] = function () {
@@ -36,11 +29,9 @@ class Hook
   /**
    * "pre_system" hook
    *
-   * @param array $config
-   *
    * @return void
    */
-  private static function preSystemHook($config)
+  private static function preSystemHook()
   {
     define('CI_DIR', __DIR__);
 
@@ -57,9 +48,8 @@ class Hook
     Route::middleware(new AuthDispatcher());
 
     // Debug module
-    if (ENVIRONMENT != 'production' && !$isCli && !$isAjax && in_array('debug', $config['modules'])) {
+    if (ENVIRONMENT != 'production' && !$isCli && !$isAjax) {
       Debug::init();
-      Debug::addCollector(new MessagesCollector('auth'));
     }
   }
 
