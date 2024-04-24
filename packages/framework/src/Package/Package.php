@@ -11,45 +11,12 @@
 
 namespace CodeigniterXtend\Framework\Package;
 
-use CodeigniterXtend\Framework\Helpers\PathHelper;
-use CodeigniterXtend\Framework\Package\PackageManager;
-
 final class Package
 {
 	/**
 	 * Holds an array of package locations.
-	 * @var array.
 	 */
 	protected static $_locations;
-
-	// -------------------------------------------------------------------------
-
-	public static function init()
-	{
-		// Lopp through all packages.
-		foreach (PackageManager::lists() as $folder => $path) {
-
-			// package enabled but folder missing? Nothing to do.
-			if (TRUE !== PackageManager::is_enabled($folder)) {
-				continue;
-			}
-
-			// ".php" not found? Nothing to do.
-			if (!is_file($path . $folder . '.php')) {
-				continue;
-			}
-
-			// added package path.
-			$ci = &get_instance();
-			$ci->load->add_package_path($path);
-
-			// Include their  file if found.
-			require_once($path . $folder . ".php");
-
-			// We always fire this action.
-			do_action('package_loaded_' . $folder);
-		}
-	}
 
 	// -------------------------------------------------------------------------
 

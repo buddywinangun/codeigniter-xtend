@@ -29,28 +29,6 @@ final class Template
    */
   protected static $_locations;
 
-	// -------------------------------------------------------------------------
-
-	public static function init()
-	{
-		if (FALSE === self::path()) return;
-
-		$GLOBALS['BM']->mark('theme_initialize_start');
-
-		// Load the current theme's functions.php file.
-		if (TRUE != ($function = self::path('functions.php'))) {
-			log_message('error', 'Unable to locate the theme\'s "functions.php" file: ' . self::current());
-			show_error(sprintf('theme_missing_functions %s', self::current()));
-		}
-
-		require_once($function);
-
-		// load language
-		self::language();
-
-		$GLOBALS['BM']->mark('theme_initialize_end');
-	}
-
   // ----------------------------------------------------------------------------
 
   /**
@@ -298,15 +276,13 @@ final class Template
       return;
     }
 
-		if (file_exists(APPPATH.'config/locate.php'))
-		{
-			include(APPPATH.'config/locate.php');
-		}
+    if (file_exists(APPPATH . 'config/locate.php')) {
+      include(APPPATH . 'config/locate.php');
+    }
 
-		if (file_exists(APPPATH.'config/'.ENVIRONMENT.'/locate.php'))
-		{
-			include(APPPATH.'config/'.ENVIRONMENT.'/locate.php');
-		}
+    if (file_exists(APPPATH . 'config/' . ENVIRONMENT . '/locate.php')) {
+      include(APPPATH . 'config/' . ENVIRONMENT . '/locate.php');
+    }
 
     self::$_locations = $locate['template'];
 

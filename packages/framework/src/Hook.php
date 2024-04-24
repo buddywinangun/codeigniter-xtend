@@ -8,37 +8,22 @@
 
 namespace CodeigniterXtend\Framework;
 
-use CodeigniterXtend\Framework\Route\RouteBuilder as Route;
+use CodeigniterXtend\Framework\Package\PackageManager;
+use CodeigniterXtend\Framework\View\Template;
 
-// $hook['pre_system'][] = [new CodeigniterXtend\Framework\Autoloader\Autoloader, 'register'];
-// $hook['pre_controller_constructor'][] = [new CodeigniterXtend\Framework\Package\Package, 'init'];
-// $hook['pre_controller_constructor'][] = [new CodeigniterXtend\Framework\View\Template, 'init'];
 class Hook
 {
-	public static function getHooks($config = null)
+	public static function getHooks()
 	{
 		$hooks = [];
 
-		$hooks['pre_system'][] = function () use ($config) {
-			self::preSystemHook($config);
+		$hooks['pre_system'][] = function () {
+			self::preSystemHook();
 		};
 
-		$hooks['pre_controller'][] = function () {
-			global $params, $URI, $class, $method;
-			self::preControllerHook($params, $URI, $class, $method);
-		};
-
-		$hooks['post_controller_constructor'][] = function () use ($config) {
+		$hooks['post_controller_constructor'][] = function () {
 			global $params;
-			self::postControllerConstructorHook($config, $params);
-		};
-
-		$hooks['post_controller'][] = function () use ($config) {
-			self::postControllerHook($config);
-		};
-
-		$hooks['display_override'][] = function () {
-			self::displayOverrideHook();
+			self::postControllerConstructorHook($params);
 		};
 
 		return $hooks;
@@ -47,64 +32,60 @@ class Hook
 	/**
 	 * "pre_system" hook
 	 *
-	 * @param array $config
 	 * @return void
 	 */
-	private static function preSystemHook($config)
+	private static function preSystemHook()
 	{
-		$isAjax =  isset($_SERVER['HTTP_X_REQUESTED_WITH']) && (!empty($_SERVER['HTTP_X_REQUESTED_WITH'])
-			&& strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest');
+		$autoloader = new CodeigniterXtend\Framework\Autoloader\Autoloader();
+		$autoloader->register();
+	}
 
-		$isCli  =  is_cli();
+  /**
+   * "post_controller" hook
+   *
+   * @param  array $params
+   *
+   * @return void
+   */
+  private static function postControllerConstructorHook(&$params)
+  {
+		// Lopp through all packages.
+		foreach (PackageManager::lists() as $folder => $path) {
 
-		require_once __DIR__ . '/Facades/Route.php';
-
-		if (!file_exists(APPPATH . '/routes')) {
-			mkdir(APPPATH . '/routes');
-		}
-
-		if (!file_exists(APPPATH . '/middleware')) {
-			mkdir(APPPATH . '/middleware');
-		}
-
-		// Compiling all routes
-		Route::compileAll();
-
-		// HTTP verb tweak
-		//
-		// (This allows us to use any HTTP Verb if the form contains a hidden field
-		// named "_method")
-		if (isset($_SERVER['REQUEST_METHOD'])) {
-			if (strtolower($_SERVER['REQUEST_METHOD']) == 'post' && isset($_POST['_method'])) {
-				$_SERVER['REQUEST_METHOD'] = $_POST['_method'];
+			// package enabled but folder missing? Nothing to do.
+			if (TRUE !== PackageManager::is_enabled($folder)) {
+				continue;
 			}
 
-			$requestMethod = $_SERVER['REQUEST_METHOD'];
-		} else {
-			$requestMethod = 'CLI';
+			// ".php" not found? Nothing to do.
+			if (!is_file($path . $folder . '.php')) {
+				continue;
+			}
+
+			// added package path.
+			get_instance()->load->add_package_path($path);
+
+			// Include their  file if found.
+			require_once($path . $folder . ".php");
+
+			// We always fire this action.
+			do_action('package_loaded_' . $folder);
 		}
 
-		// Getting the current url
-		$url = Utils::currentUrl();
+    global $BM;
+    $BM->mark('theme_initialize_start');
 
-		try {
-			$currentRoute = Route::getByUrl($url);
-		} catch (RouteNotFoundException $e) {
-			Route::$compiled['routes'][$url] = Route::DEFAULT_CONTROLLER . '/index';
-			$currentRoute =  Route::{!is_cli() ? 'any' : 'cli'}($url, function () {
-				if (!is_cli() && is_callable(Route::get404())) {
-					$_404 = Route::get404();
-					call_user_func($_404);
-				} else {
-					show_404();
-				}
-			});
-			$currentRoute->is404 = true;
-			$currentRoute->isCli = is_cli();
-		};
+    // Load the current theme's functions.php file.
+    if (TRUE != ($function = Template::path('functions.php'))) {
+      log_message('error', 'Unable to locate the theme\'s "functions.php" file: ' . self::current());
+      show_error(sprintf('theme_missing_functions %s', Template::current()));
+    }
 
-		$currentRoute->requestMethod = $requestMethod;
+    require_once($function);
 
-		Route::setCurrentRoute($currentRoute);
-	}
+    // load language
+    Template::language();
+
+    $BM->mark('theme_initialize_end');
+  }
 }
