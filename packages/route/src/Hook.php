@@ -4,6 +4,7 @@ namespace CodeigniterXtend\Route;
 
 use CodeigniterXtend\Route\Exception\RouteNotFoundException;
 use CodeigniterXtend\Route\RouteBuilder as Route;
+use CodeigniterXtend\Debug\Debug;
 use DebugBar\DataCollector\MessagesCollector;
 
 class Hook
@@ -102,7 +103,7 @@ class Hook
     require_once(__DIR__ . '/Functions.php');
 
     // Debug module
-    if (ENVIRONMENT != 'production' && !$isCli && !$isAjax && in_array('debug', $config['modules'])) {
+    if (ENVIRONMENT != 'production' && !$isCli && !$isAjax) {
       Debug::init();
       Debug::setDebugBarRoutes();
       Debug::addCollector(new MessagesCollector('auth'));

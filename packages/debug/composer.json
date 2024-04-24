@@ -1,11 +1,11 @@
 {
-    "name": "buddywinangun/codeigniter-route",
-    "description": "Codeigniter Xtend Route",
+    "name": "buddywinangun/codeigniter-debug",
+    "description": "Codeigniter Xtend Debug",
     "type": "library",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "CodeigniterXtend\\Route\\": "src/"
+            "CodeigniterXtend\\Debug\\": "src/"
         }
     },
     "authors": [
@@ -15,7 +15,8 @@
         }
     ],
     "require": {
-        "php": "^7.0|~8.1.0"
+        "php": "^7.0|~8.1.0",
+        "maximebf/debugbar": "^1.21"
     },
     "extra": {
         "branch-alias": {

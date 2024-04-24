@@ -2,7 +2,7 @@
 
 namespace CodeigniterXtend\Auth;
 
-use CodeigniterXtend\Route\Debug;
+use CodeigniterXtend\Debug\Debug;
 
 class Auth
 {

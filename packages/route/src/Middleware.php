@@ -2,6 +2,8 @@
 
 namespace CodeigniterXtend\Route;
 
+use CodeigniterXtend\Debug\Debug;
+
 /**
  * Middleware handler class
  */
@@ -66,7 +68,7 @@ class Middleware
         {
             if(!$middleware instanceof MiddlewareInterface)
             {
-                Debug::log('DEPRECATED: All your middleware MUST implement the Luthire\MiddlewareInterface interface. Please fix this issue with "' . get_class($middleware) . '" middleware');
+                Debug::log('DEPRECATED: All your middleware MUST implement the Framework\MiddlewareInterface interface. Please fix this issue with "' . get_class($middleware) . '" middleware');
                 if(method_exists($middleware,'run'))
                 {
                     show_error('Your "' . get_class($middleware) . '" middleware doesn\'t have a run() public method');

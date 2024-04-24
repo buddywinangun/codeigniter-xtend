@@ -5,7 +5,6 @@ an awesome set of core improvements for CodeIgniter 3 that makes the development
 * Easy installation via hooks
 * routing: prefixes, namespaces, anonymous functions as routes, route groups, named parameters, optional parameters, etc.
 * Middleware support
-* PHP Debug Bar integration (experimental)
 
 ## Installation
 

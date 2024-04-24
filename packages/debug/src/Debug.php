@@ -1,8 +1,9 @@
 <?php
 
-namespace CodeigniterXtend\Route;
+namespace CodeigniterXtend\Debug;
 
 use DebugBar\StandardDebugBar as DebugBar;
+use CodeigniterXtend\Route\RouteBuilder;
 
 /**
  * Wrapper of PHP Debug integration
@@ -49,7 +50,7 @@ class Debug
         RouteBuilder::any('_debug_bar/css', function(){
 
             ob_start();
-            Debug::getDebugBar()->getJavascriptRenderer()->dumpCssAssets();
+            self::getDebugBar()->getJavascriptRenderer()->dumpCssAssets();
 
             // CSS tweaks
             echo "
@@ -117,7 +118,7 @@ class Debug
         RouteBuilder::any('_debug_bar/js', function(){
 
             ob_start();
-            Debug::getDebugBar()->getJavascriptRenderer()->dumpJsAssets();
+            self::getDebugBar()->getJavascriptRenderer()->dumpJsAssets();
             $js = ob_get_clean();
 
             ci()->output
@@ -159,7 +160,7 @@ class Debug
             $head .= '<link rel="stylesheet" href="'. route('debug_bar.css_assets') .'" onerror="asset_retry(this, \'css\')" />';
 
             $body  = '<script src="'. route('debug_bar.js_assets') .'" onerror="asset_retry(this, \'js\')"></script>';
-            $body .=  Debug::getDebugBar()->getJavascriptRenderer()->render();
+            $body .=  self::getDebugBar()->getJavascriptRenderer()->render();
 
             $output = str_ireplace('</head>', $head . '</head>', $output);
             $output = str_ireplace('</body>', $body . '</body>', $output);

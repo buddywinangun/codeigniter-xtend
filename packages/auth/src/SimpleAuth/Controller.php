@@ -6,7 +6,7 @@ use CodeigniterXtend\Auth\Auth;
 use CodeigniterXtend\Auth\ControllerInterface as AuthControllerInterface;
 use CodeigniterXtend\Auth\SimpleAuth\Middleware as SimpleAuthMiddleware;
 use CodeigniterXtend\Route\Utils;
-use CodeigniterXtend\Route\Debug;
+use CodeigniterXtend\Debug\Debug;
 
 /**
  * SimpleAuth base controller

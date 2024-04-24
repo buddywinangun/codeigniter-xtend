@@ -5,7 +5,7 @@ namespace CodeigniterXtend\Auth;
 use CodeigniterXtend\Route\Utils;
 use CodeigniterXtend\Route\RouteBuilder as Route;
 use CodeigniterXtend\Auth\Dispatcher as AuthDispatcher;
-use CodeigniterXtend\Route\Debug;
+use CodeigniterXtend\Debug\Debug;
 
 class Hook
 {
