@@ -1,12 +1,12 @@
 <?php
 
-namespace CodeigniterXtend\Auth\SimpleAuth\Middleware;
+namespace CodeigniterXtend\Auth\Middleware;
 
 use CodeigniterXtend\Route\MiddlewareInterface;
 use CodeigniterXtend\Auth\Auth;
 
 /**
- * Special 'Remember me' feature of SimpleAuth
+ * Special 'Remember me' feature
  */
 class RememberMeMiddleware implements MiddlewareInterface
 {
@@ -37,7 +37,7 @@ class RememberMeMiddleware implements MiddlewareInterface
 
     private function storeAuthCookie()
     {
-        if(ci()->input->post(config_item('simpleauth_remember_me_field')) === null)
+        if(ci()->input->post(config_item('auth_remember_me_field')) === null)
         {
             return;
         }
@@ -47,12 +47,12 @@ class RememberMeMiddleware implements MiddlewareInterface
         $rememberToken = bin2hex(ci()->encryption->create_key(32));
 
         ci()->db->update(
-            config_item('simpleauth_users_table'),
-           [config_item('simpleauth_remember_me_col') => $rememberToken],
+            config_item('auth_users_table'),
+           [config_item('auth_remember_me_col') => $rememberToken],
            ['id' => Auth::user()->id]
         );
 
-        ci()->input->set_cookie(config_item('simpleauth_remember_me_cookie'), $rememberToken, 1296000); // 15 days
+        ci()->input->set_cookie(config_item('auth_remember_me_cookie'), $rememberToken, 1296000); // 15 days
     }
 
     private function restoreAuthFromCookie()
@@ -66,7 +66,7 @@ class RememberMeMiddleware implements MiddlewareInterface
         ci()->load->helper('cookie');
         ci()->load->library('encryption');
 
-        $rememberToken = get_cookie(config_item('simpleauth_remember_me_cookie'));
+        $rememberToken = get_cookie(config_item('auth_remember_me_cookie'));
 
         if( empty($rememberToken) )
         {
@@ -74,26 +74,26 @@ class RememberMeMiddleware implements MiddlewareInterface
         }
 
         $storedUserFromToken = ci()->db->get_where(
-             config_item('simpleauth_users_table'),
-            [config_item('simpleauth_remember_me_col') => $rememberToken]
+             config_item('auth_users_table'),
+            [config_item('auth_remember_me_col') => $rememberToken]
         )->result();
 
         if(empty($storedUserFromToken))
         {
-            delete_cookie(config_item('simpleauth_remember_me_cookie'));
+            delete_cookie(config_item('auth_remember_me_cookie'));
             return;
         }
 
-        $userProvider = Auth::loadUserProvider(config_item('simpleauth_user_provider'));
+        $userProvider = Auth::loadUserProvider(config_item('auth_user_provider'));
 
         try
         {
-            $user = Auth::bypass($storedUserFromToken[0]->{config_item('simpleauth_username_col')}, $userProvider);
+            $user = Auth::bypass($storedUserFromToken[0]->{config_item('auth_username_col')}, $userProvider);
                     $userProvider->checkUserIsActive($user);
 
                     if(
-                        config_item('simpleauth_enable_email_verification')  === TRUE &&
-                        config_item('simpleauth_enforce_email_verification') === TRUE
+                        config_item('auth_enable_email_verification')  === TRUE &&
+                        config_item('auth_enforce_email_verification') === TRUE
                     )
                     {
                         $userProvider->checkUserIsVerified($user);
@@ -101,7 +101,7 @@ class RememberMeMiddleware implements MiddlewareInterface
         }
         catch(\Exception $e)
         {
-            delete_cookie(config_item('simpleauth_remember_me_cookie'));
+            delete_cookie(config_item('auth_remember_me_cookie'));
             return;
         }
 
@@ -111,6 +111,6 @@ class RememberMeMiddleware implements MiddlewareInterface
     private function destroyAuthCookie()
     {
         ci()->load->helper('cookie');
-        delete_cookie(config_item('simpleauth_remember_me_cookie'));
+        delete_cookie(config_item('auth_remember_me_cookie'));
     }
 }

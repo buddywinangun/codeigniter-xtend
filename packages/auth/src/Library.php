@@ -1,13 +1,13 @@
 <?php
 
-namespace CodeigniterXtend\Auth\SimpleAuth;
+namespace CodeigniterXtend\Auth;
 
 use CodeigniterXtend\Auth\Auth;
 use CodeigniterXtend\Auth\Exception\UserNotFoundException;
 use CodeigniterXtend\Auth\Exception\PermissionNotFoundException;
 
 /**
- * SimpleAuth useful methods in a CodeIgniter-compatible library format
+ * useful methods in a CodeIgniter-compatible library format
  */
 class Library
 {
@@ -28,7 +28,7 @@ class Library
             return call_user_func_array([Auth::class, $name], $args);
         }
 
-        show_error('Unknown "' . $name . '" method', 500, 'SimpleAuth error');
+        show_error('Unknown "' . $name . '" method', 500, 'Auth error');
     }
 
     /**
@@ -44,7 +44,7 @@ class Library
     final public static function walkUpPermission($id, &$permissionName = '')
     {
         // FASTEST: Defined permission ID in ACL Map
-        $aclMap = config_item('simpleauth_acl_map');
+        $aclMap = config_item('auth_acl_map');
 
         if(is_array($aclMap) && !empty($aclMap))
         {
@@ -70,7 +70,7 @@ class Library
         else
         {
             $permission = ci()->db->get_where(
-                config_item('simpleauth_users_acl_categories_table'),
+                config_item('auth_users_acl_categories_table'),
                 [
                     'id' => $id,
                 ]
@@ -115,7 +115,7 @@ class Library
      */
     final public static function walkDownPermission($permission , $parentID = null)
     {
-        $aclMap = config_item('simpleauth_acl_map');
+        $aclMap = config_item('auth_acl_map');
 
         // FASTEST: Defined permission ID in ACL Map
         if(is_array($aclMap) && !empty($aclMap) && isset($aclMap[$permission]))
@@ -131,7 +131,7 @@ class Library
         $getCategory = function($permissionName, $parentID)
         {
             $category = ci()->db->get_where(
-                config_item('simpleauth_users_acl_categories_table'),
+                config_item('auth_users_acl_categories_table'),
                 [
                     'name'      => $permissionName,
                     'parent_id' => $parentID,
@@ -231,7 +231,7 @@ class Library
         {
             ci()->load->database();
 
-            $user = ci()->db->get_where( config_item('simpleauth_users_table'), [ config_item('simpleauth_id_col') => $search ])
+            $user = ci()->db->get_where( config_item('auth_users_table'), [ config_item('auth_id_col') => $search ])
                 ->result();
 
             return !empty($user) ? $user[0] : null;
@@ -240,7 +240,7 @@ class Library
         {
             ci()->load->database();
 
-            $user = ci()->db->get_where( config_item('simpleauth_users_table'), [ config_item('simpleauth_username_col') => $search ])
+            $user = ci()->db->get_where( config_item('auth_users_table'), [ config_item('auth_username_col') => $search ])
                 ->result();
 
             return !empty($user) ? $user[0] : null;
@@ -249,14 +249,14 @@ class Library
         {
             ci()->load->database();
 
-            $user = ci()->db->get_where( config_item('simpleauth_users_table'), $search )
+            $user = ci()->db->get_where( config_item('auth_users_table'), $search )
                 ->result();
 
             return !empty($user) ? $user[0] : null;
         }
         else
         {
-            show_error('Unknown user search criteria', 500, 'SimpleAuth error');
+            show_error('Unknown user search criteria', 500, 'Auth error');
         }
     }
 
@@ -276,21 +276,21 @@ class Library
 
         if(!is_int($user) && !is_string($user))
         {
-            show_error('The $user argument must be an integer or a string', 500, 'SimpleAuth error');
+            show_error('The $user argument must be an integer or a string', 500, 'Auth error');
         }
 
         if(!is_array($values))
         {
-            show_error('The new values must be provided as an associative array', 500, 'SimpleAuth error');
+            show_error('The new values must be provided as an associative array', 500, 'Auth error');
         }
 
         ci()->load->database();
 
         ci()->db->update(
-            config_item('simpleauth_users_table'),
+            config_item('auth_users_table'),
             $values,
             [
-                config_item('simpleauth_id_col') => $user->{config_item( is_int($user) ? 'simpleauth_id_col' : 'simpleauth_username_col')}
+                config_item('auth_id_col') => $user->{config_item( is_int($user) ? 'auth_id_col' : 'auth_username_col')}
             ]
         );
     }
@@ -303,13 +303,13 @@ class Library
     public function createUser($user)
     {
         // Automatic password hash
-        if(isset($user[config_item('simpleauth_password_col')]))
+        if(isset($user[config_item('auth_password_col')]))
         {
-            $user[config_item('simpleauth_password_col')] = Auth::loadUserProvider( config_item('simpleauth_user_provider') )
-                ->hashPassword($user[config_item('simpleauth_password_col')]);
+            $user[config_item('auth_password_col')] = Auth::loadUserProvider( config_item('auth_user_provider') )
+                ->hashPassword($user[config_item('auth_password_col')]);
         }
 
-        ci()->db->insert(config_item('simpleauth_users_table'), $user);
+        ci()->db->insert(config_item('auth_users_table'), $user);
     }
 
     /**
@@ -321,7 +321,7 @@ class Library
      */
     final public function permissionExists($permission)
     {
-        if(config_item('simpleauth_enable_acl') !== true)
+        if(config_item('auth_enable_acl') !== true)
         {
             return false;
         }
@@ -350,7 +350,7 @@ class Library
      */
     final public function grantPermission($username, $permission = null)
     {
-        if(config_item('simpleauth_enable_acl') !== true)
+        if(config_item('auth_enable_acl') !== true)
         {
             return false;
         }
@@ -362,7 +362,7 @@ class Library
         }
         else
         {
-            $userProvider = Auth::loadUserProvider(config_item('simpleauth_user_provider'));
+            $userProvider = Auth::loadUserProvider(config_item('auth_user_provider'));
 
             try
             {
@@ -380,13 +380,13 @@ class Library
 
             ci()->load->database();
             ci()->db->insert(
-                config_item('simpleauth_users_acl_table'),
+                config_item('auth_users_acl_table'),
                 [
-                    'user_id'     => $user->{config_item('simpleauth_id_col')},
+                    'user_id'     => $user->{config_item('auth_id_col')},
                     'category_id' => $id,
                 ],
                 [
-                    config_item('simpleauth_username_col') => $user->getUsername()
+                    config_item('auth_username_col') => $user->getUsername()
                 ]
             );
 
@@ -407,7 +407,7 @@ class Library
      */
     final public function revokePermission($username, $permission = null)
     {
-        if(config_item('simpleauth_enable_acl') !== true)
+        if(config_item('auth_enable_acl') !== true)
         {
             return false;
         }
@@ -419,7 +419,7 @@ class Library
         }
         else
         {
-            $userProvider = Auth::loadUserProvider(config_item('simpleauth_user_provider'));
+            $userProvider = Auth::loadUserProvider(config_item('auth_user_provider'));
 
             try
             {
@@ -437,9 +437,9 @@ class Library
 
             ci()->load->database();
             ci()->db->delete(
-                config_item('simpleauth_users_acl_table'),
+                config_item('auth_users_acl_table'),
                 [
-                    'user_id'     => $user->{config_item('simpleauth_id_col')},
+                    'user_id'     => $user->{config_item('auth_id_col')},
                     'category_id' => $id,
                 ]
             );

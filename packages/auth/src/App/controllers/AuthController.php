@@ -3,14 +3,14 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Welcome to your SimpleAuth controller!
+ * Welcome to your Auth controller!
  *
- * This class inherits the base SimpleAuth controller, which contains
+ * This class inherits the base Auth controller, which contains
  * all the authentication logic out-the-box.
  *
  * (And yes, is still a controller, so you can add your own methods)
  */
-class SimpleAuthController extends CodeigniterXtend\Auth\SimpleAuth\Controller
+class AuthController extends CodeigniterXtend\Auth\Controller
 {
 
     /**
@@ -57,13 +57,13 @@ class SimpleAuthController extends CodeigniterXtend\Auth\SimpleAuth\Controller
                 'text',
                 'Username',
                 ['required' => true, 'max_length' => 22],
-                ['required', 'min_length[3]', 'max_length[22]', 'is_unique[' . config_item('simpleauth_users_table') . '.username' . ']'],
+                ['required', 'min_length[3]', 'max_length[22]', 'is_unique[' . config_item('auth_users_table') . '.username' . ']'],
             ],
             'email' => [
                 'email',
                 'Email',
                 ['required' => true],
-                ['required', 'valid_email', 'max_length[255]', 'is_unique[' . config_item('simpleauth_users_table') . '.' . config_item('simpleauth_username_col') .']'],
+                ['required', 'valid_email', 'max_length[255]', 'is_unique[' . config_item('auth_users_table') . '.' . config_item('auth_username_col') .']'],
             ],
             'gender' => [
                 'radio' => [ 'm' => 'Male', 'f' => 'Female'],

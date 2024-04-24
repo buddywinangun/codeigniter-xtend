@@ -2,7 +2,7 @@
 
 namespace CodeigniterXtend\Auth;
 
-use CodeigniterXtend\Auth\Middleware as AuthMiddlewareInterface;
+use CodeigniterXtend\Auth\AuthBaseMiddleware;
 use CodeigniterXtend\Auth\Auth;
 use CodeigniterXtend\Route\Middleware;
 use CodeigniterXtend\Route\MiddlewareInterface;
@@ -16,7 +16,7 @@ class Dispatcher implements MiddlewareInterface
     /**
      * {@inheritDoc}
      *
-     * @see \CodeigniterXtend\Auth\MiddlewareInterface::run()
+     * @see \CodeigniterXtend\Route\MiddlewareInterface::run()
      */
     public function run($args)
     {
@@ -32,9 +32,9 @@ class Dispatcher implements MiddlewareInterface
             $authMiddleware = Middleware::load($authMiddleware);
         }
 
-        if(!$authMiddleware instanceof AuthMiddlewareInterface)
+        if(!$authMiddleware instanceof AuthBaseMiddleware)
         {
-            show_error('The auth middleware must inherit the CodeigniterXtend\Auth\Auth\Middleware class');
+            show_error('The auth middleware must inherit the CodeigniterXtend\Auth\AuthBaseMiddleware class');
         }
 
         ci()->middleware->run($authMiddleware,  Auth::loadUserProvider(ci()->getUserProvider()));

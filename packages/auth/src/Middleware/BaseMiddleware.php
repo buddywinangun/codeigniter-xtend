@@ -1,15 +1,15 @@
 <?php
 
-namespace CodeigniterXtend\Auth\SimpleAuth\Middleware;
+namespace CodeigniterXtend\Auth\Middleware;
 
 use CodeigniterXtend\Auth\Auth;
-use CodeigniterXtend\Route\MiddlewareInterface;
 use CodeigniterXtend\Auth\ControllerInterface as AuthControllerInterface;
+use CodeigniterXtend\Route\MiddlewareInterface;
 
 /**
  * Basic security layer for routing that requires user authentication.
  */
-class SimpleAuthMiddleware implements MiddlewareInterface
+class BaseMiddleware implements MiddlewareInterface
 {
     /**
      * {@inheritDoc}
@@ -23,7 +23,7 @@ class SimpleAuthMiddleware implements MiddlewareInterface
             return;
         }
 
-        if( config_item('simpleauth_enable_remember_me') === true )
+        if( config_item('auth_enable_remember_me') === true )
         {
             ci()->middleware->run(new RememberMeMiddleware(), 'restore');
         }

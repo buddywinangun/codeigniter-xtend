@@ -18,7 +18,7 @@ interface ControllerInterface
     /**
      * Gets the middleware used by the Controller-based authentication
      *
-     * @return \CodeigniterXtend\Auth\Middleware
+     * @return \CodeigniterXtend\Route\Middleware
      */
     public function getMiddleware();
 

@@ -40,22 +40,22 @@
                                     <input type="password" name="<?= config_item('auth_form_password_field'); ?>" placeholder="<?= ucwords(config_item('auth_form_password_field')); ?>" class="form-control" required />
                                 </div>
 
-                                <?php if( config_item('simpleauth_enable_remember_me') == true){ ?>
+                                <?php if( config_item('auth_enable_remember_me') == true){ ?>
                                 <div class="form-group">
                                     <label>
-                                        <input type="checkbox" name="<?= config_item('simpleauth_remember_me_field');?>" /> <?= $lang('remember_me') ;?>
+                                        <input type="checkbox" name="<?= config_item('auth_remember_me_field');?>" /> <?= $lang('remember_me') ;?>
                                     </label>
                                 </div>
                                 <?php } ?>
 
                                 <button type="submit" class="btn btn-primary btn-block"><?= $lang('enter') ;?></button>
 
-                                <?php if( config_item('simpleauth_enable_password_reset') === TRUE || config_item('simpleauth_enable_signup') === TRUE){ ?>
+                                <?php if( config_item('auth_enable_password_reset') === TRUE || config_item('auth_enable_signup') === TRUE){ ?>
                                     <hr />
                                 <?php } ?>
 
 
-                                <?php if(config_item('simpleauth_enable_password_reset') === TRUE){ ?>
+                                <?php if(config_item('auth_enable_password_reset') === TRUE){ ?>
                                     <div class="form-group text-center">
                                         <a href="<?= route('password_reset') ;?>">
                                             <?= $lang('forgotten_password_link') ;?>
@@ -63,7 +63,7 @@
                                     </div>
                                 <?php } ?>
 
-                                <?php if(config_item('simpleauth_enable_signup') === TRUE){ ?>
+                                <?php if(config_item('auth_enable_signup') === TRUE){ ?>
                                     <div class="form-group text-center">
                                         <a href="<?= route('signup') ;?>">
                                             <?= $lang('register_link') ;?>

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * SimpleAuth English translation file
+ * Auth English translation file
  */
 
 return [

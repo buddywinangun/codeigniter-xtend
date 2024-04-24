@@ -2,190 +2,112 @@
 
 namespace CodeigniterXtend\Auth;
 
-use CodeigniterXtend\Auth\Auth;
-use CodeigniterXtend\Middleware as CodeigniterXtendMiddleware;
-use CodeigniterXtend\Auth\Exception\UserNotFoundException;
-use CodeigniterXtend\Auth\Exception\InactiveUserException;
-use CodeigniterXtend\Auth\Exception\UnverifiedUserException;
+use CodeigniterXtend\Auth\AuthBaseMiddleware;
+use CodeigniterXtend\Auth\UserInterface;
+use CodeigniterXtend\Auth\Middleware\RememberMeMiddleware;
 use CodeigniterXtend\Route\Route;
-use CodeigniterXtend\Route\Debug;
-use CodeigniterXtend\Route\MiddlewareInterface;
 
 /**
- * Controller-based authentication middleware
- *
- * This is a special middleware used internally by CodeigniterXtend CI. Handles
- * the Controller-based authentication and dispatches special authentication
- * events during the process.
+ * implementation of the Controller-based authentication
  */
-abstract class Middleware implements MiddlewareInterface
+class Middleware extends AuthBaseMiddleware
 {
     /**
      * {@inheritDoc}
      *
-     * @see \CodeigniterXtend\MiddlewareInterface::run()
+     * @see \CodeigniterXtend\Auth\AuthBaseMiddleware::preLogin()
      */
-    final public function run($userProvider)
+    public function preLogin(Route $route)
     {
-        Debug::log(
-            '>>> USING CONTROLLER-BASED AUTH ['
-            . get_class(ci()) . ', '
-            . get_class($userProvider) . ', '
-            . get_class( is_object(ci()->getMiddleware()) ? ci()->getMiddleware() : CodeigniterXtendMiddleware::load(ci()->getMiddleware()) ) . ' ]',
-            'info', 'auth');
-
-        $authLoginRoute = config_item('auth_login_route') !== null
-            ? config_item('auth_login_route')
-            : 'login';
-
-        $authLoginRouteRedirect = config_item('auth_login_route_redirect') !== null
-            ? config_item('auth_login_route_redirect')
-            : null;
-
-        $authLogoutRoute = config_item('auth_logout_route') !== null
-            ? config_item('auth_logout_route')
-            : 'logout';
-
-        $authLogoutRouteRedirect = config_item('auth_logout_route_redirect') !== null
-            ? config_item('auth_logout_route_redirect')
-            : null;
-
-        $authRouteAutoRedirect = is_array( config_item('auth_route_auto_redirect')  )
-            ? config_item('auth_route_auto_redirect')
-            : [];
-
-        if( !Auth::isGuest() && ( ci()->route->getName() == $authLoginRoute || in_array(ci()->route->getName(), $authRouteAutoRedirect)) )
+        if(
+            $route->getName()     == config_item('auth_login_route') &&
+            $route->requestMethod == 'POST' &&
+            config_item('auth_enable_brute_force_protection') === true
+        )
         {
-            return redirect(
-                $authLoginRouteRedirect !== null && route_exists($authLoginRouteRedirect)
-                    ? route($authLoginRouteRedirect)
-                    : base_url()
-            );
+            ci()->load->database();
+
+            $loginAttemptCount = ci()->db->where('ip', $_SERVER['REMOTE_ADDR'])
+                ->where('created_at >=', date('Y-m-d H:i:s', time() - (60 * 30)) ) // 30 minutes
+                ->where('created_at <=', date('Y-m-d H:i:s', time()))
+                ->count_all_results(config_item('auth_login_attempts_table'));
+
+            if($loginAttemptCount >= 4)
+            {
+                ci()->session->set_flashdata('_auth_messages', [ 'danger' =>  'ERR_LOGIN_ATTEMPT_BLOCKED' ]);
+
+                return redirect(route(config_item('auth_login_route')));
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see \CodeigniterXtend\Auth\AuthBaseMiddleware::onLoginSuccess()
+     */
+    public function onLoginSuccess(UserInterface $user)
+    {
+        if( config_item('auth_enable_remember_me') === true )
+        {
+            ci()->middleware->run( new RememberMeMiddleware(), 'store');
         }
 
-        $this->preLogin(ci()->route);
+        return redirect(
+            route_exists(config_item('auth_login_route_redirect'))
+                ? route(config_item('auth_login_route_redirect'))
+                : base_url()
+        );
+    }
 
-        if(ci()->route->getName() == $authLoginRoute && ci()->route->requestMethod == 'POST')
+    /**
+     * {@inheritDoc}
+     *
+     * @see \CodeigniterXtend\Auth\AuthBaseMiddleware::onLoginFailed()
+     */
+    public function onLoginFailed($username)
+    {
+        ci()->load->database();
+
+        if( config_item('auth_enable_brute_force_protection') === true )
         {
-            $usernameField = config_item('auth_form_username_field') !== null
-                ? config_item('auth_form_username_field')
-                : 'username';
-
-            $passwordField = config_item('auth_form_password_field') !== null
-                ? config_item('auth_form_password_field')
-                : 'password';
-
-            $username = ci()->input->post($usernameField);
-            $password = ci()->input->post($passwordField);
-
-            Debug::logFlash('>>> LOGIN ATTEMPT INTERCEPTED', 'info', 'auth');
-            Debug::logFlash('Username: ' . $username, 'info', 'auth');
-            Debug::logFlash('Password: ' . $password . ' [hash: ' . $userProvider->hashPassword($password) . ']', 'info', 'auth');
-
-            try
-            {
-                $user = $userProvider->loadUserByUsername($username, $password);
-                        $userProvider->checkUserIsActive($user);
-                        $userProvider->checkUserIsVerified($user);
-            }
-            catch(UserNotFoundException $e)
-            {
-                Debug::logFlash('FAILED: ' . UserNotFoundException::class, 'error', 'auth');
-                ci()->session->set_flashdata('_auth_messages', [ 'danger' => 'ERR_LOGIN_INVALID_CREDENTIALS' ]);
-                $this->onLoginFailed($username);
-
-                return redirect(route($authLoginRoute));
-            }
-            catch(InactiveUserException $e)
-            {
-                Debug::logFlash('FAILED: ' . InactiveUserException::class, 'error', 'auth');
-                ci()->session->set_flashdata('_auth_messages', [ 'danger' => 'ERR_LOGIN_INACTIVE_USER' ]);
-                $this->onLoginInactiveUser($user);
-
-                return redirect(route($authLoginRoute));
-            }
-            catch(UnverifiedUserException $e)
-            {
-                Debug::logFlash('FAILED: ' . UnverifiedUserException::class, 'error', 'auth');
-                ci()->session->set_flashdata('_auth_messages', [ 'danger' => 'ERR_LOGIN_UNVERIFIED_USER' ]);
-                $this->onLoginUnverifiedUser($user);
-
-                return redirect(route($authLoginRoute));
-            }
-
-            Auth::store($user);
-            $this->onLoginSuccess($user);
-
-            return redirect( $authLoginRouteRedirect !== null ? route($authLoginRouteRedirect) : base_url() );
-        }
-
-        if(ci()->route->getName() == $authLogoutRoute)
-        {
-            Auth::destroy();
-            $this->onLogout();
-
-            return redirect(
-                $authLogoutRouteRedirect !== null && route_exists($authLogoutRouteRedirect)
-                    ? route($authLogoutRouteRedirect)
-                    : base_url()
+            ci()->db->insert(
+                config_item('auth_login_attempts_table'),
+                [
+                    'username'   => $username,
+                    'ip'         => $_SERVER['REMOTE_ADDR']
+                ]
             );
         }
     }
 
     /**
-     * Event triggered when the user visits the login path, regardless of whether
-     * logs in or not
+     * {@inheritDoc}
      *
-     * @param Route $route Current route
-     *
-     * @return void
+     * @see \CodeigniterXtend\Auth\AuthBaseMiddleware::onLoginInactiveUser()
      */
-    abstract public function preLogin(Route $route);
+    public function onLoginInactiveUser(UserInterface $user)
+    {
+        return;
+    }
 
     /**
-     * Event triggered immediately after a successful login session, and before the
-     * redirect that follows
+     * {@inheritDoc}
      *
-     * @param UserInterface $user Current user
-     *
-     * @return void
+     * @see \CodeigniterXtend\Auth\AuthBaseMiddleware::onLoginUnverifiedUser()
      */
-    abstract public function onLoginSuccess(UserInterface $user);
+    public function onLoginUnverifiedUser(UserInterface $user)
+    {
+        return;
+    }
 
     /**
-     * Event triggered after a failed session attempt, and before the redirect that
-     *  follows
+     * {@inheritDoc}
      *
-     * @param string $username Attempted username
-     *
-     * @return void
+     * @see \CodeigniterXtend\Auth\AuthBaseMiddleware::onLogout()
      */
-    abstract public function onLoginFailed($username);
-
-    /**
-     * Event triggered if an InactiveUserException exception is thrown within the
-     * User Provider, corresponding to an inactive user login error
-     *
-     * @param UserInterface $user
-     *
-     * @return void
-     */
-    abstract public function onLoginInactiveUser(UserInterface $user);
-
-    /**
-     * Event triggered if an `UnverifiedUserException` exception is thrown inside the
-     * User Provider, corresponding to an error by login of an unverified user.
-     *
-     * @param UserInterface $user
-     *
-     * @return void
-     */
-    abstract public function onLoginUnverifiedUser(UserInterface $user);
-
-    /**
-     * Event triggered immediately after the user log out.
-     *
-     * @return void
-     */
-    abstract public function onLogout();
+    public function onLogout()
+    {
+        ci()->middleware->run( new RememberMeMiddleware(), 'destroy');
+    }
 }

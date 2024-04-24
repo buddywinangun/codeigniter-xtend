@@ -1,11 +1,11 @@
 <?php
 
-namespace CodeigniterXtend\Auth\SimpleAuth;
+namespace CodeigniterXtend\Auth;
 
 use CodeigniterXtend\Auth\UserInterface;
 
 /**
- * SimpleAuth User class
+ * User class
  */
 class User implements UserInterface
 {

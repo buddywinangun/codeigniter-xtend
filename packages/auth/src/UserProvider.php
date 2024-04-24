@@ -1,6 +1,6 @@
 <?php
 
-namespace CodeigniterXtend\Auth\SimpleAuth;
+namespace CodeigniterXtend\Auth;
 
 use CodeigniterXtend\Auth\UserInterface;
 use CodeigniterXtend\Auth\UserProviderInterface;
@@ -9,7 +9,7 @@ use CodeigniterXtend\Auth\Exception\InactiveUserException;
 use CodeigniterXtend\Auth\Exception\UnverifiedUserException;
 
 /**
- * SimpleAuth user provider
+ * user provider
  */
 class UserProvider implements UserProviderInterface
 {
@@ -33,25 +33,25 @@ class UserProvider implements UserProviderInterface
         ci()->load->database();
 
         $user = ci()->db->get_where(
-              config_item('simpleauth_users_table'),
-            [ config_item('simpleauth_username_col') => $username ]
+              config_item('auth_users_table'),
+            [ config_item('auth_username_col') => $username ]
         )->result();
 
-        if(empty($user) || ($password !== null && !$this->verifyPassword($password, $user[0]->{config_item('simpleauth_password_col')})))
+        if(empty($user) || ($password !== null && !$this->verifyPassword($password, $user[0]->{config_item('auth_password_col')})))
         {
             throw new UserNotFoundException();
         }
 
         $userClass = $this->getUserClass();
 
-        $roles = [ $user[0]->{config_item('simpleauth_role_col')} ];
+        $roles = [ $user[0]->{config_item('auth_role_col')} ];
 
         $permissions = [];
 
-        if(config_item('simpleauth_enable_acl') === true)
+        if(config_item('auth_enable_acl') === true)
         {
             $databaseUserPermissions = ci()->db->get_where(
-                  config_item('simpleauth_users_acl_table'),
+                  config_item('auth_users_acl_table'),
                 [ 'user_id' => $user[0]->id ]
             )->result();
 
@@ -76,7 +76,7 @@ class UserProvider implements UserProviderInterface
      */
     final public function checkUserIsActive(UserInterface $user)
     {
-        if($user->getEntity()->{config_item('simpleauth_active_col')} == 0)
+        if($user->getEntity()->{config_item('auth_active_col')} == 0)
         {
             throw new InactiveUserException();
         }
@@ -89,15 +89,15 @@ class UserProvider implements UserProviderInterface
      */
     final public function checkUserIsVerified(UserInterface $user)
     {
-        $enableCheck = config_item('simpleauth_enable_email_verification')  === TRUE &&
-                       config_item('simpleauth_enforce_email_verification') === TRUE;
+        $enableCheck = config_item('auth_enable_email_verification')  === TRUE &&
+                       config_item('auth_enforce_email_verification') === TRUE;
 
         if(!$enableCheck)
         {
             return;
         }
 
-        if($user->getEntity()->{config_item('simpleauth_verified_col')} == 0)
+        if($user->getEntity()->{config_item('auth_verified_col')} == 0)
         {
             throw new UnverifiedUserException();
         }

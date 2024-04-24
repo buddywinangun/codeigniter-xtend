@@ -41,7 +41,7 @@ class Hook
 
     $isCli  =  is_cli();
 
-    Utils::rcopy(__DIR__ . '/SimpleAuth/Framework', APPPATH);
+    Utils::rcopy(__DIR__ . '/App', APPPATH);
 
     require_once __DIR__ . '/Facades/Auth.php';
 

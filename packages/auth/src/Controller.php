@@ -1,15 +1,15 @@
 <?php
 
-namespace CodeigniterXtend\Auth\SimpleAuth;
+namespace CodeigniterXtend\Auth;
 
 use CodeigniterXtend\Auth\Auth;
 use CodeigniterXtend\Auth\ControllerInterface as AuthControllerInterface;
-use CodeigniterXtend\Auth\SimpleAuth\Middleware as SimpleAuthMiddleware;
+use CodeigniterXtend\Auth\Middleware;
 use CodeigniterXtend\Route\Utils;
 use CodeigniterXtend\Debug\Debug;
 
 /**
- * SimpleAuth base controller
+ * Auth base controller
  */
 class Controller extends \CI_Controller implements AuthControllerInterface
 {
@@ -29,10 +29,10 @@ class Controller extends \CI_Controller implements AuthControllerInterface
      */
     private static function lang($index)
     {
-        $langFile = CI_DIR . '/SimpleAuth/Translations/' . config_item('language') . '.php';
+        $langFile = CI_DIR . '/Translations/' . config_item('language') . '.php';
 
         if (!file_exists($langFile)) {
-            $langFile = CI_DIR . '/SimpleAuth/Translations/english.php';
+            $langFile = CI_DIR . '/Translations/english.php';
         }
 
         if (self::$lang === null) {
@@ -48,7 +48,7 @@ class Controller extends \CI_Controller implements AuthControllerInterface
     }
 
     /**
-     * Shows a SimpleAuth message screen (varies depending of the current skin)
+     * Shows a Auth message screen (varies depending of the current skin)
      *
      * @param string $title
      * @param string $message
@@ -61,7 +61,7 @@ class Controller extends \CI_Controller implements AuthControllerInterface
     }
 
     /**
-     * Loads a SimpleAuth view
+     * Loads a Auth view
      *
      * @param  string  $view  View file name
      * @param  array   $data  View data
@@ -76,13 +76,13 @@ class Controller extends \CI_Controller implements AuthControllerInterface
 
         $data['lang'] = $lang;
 
-        if (file_exists(VIEWPATH . '/simpleauth/' . $view . '.php')) {
-            return $this->load->view('simpleauth/' . $view, $data);
+        if (file_exists(VIEWPATH . '/auth/' . $view . '.php')) {
+            return $this->load->view('auth/' . $view, $data);
         }
 
-        $this->copyAssets(config_item('simpleauth_skin'));
+        $this->copyAssets(config_item('auth_skin'));
 
-        $assetsPath = base_url(config_item('simpleauth_assets_dir'));
+        $assetsPath = base_url(config_item('auth_assets_dir'));
 
         ob_start();
 
@@ -90,7 +90,7 @@ class Controller extends \CI_Controller implements AuthControllerInterface
             $$_name = $_value;
         }
 
-        require CI_DIR . '/SimpleAuth/Assets/skins/' . config_item('simpleauth_skin') . '/views/' . $view . '.php';
+        require CI_DIR . '/Themes/' . config_item('auth_skin') . '/views/' . $view . '.php';
 
         $view = ob_get_clean();
 
@@ -98,8 +98,8 @@ class Controller extends \CI_Controller implements AuthControllerInterface
     }
 
     /**
-     * Copies all the required SimpleAuth assets to the path specified by
-     * the 'simpleauth_assets_dir' option
+     * Copies all the required Auth assets to the path specified by
+     * the 'auth_assets_dir' option
      *
      * @param  mixed $skin Current skin
      *
@@ -107,14 +107,14 @@ class Controller extends \CI_Controller implements AuthControllerInterface
      */
     private function copyAssets($skin)
     {
-        $target = FCPATH . '/' . config_item('simpleauth_assets_dir');
+        $target = FCPATH . '/' . config_item('auth_assets_dir');
 
         if (!file_exists($target)) {
             mkdir($target, 0777, true);
         }
 
         foreach (['css', 'js', 'img'] as $folder) {
-            $source =  CI_DIR . '/SimpleAuth/Assets/skins/' . $skin . '/assets/' . $folder;
+            $source =  CI_DIR . '/Themes/' . $skin . '/assets/' . $folder;
 
             if (file_exists($source)) {
                 Utils::rcopy($source, $target);
@@ -149,7 +149,7 @@ class Controller extends \CI_Controller implements AuthControllerInterface
      */
     final public function getUserProvider()
     {
-        return config_item('simpleauth_user_provider');
+        return config_item('auth_user_provider');
     }
 
     /**
@@ -159,7 +159,7 @@ class Controller extends \CI_Controller implements AuthControllerInterface
      */
     final public function getMiddleware()
     {
-        return new SimpleAuthMiddleware();
+        return new Middleware();
     }
 
     /**
@@ -191,7 +191,7 @@ class Controller extends \CI_Controller implements AuthControllerInterface
      */
     public function signup()
     {
-        if (config_item('simpleauth_enable_signup') !== true) {
+        if (config_item('auth_enable_signup') !== true) {
             return redirect(route(config_item('auth_login_route')));
         }
 
@@ -223,7 +223,7 @@ class Controller extends \CI_Controller implements AuthControllerInterface
                 if ((in_array($fieldName, $userFields) || isset($userFields[$fieldName])) && !empty($this->input->post($fieldName))) {
                     $user[$fieldName] = $this->input->post($fieldName);
 
-                    if ($fieldName == config_item('simpleauth_password_col')) {
+                    if ($fieldName == config_item('auth_password_col')) {
                         $user[$fieldName] = Auth::loadUserProvider($this->getUserProvider())->hashPassword($user[$fieldName]);
                     }
                 }
@@ -239,15 +239,15 @@ class Controller extends \CI_Controller implements AuthControllerInterface
 
             if ($this->form_validation->run() === TRUE) {
                 // Is the form valid? let's store the user
-                $emailVerificationEnabled = config_item('simpleauth_enable_email_verification');
+                $emailVerificationEnabled = config_item('auth_enable_email_verification');
 
                 $this->load->library('encryption');
 
                 if ($emailVerificationEnabled) {
-                    $user[config_item('simpleauth_verified_col')] = 0;
+                    $user[config_item('auth_verified_col')] = 0;
                 }
 
-                $this->db->insert(config_item('simpleauth_users_table'), $user);
+                $this->db->insert(config_item('auth_users_table'), $user);
 
                 $title = self::lang('signup_success');
 
@@ -255,10 +255,10 @@ class Controller extends \CI_Controller implements AuthControllerInterface
 
                     $emailVerificationKey = bin2hex($this->encryption->create_key(16));
                     $emailVerificationUrl = route('email_verification', ['token' => $emailVerificationKey])
-                        . '?email=' . $user[config_item('simpleauth_email_col')];
+                        . '?email=' . $user[config_item('auth_email_col')];
 
                     $this->db->insert(
-                        config_item('simpleauth_users_email_verification_table'),
+                        config_item('auth_users_email_verification_table'),
                         [
                             'email'      => $user['email'],
                             'token'      => $emailVerificationKey,
@@ -269,20 +269,20 @@ class Controller extends \CI_Controller implements AuthControllerInterface
                     $this->load->library('email');
                     $this->load->library('parser');
 
-                    if (!empty(config_item('simpleauth_email_configuration'))) {
-                        $this->email->initialize(config_item('simpleauth_email_configuration'));
+                    if (!empty(config_item('auth_email_configuration'))) {
+                        $this->email->initialize(config_item('auth_email_configuration'));
                     }
 
-                    $this->email->from(config_item('simpleauth_email_address'), config_item('simpleauth_email_name'));
-                    $this->email->to($user[config_item('simpleauth_email_col')]);
-                    $this->email->subject('[' . config_item('simpleauth_email_name') . '] Verify your email address');
+                    $this->email->from(config_item('auth_email_address'), config_item('auth_email_name'));
+                    $this->email->to($user[config_item('auth_email_col')]);
+                    $this->email->subject('[' . config_item('auth_email_name') . '] Verify your email address');
 
                     $emailBody = $this->parser->parse_string(
-                        config_item('simpleauth_email_verification_message') !== null
-                            ? config_item('simpleauth_email_verification_message')
+                        config_item('auth_email_verification_message') !== null
+                            ? config_item('auth_email_verification_message')
                             : self::lang('email_verification_message'),
                         [
-                            'first_name'       => $user[config_item('simpleauth_email_first_name_col')],
+                            'first_name'       => $user[config_item('auth_email_first_name_col')],
                             'verification_url' => $emailVerificationUrl,
                         ]
                     );
@@ -314,7 +314,7 @@ class Controller extends \CI_Controller implements AuthControllerInterface
      */
     public function emailVerification($token)
     {
-        if (config_item('simpleauth_enable_email_verification') !== true) {
+        if (config_item('auth_enable_email_verification') !== true) {
             return redirect(route('login'));
         }
 
@@ -331,7 +331,7 @@ class Controller extends \CI_Controller implements AuthControllerInterface
 
         // Verifying the token
         $verificationToken = $this->db->get_where(
-            config_item('simpleauth_users_email_verification_table'),
+            config_item('auth_users_email_verification_table'),
             [
                 'token' => $token,
                 'email' => $email,
@@ -340,10 +340,10 @@ class Controller extends \CI_Controller implements AuthControllerInterface
         )->result();
 
         $user = $this->db->get_where(
-            config_item('simpleauth_users_table'),
+            config_item('auth_users_table'),
             [
-                config_item('simpleauth_username_col') => $email,
-                config_item('simpleauth_active_col')   => 1,
+                config_item('auth_username_col') => $email,
+                config_item('auth_active_col')   => 1,
             ]
         )->result();
 
@@ -358,9 +358,9 @@ class Controller extends \CI_Controller implements AuthControllerInterface
         $user = $user[0];
 
         $this->db->update(
-            config_item('simpleauth_users_table'),
+            config_item('auth_users_table'),
             [
-                config_item('simpleauth_verified_col') => 1
+                config_item('auth_verified_col') => 1
             ],
             [
                 'id' => $user->id
@@ -368,7 +368,7 @@ class Controller extends \CI_Controller implements AuthControllerInterface
         );
 
         $this->db->delete(
-            config_item('simpleauth_users_email_verification_table'),
+            config_item('auth_users_email_verification_table'),
             [
                 'id' => $verificationToken->id
             ]
@@ -387,7 +387,7 @@ class Controller extends \CI_Controller implements AuthControllerInterface
      */
     public function passwordReset()
     {
-        if (config_item('simpleauth_enable_password_reset') !== true) {
+        if (config_item('auth_enable_password_reset') !== true) {
             return redirect(route(config_item('auth_login_route')));
         }
 
@@ -409,10 +409,10 @@ class Controller extends \CI_Controller implements AuthControllerInterface
 
                 // First, check if the user exists
                 $user = $this->db->get_where(
-                    config_item('simpleauth_users_table'),
+                    config_item('auth_users_table'),
                     [
-                        config_item('simpleauth_username_col') => $this->input->post('email'),
-                        config_item('simpleauth_active_col')   => 1,
+                        config_item('auth_username_col') => $this->input->post('email'),
+                        config_item('auth_active_col')   => 1,
                     ]
                 )->result();
 
@@ -427,7 +427,7 @@ class Controller extends \CI_Controller implements AuthControllerInterface
                     $requestCount = $this->db->where('email', $this->input->post('email'))
                         ->where('created_at <=', date('Y-m-d H:i:s'))
                         ->where('created_at >=', date('Y-m-d H:i:s', time() - (60 * 60 * 2))) // 2 hours
-                        ->count_all_results(config_item('simpleauth_password_resets_table'));
+                        ->count_all_results(config_item('auth_password_resets_table'));
 
                     Debug::log('Password reset count for this email: ' . $requestCount, 'info', 'auth');
 
@@ -443,7 +443,7 @@ class Controller extends \CI_Controller implements AuthControllerInterface
                             . '?email=' . $this->input->post('email');
 
                         $this->db->update(
-                            config_item('simpleauth_password_resets_table'),
+                            config_item('auth_password_resets_table'),
                             [
                                 'active' => 0,
                             ],
@@ -455,7 +455,7 @@ class Controller extends \CI_Controller implements AuthControllerInterface
                         );
 
                         $this->db->insert(
-                            config_item('simpleauth_password_resets_table'),
+                            config_item('auth_password_resets_table'),
                             [
                                 'email'      => $this->input->post('email'),
                                 'token'      => $emailPasswordResetKey,
@@ -463,20 +463,20 @@ class Controller extends \CI_Controller implements AuthControllerInterface
                         );
 
                         // Sending password reset message
-                        if (!empty(config_item('simpleauth_email_configuration'))) {
-                            $this->email->initialize(config_item('simpleauth_email_configuration'));
+                        if (!empty(config_item('auth_email_configuration'))) {
+                            $this->email->initialize(config_item('auth_email_configuration'));
                         }
 
-                        $this->email->from(config_item('simpleauth_email_address'), config_item('simpleauth_email_name'));
+                        $this->email->from(config_item('auth_email_address'), config_item('auth_email_name'));
                         $this->email->to($this->input->post('email'));
-                        $this->email->subject('[' . config_item('simpleauth_email_name') . '] Password reset');
+                        $this->email->subject('[' . config_item('auth_email_name') . '] Password reset');
 
                         $emailBody = $this->parser->parse_string(
-                            config_item('simpleauth_password_reset_message') !== null
-                                ? config_item('simpleauth_password_reset_message')
+                            config_item('auth_password_reset_message') !== null
+                                ? config_item('auth_password_reset_message')
                                 : self::lang('email_password_reset_message'),
                             [
-                                'first_name'         => $user->{config_item('simpleauth_email_first_name_col')},
+                                'first_name'         => $user->{config_item('auth_email_first_name_col')},
                                 'password_reset_url' => $emailPasswordResetUrl,
                             ]
                         );
@@ -524,7 +524,7 @@ class Controller extends \CI_Controller implements AuthControllerInterface
         }
 
         $verificationToken = $this->db->get_where(
-            config_item('simpleauth_password_resets_table'),
+            config_item('auth_password_resets_table'),
             [
                 'token'  => $token,
                 'email'  => $email,
@@ -534,10 +534,10 @@ class Controller extends \CI_Controller implements AuthControllerInterface
         )->result();
 
         $user = $this->db->get_where(
-            config_item('simpleauth_users_table'),
+            config_item('auth_users_table'),
             [
-                config_item('simpleauth_username_col') => $email,
-                config_item('simpleauth_active_col')   => 1,
+                config_item('auth_username_col') => $email,
+                config_item('auth_active_col')   => 1,
             ]
         )->result();
 
@@ -572,18 +572,18 @@ class Controller extends \CI_Controller implements AuthControllerInterface
 
             if ($this->form_validation->run() === true) {
                 $this->db->update(
-                    config_item('simpleauth_users_table'),
+                    config_item('auth_users_table'),
                     [
-                        config_item('simpleauth_password_col') => Auth::loadUserProvider($this->getUserProvider())
+                        config_item('auth_password_col') => Auth::loadUserProvider($this->getUserProvider())
                             ->hashPassword($this->input->post('new_password'))
                     ],
                     [
-                        config_item('simpleauth_username_col') => $email,
+                        config_item('auth_username_col') => $email,
                     ]
                 );
 
                 $this->db->delete(
-                    config_item('simpleauth_password_resets_table'),
+                    config_item('auth_password_resets_table'),
                     [
                         'active'  => 0,
                     ],
@@ -632,7 +632,7 @@ class Controller extends \CI_Controller implements AuthControllerInterface
                     'required', ['current_password', function ($password) {
 
                         $userProvider = Auth::loadUserProvider($this->getUserProvider());
-                        $storedHash   = Auth::user()->{config_item('simpleauth_password_col')};
+                        $storedHash   = Auth::user()->{config_item('auth_password_col')};
 
                         return $userProvider->verifyPassword($password, $storedHash);
                     }]

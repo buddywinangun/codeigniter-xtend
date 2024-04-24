@@ -1,7 +1,7 @@
 ## Features
 
 * Easy installation via hooks
-* Authentication library with SimpleAuth template
+* Authentication library with template
 
 ## Installation
 
@@ -51,5 +51,5 @@ In your web.php route file, add the following line:
 
 ```php
 // Sets the default routing
-\CodeigniterXtend\Auth\SimpleAuth\Routes::getRoutes();
+\CodeigniterXtend\Auth\Routes::getRoutes();
 ```

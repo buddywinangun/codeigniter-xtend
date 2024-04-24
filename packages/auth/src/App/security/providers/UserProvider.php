@@ -1,7 +1,7 @@
 <?php
 
 /**
- * SimpleAuth default User Provider
+ * User Provider
  *
  * This User Provider uses the native functionalities of CodeIgniter to obtain users from
  * a database.
@@ -15,9 +15,9 @@
  *
  */
 
-use CodeigniterXtend\Auth\SimpleAuth\UserProvider as SimpleAuthUserProvider;
+use CodeigniterXtend\Auth\UserProvider as BaseUserProvider;
 
-class UserProvider extends SimpleAuthUserProvider
+class UserProvider extends BaseUserProvider
 {
 
 }

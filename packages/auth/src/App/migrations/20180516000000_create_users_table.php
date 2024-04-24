@@ -8,7 +8,7 @@ class Migration_create_users_table extends CI_Migration
     {
         parent::__construct();
         $this->load->config('auth');
-        $this->load->library('simple_auth');
+        $this->load->library('authlib');
     }
 
     public function up()
@@ -80,7 +80,7 @@ class Migration_create_users_table extends CI_Migration
                 ],
 
             'created_at DATETIME default CURRENT_TIMESTAMP',
-            
+
             'updated_at' =>
                 [
                     'type' => 'DATETIME',
@@ -95,7 +95,7 @@ class Migration_create_users_table extends CI_Migration
         // (Edit this with your values)
         //
 
-        $this->simple_auth->createUser(
+        $this->authlib->createUser(
             [
                 'first_name' => 'Admin',
                 'last_name'  => 'Admin',
